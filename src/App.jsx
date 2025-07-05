@@ -1,14 +1,9 @@
-import Button from "@mui/material/Button";
-import Delete from "@mui/icons-material/Delete";
+import ToggleTheme from "./ToggleTheme";
 
-function App() {
+export default function App() {
   return (
     <>
-      <h1>Hello world</h1>
-      <Button variant="contained">Hello world</Button>
-      <Button startIcon={<Delete />} />
+      <ToggleTheme />
     </>
   );
 }
-
-export default App;
