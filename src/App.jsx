@@ -1,9 +1,8 @@
-import ToggleTheme from "./ToggleTheme";
-
+import Board from "./pages/Boards/_id.jsx";
 export default function App() {
   return (
     <>
-      <ToggleTheme />
+      <Board />
     </>
   );
 }
