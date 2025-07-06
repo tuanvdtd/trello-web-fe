@@ -1,8 +1,8 @@
 //Board Details Page
 import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
 import AppBar from "~/components/AppBar/AppBar.jsx";
 import BoardBar from "~/pages/Boards/BoardBar.jsx";
+import BoardContent from "~/pages/Boards/BoardContent.jsx";
 
 function Board() {
   return (
@@ -10,18 +10,7 @@ function Board() {
       <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
         <AppBar />
         <BoardBar />
-        <Box
-          sx={{
-            backgroundColor: "primary.main",
-            height: (theme) =>
-              `calc(100vh - ${theme.trello.appBarHeight} - ${theme.trello.boardBarHeight})`,
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          Board Content
-        </Box>
+        <BoardContent />
       </Container>
     </>
   );
