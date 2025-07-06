@@ -1,25 +1,55 @@
+import { cyan, deepOrange, teal, orange } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   trello: {
-    appBarHeight: "48px",
+    appBarHeight: "58px",
     boardBarHeight: "68px",
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none", // Disable uppercase transformation
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          ".MuiOutlinedInput-notchedOutline": {
+            borderColor: theme.palette.primary.light,
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: theme.palette.primary.main,
+          },
+          "& fieldset": {
+            borderWidth: "1px !important", // Ensure the border width is 1px
+          },
+        }),
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          fontSize: "0.875rem",
+        }),
+      },
+    },
   },
   colorSchemes: {
     light: {
       palette: {
-        mode: "light",
-        primary: {
-          main: "#1976d2", // Example primary color
-        },
+        primary: teal,
+        secondary: deepOrange,
       },
     },
     dark: {
       palette: {
-        mode: "dark",
-        primary: {
-          main: "#bb86fc", // Example primary color
-        },
+        primary: cyan,
+        secondary: orange,
       },
     },
   },
