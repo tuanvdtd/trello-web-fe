@@ -101,6 +101,8 @@ function BoardBar() {
                 height: 34,
                 fontSize: "16px",
                 border: "none",
+                cursor: "pointer",
+                "&:first-of-type": { bgcolor: "#a4b0de" },
               },
             }}
           >

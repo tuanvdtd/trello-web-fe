@@ -1,5 +1,5 @@
-import React from "react";
 import Box from "@mui/material/Box";
+import ListColumn from "./ListColumn/ListColumn";
 
 function BoardContent() {
   return (
@@ -8,14 +8,12 @@ function BoardContent() {
         sx={{
           bgcolor: (theme) =>
             theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
-          height: (theme) =>
-            `calc(100vh - ${theme.trello.appBarHeight} - ${theme.trello.boardBarHeight})`,
+          height: (theme) => theme.trello.boardContentHeight,
           width: "100%",
-          display: "flex",
-          alignItems: "center",
+          p: "10px 0",
         }}
       >
-        Board Content
+        <ListColumn />
       </Box>
     </>
   );
