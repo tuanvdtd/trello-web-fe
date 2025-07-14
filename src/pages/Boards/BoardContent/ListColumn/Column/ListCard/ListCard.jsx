@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import TrelloCard from "./TrelloCard";
 
-function ListCard() {
+function ListCard({ cards }) {
   return (
     <>
       <Box
@@ -26,13 +26,9 @@ function ListCard() {
           },
         }}
       >
-        <TrelloCard />
-        <TrelloCard isHideCardMedia />
-        <TrelloCard isHideCardMedia />
-        <TrelloCard isHideCardMedia />
-        <TrelloCard isHideCardMedia />
-        <TrelloCard isHideCardMedia />
-        <TrelloCard isHideCardMedia />
+        {cards.map((card) => {
+          return <TrelloCard key={card?._id} card={card} />;
+        })}
       </Box>
     </>
   );

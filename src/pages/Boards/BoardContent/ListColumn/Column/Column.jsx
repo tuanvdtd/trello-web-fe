@@ -15,8 +15,11 @@ import Button from "@mui/material/Button";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import ListCard from "./ListCard/ListCard";
+import { mapOrder } from "~/utils/sort";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
-function Column() {
+function Column({ column }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -25,9 +28,24 @@ function Column() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: column._id, data: { ...column } });
+
+  const styleDnDColumn = {
+    touchAction: "none",
+    transform: CSS.Translate.toString(transform),
+    transition,
+  };
+
   return (
     <>
       <Box
+        ref={setNodeRef}
+        style={styleDnDColumn}
+        {...attributes}
+        {...listeners}
         sx={{
           minWidth: "300px",
           maxWidth: "300px",
@@ -59,7 +77,7 @@ function Column() {
               cursor: "pointer",
             }}
           >
-            Tuan MERN Stack
+            {column?.title}
           </Typography>
           <Box>
             <Tooltip title="More Actions">
@@ -109,7 +127,7 @@ function Column() {
           </Box>
         </Box>
         {/* List Card Content */}
-        <ListCard />
+        <ListCard cards={orderedCards} />
         {/* Column Footer*/}
         <Box
           sx={{
