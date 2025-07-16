@@ -9,8 +9,26 @@ import CardMedia from "@mui/material/CardMedia";
 import GroupIcon from "@mui/icons-material/Group";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import AttachmentIcon from "@mui/icons-material/Attachment";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 function TrelloCard({ card }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: card._id, data: { ...card } });
+
+  const styleDnDCard = {
+    touchAction: "none",
+    transform: CSS.Translate.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : undefined,
+  };
+
   const isShowCardActions = () => {
     return (
       !!card?.memberIds.length ||
@@ -21,6 +39,10 @@ function TrelloCard({ card }) {
   return (
     <>
       <Card
+        ref={setNodeRef}
+        style={styleDnDCard}
+        {...attributes}
+        {...listeners}
         sx={{
           cursor: "pointer",
           boxShadow: "0 1px 1px rgba(0, 0, 0, 0.2)",
