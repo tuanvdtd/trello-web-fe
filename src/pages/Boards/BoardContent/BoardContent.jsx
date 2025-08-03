@@ -16,8 +16,9 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 import Column from "./ListColumn/Column/Column";
 
-import { cloneDeep } from "lodash";
+import { cloneDeep, isEmpty } from "lodash";
 import TrelloCard from "./ListColumn/Column/ListCard/TrelloCard";
+import { generatePlaceholderCard } from "~/utils/formatter";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: "COLUMN",
@@ -133,6 +134,11 @@ function BoardContent({ board }) {
           nextActiveColumn.cards = nextActiveColumn.cards.filter(
             (card) => card._id !== activeDraggingCardId
           );
+          if (isEmpty(nextActiveColumn.cards)) {
+            nextActiveColumn.cards = [
+              generatePlaceholderCard(nextActiveColumn._id),
+            ];
+          }
           nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
             (card) => card._id
           );
@@ -221,6 +227,9 @@ function BoardContent({ board }) {
             nextOverColumn.cards = nextOverColumn.cards.filter(
               (card) => card._id !== activeDraggingCardId
             );
+            nextOverColumn.cards = nextOverColumn.cards.filter(
+              (c) => !c.isPlaceHolderCard
+            );
             nextOverColumn.cards = nextOverColumn.cards.toSpliced(
               newCardIndex,
               0,
@@ -236,7 +245,7 @@ function BoardContent({ board }) {
       } else {
         // console.log("Same column, no action needed");
         const oldIndex = preActiveDragColumn?.cards?.findIndex(
-          (card) => card._id === activeDraggingCardId
+          (card) => card._id === activeDragItemId
         );
         const newIndex = overColumn?.cards?.findIndex(
           (card) => card._id === overCardId
