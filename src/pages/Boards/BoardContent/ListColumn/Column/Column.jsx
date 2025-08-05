@@ -20,7 +20,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
-
+import { toast } from "react-toastify";
 
 function Column({ column }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -58,7 +58,10 @@ function Column({ column }) {
   }
   const [newCardTitle, setNewCardTitle] = useState("");
   const addCard = () => {
-    if(!newCardTitle) return;
+    if(!newCardTitle) {
+      toast.error("Card title cannot be empty!");
+      return;
+    }
       // Call the API to add the new card
       // After successful addition, reset the form
       setNewCardTitle("");

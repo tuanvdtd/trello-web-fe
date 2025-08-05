@@ -9,6 +9,7 @@ import {
 import  { useState } from "react";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
+import { toast } from "react-toastify";
 
 function ListColumn({ columns }) {
   const [openForm, setOpenForm] = useState(false);
@@ -18,7 +19,10 @@ function ListColumn({ columns }) {
   }
   const [newColumnTitle, setNewColumnTitle] = useState("");
   const addColumn = () => {
-    if(!newColumnTitle) return;
+    if(!newColumnTitle) {
+      toast.error("Column title cannot be empty!");
+      return;
+    }
       // Call the API to add the new column
       // After successful addition, reset the form
       setNewColumnTitle("");
