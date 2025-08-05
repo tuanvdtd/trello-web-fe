@@ -32,9 +32,9 @@ function TrelloCard({ card }) {
 
   const isShowCardActions = () => {
     return (
-      !!card?.memberIds.length ||
-      !!card?.comments.length ||
-      !!card?.attachments.length
+      !!card?.memberIds?.length ||
+      !!card?.comments?.length ||
+      !!card?.attachments?.length
     );
   };
   return (
