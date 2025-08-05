@@ -7,12 +7,11 @@ import {
   DndContext,
   DragOverlay,
   // PointerSensor,
-  MouseSensor,
-  TouchSensor,
   useSensor,
   useSensors,
   closestCorners,
 } from "@dnd-kit/core";
+import {MouseSensor,TouchSensor} from '~/customLib/DndSensors';
 import { arrayMove } from "@dnd-kit/sortable";
 import Column from "./ListColumn/Column/Column";
 

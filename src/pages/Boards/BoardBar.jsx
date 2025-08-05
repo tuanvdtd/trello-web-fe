@@ -46,12 +46,14 @@ function BoardBar({ board }) {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          <Tooltip title={board?.description}>
           <Chip
             icon={<DashboardIcon />}
             label={board?.title}
             clickable
             sx={MenuStyle}
           />
+          </Tooltip>
 
           <Chip
             icon={<VpnLockIcon />}

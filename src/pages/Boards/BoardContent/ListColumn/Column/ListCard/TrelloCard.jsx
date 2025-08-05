@@ -50,6 +50,10 @@ function TrelloCard({ card }) {
           overflow: card?.isPlaceHolderCard ? "hidden" : "unset",
           // display: card?.isPlaceHolderCard ? "none" : "block",
           height: card?.isPlaceHolderCard ? "0px" : "unset",
+          border: "1px solid transparent",
+          "&:hover": {
+            borderColor: (theme) => theme.palette.primary.main,
+          }, 
         }}
       >
         {card?.cover && <CardMedia sx={{ height: 140 }} image={card?.cover} />}
