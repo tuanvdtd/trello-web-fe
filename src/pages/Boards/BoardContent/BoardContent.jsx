@@ -24,7 +24,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: "CARD",
 };
 
-function BoardContent({ board, createNewColumn, createNewCard }) {
+function BoardContent({ board, createNewColumn, createNewCard, updateBoardDnd }) {
   const [orderedColumnsState, setOrderedColumnsState] = useState([]);
 
   // const pointer = useSensor(PointerSensor, {
@@ -278,7 +278,8 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
         );
         const dnd = arrayMove(orderedColumnsState, oldIndex, newIndex);
         // const dndColumnIds = dnd.map((column) => column._id);
-
+        //Viết API cập nhật lại thứ tự cột
+        updateBoardDnd(dnd);
         setOrderedColumnsState(dnd);
       }
     }

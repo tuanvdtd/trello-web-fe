@@ -5,7 +5,7 @@ import AppBar from "~/components/AppBar/AppBar";
 import BoardBar from "~/pages/Boards/BoardBar";
 import BoardContent from "~/pages/Boards/BoardContent/BoardContent";
 // import { mockData } from "~/apis/mockdata";
-import{ fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI } from "~/apis/index";
+import{ fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI, updateBoardDetailsAPI } from "~/apis/index";
 import { generatePlaceholderCard } from '~/utils/formatter'
 import { isEmpty} from "lodash"
 
@@ -53,7 +53,6 @@ function Board() {
       boardId: board._id,
     });
     
-
     // Cập nhật lại state bên Fe, tránh gọi lại api fetchBoardDetailsAPI  gây mất thời gian
     const updateBoard = {...board}
     const updateColumn =  updateBoard.columns.find(column => column._id === createdCard.columnId);
@@ -62,12 +61,24 @@ function Board() {
     setBoard(updateBoard);
   }
 
+   const updateBoardDnd = async (dnd) => {
+    const dndColumnIds = dnd.map((column) => column._id);
+    const updateBoard = {...board}
+    updateBoard.columnOrderIds = dndColumnIds;
+    updateBoard.columns = dnd;
+    setBoard(updateBoard);
+    await updateBoardDetailsAPI(updateBoard._id, {columnOrderIds: dndColumnIds})
+  }
+
+
+ 
+
   return (
     <>
       <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
         <AppBar />
         <BoardBar board={board} />
-        <BoardContent board={board} createNewColumn={createNewColumn} createNewCard={createNewCard} />
+        <BoardContent board={board} createNewColumn={createNewColumn} createNewCard={createNewCard} updateBoardDnd={updateBoardDnd} />
       </Container>
     </>
   );
