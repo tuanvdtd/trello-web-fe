@@ -22,7 +22,7 @@ import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 
-function Column({ column }) {
+function Column({ column, createNewCard }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -57,15 +57,21 @@ function Column({ column }) {
     setOpenForm(!openForm);
   }
   const [newCardTitle, setNewCardTitle] = useState("");
-  const addCard = () => {
+
+  const addCard = async () => {
     if(!newCardTitle) {
       toast.error("Card title cannot be empty!");
       return;
     }
-      // Call the API to add the new card
-      // After successful addition, reset the form
-      setNewCardTitle("");
-      handleToggleForm();
+    // Call the API to add the new card
+    const newCardData = {
+      title: newCardTitle,
+      columnId: column._id
+    }
+    await createNewCard(newCardData);
+    // After successful addition, reset the form
+    setNewCardTitle("");
+    handleToggleForm();
   }
 
   return (
