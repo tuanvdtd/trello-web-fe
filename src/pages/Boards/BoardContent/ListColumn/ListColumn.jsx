@@ -53,7 +53,7 @@ function ListColumn({ columns, createNewColumn, createNewCard }) {
             "&::-webkit-scrollbar-track": { m: 2 },
           }}
         >
-          {columns.map((column) => {
+          {columns?.map((column) => {
             return <Column key={column?._id} column={column} createNewCard={createNewCard} />;
           })}
           {!openForm

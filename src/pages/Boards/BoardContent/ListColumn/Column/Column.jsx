@@ -15,7 +15,7 @@ import Button from "@mui/material/Button";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import ListCard from "./ListCard/ListCard";
-import { mapOrder } from "~/utils/sort";
+// import { mapOrder } from "~/utils/sort";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TextField from "@mui/material/TextField";
@@ -32,7 +32,7 @@ function Column({ column, createNewCard }) {
     setAnchorEl(null);
   };
 
-  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
+  const orderedCards = column.cards;
   
   const {
     attributes,
