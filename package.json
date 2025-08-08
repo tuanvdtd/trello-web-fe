@@ -17,11 +17,13 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
+    "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.5.1",
     "lodash": "^4.17.21",
     "material-ui-confirm": "^4.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-redux": "^9.1.0",
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {
