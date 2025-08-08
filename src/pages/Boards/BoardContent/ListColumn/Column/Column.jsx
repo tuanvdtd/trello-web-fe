@@ -20,9 +20,14 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
+import ContentCopy from "@mui/icons-material/ContentCopy";
+import ContentPaste from "@mui/icons-material/ContentPaste";
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import AddCardOutlinedIcon from '@mui/icons-material/AddCardOutlined';
 import { toast } from "react-toastify";
+import { useConfirm } from "material-ui-confirm";
 
-function Column({ column, createNewCard }) {
+function Column({ column, createNewCard, deleteColumn }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -72,6 +77,35 @@ function Column({ column, createNewCard }) {
     // After successful addition, reset the form
     setNewCardTitle("");
     handleToggleForm();
+  }
+
+  const confirm = useConfirm();
+  const handleDeleteColumn = async () => {
+    const { confirmed } = await confirm({
+      title: "Are you sure you want to delete this column?",
+      confirmationText: "Delete",
+      cancellationText: "Cancel",
+      // confirmationButtonProps: { color:"error", variant: "contained" },
+      // cancellationButtonProps: { color: "inherit", variant: "outlined" },
+      // allowClose: false,
+      description: `Type "${column.title}" to confirm your action`,
+      confirmationKeyword: `${column.title}`,
+
+    });
+
+    if (confirmed) {
+      console.log(column.title);
+      // Call the API to delete the column
+      deleteColumn(column._id);
+      // toast.success("Column deleted successfully!");
+      return;
+    }
+
+    else {
+      toast.info("You cancelled the delete action!");
+      return;
+    }
+
   }
 
   return (
@@ -128,33 +162,63 @@ function Column({ column, createNewCard }) {
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
+                onClick={handleClose}
                 slotProps={{
                   list: {
                     "aria-labelledby": "basic-icon-title",
                   },
                 }}
               >
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleToggleForm} sx = {{
+                  '&:hover': {
+                    color: 'info.main',
+                    '& .add_card_icon': {
+                      color: 'info.main',
+                    }
+                  }
+                }}>
+                  <ListItemIcon>
+                    <AddCardOutlinedIcon fontSize="small" className="add_card_icon" />
+                  </ListItemIcon>
+                  <ListItemText>Add new card</ListItemText>
+                </MenuItem>
+                <MenuItem>
                   <ListItemIcon>
                     <ContentCut fontSize="small" />
                   </ListItemIcon>
                   <ListItemText>Cut</ListItemText>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    ⌘X
-                  </Typography>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCopy fontSize="small" />
+                      </ListItemIcon>
+                    <ListItemText>Copy</ListItemText> 
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentPaste fontSize="small" />
+                    </ListItemIcon>
+                  <ListItemText>Paste</ListItemText>
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>
+                <MenuItem sx = {{
+                  '&:hover': {
+                    color: 'warning.dark',
+                    '& .delete_icon': {
+                      color: 'warning.dark',
+                    }
+                  }
+                }} onClick={handleDeleteColumn}>
                   <ListItemIcon>
-                    <Cloud fontSize="small" />
+                    <DeleteForeverOutlinedIcon fontSize="small" className="delete_icon"/>
                   </ListItemIcon>
-                  <ListItemText>Web Clipboard</ListItemText>
+                  <ListItemText>Delete this column</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem>
                   <ListItemIcon>
                     <Cloud fontSize="small" />
                   </ListItemIcon>
-                  <ListItemText>Web Clipboard V2</ListItemText>
+                  <ListItemText>Archive this column</ListItemText>
                 </MenuItem>
               </Menu>
             </Box>
@@ -166,7 +230,7 @@ function Column({ column, createNewCard }) {
             sx={{
               height: (theme) => theme.trello.columnFooterHeight,
               p: 2,
-               display: "flex",
+              display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
             }}

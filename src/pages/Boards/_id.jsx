@@ -9,12 +9,15 @@ import { mapOrder } from "~/utils/sort";
 import{ fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI,
   updateColumnDetailsAPI,
   updateBoardDetailsAPI,
-  moveCardToDiffColumnAPI } from "~/apis/index";
+  moveCardToDiffColumnAPI,
+  deleteColumnAPI 
+} from "~/apis/index";
 import { generatePlaceholderCard } from '~/utils/formatter'
 import { isEmpty} from "lodash"
 import  Box  from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import  Typography  from "@mui/material/Typography";
+import { toast } from "react-toastify";
 
 
 
@@ -127,6 +130,16 @@ function Board() {
    
   }
 
+   const deleteColumn =  (columnId) => {
+    const updateBoard = {...board}
+    updateBoard.columns = updateBoard.columns.filter(column => column._id !== columnId);
+    updateBoard.columnOrderIds = updateBoard.columnOrderIds.filter(id => id !== columnId);
+    setBoard(updateBoard);
+    deleteColumnAPI(columnId).then(() => {
+      toast.success("Column deleted successfully!");
+    })
+  }
+
   if (!board) return (
     <Box sx={{ display: 'flex' , justifyContent: 'center', alignItems: 'center', height: '100vh' ,width:'100vw', gap: 2 }}>
       <CircularProgress />
@@ -144,7 +157,9 @@ function Board() {
         <BoardContent board={board} createNewColumn={createNewColumn} createNewCard={createNewCard} 
         moveColumnDnd={moveColumnDnd} 
         moveCardInSameColumnDnd={moveCardInSameColumnDnd}
-        moveCardToDiffColumnDnd={moveCardToDiffColumnDnd}/>
+        moveCardToDiffColumnDnd={moveCardToDiffColumnDnd}
+        deleteColumn={deleteColumn}
+        />
       </Container>
     </>
   );

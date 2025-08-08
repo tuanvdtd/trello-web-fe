@@ -24,7 +24,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: "CARD",
 };
 
-function BoardContent({ board, createNewColumn, createNewCard, moveColumnDnd, moveCardInSameColumnDnd, moveCardToDiffColumnDnd }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumnDnd, moveCardInSameColumnDnd, moveCardToDiffColumnDnd, deleteColumn }) {
   const [orderedColumnsState, setOrderedColumnsState] = useState([]);
 
   // const pointer = useSensor(PointerSensor, {
@@ -295,7 +295,7 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumnDnd, mo
             p: "10px 0",
           }}
         >
-          <ListColumn columns={orderedColumnsState} createNewColumn={createNewColumn} createNewCard={createNewCard} />
+          <ListColumn columns={orderedColumnsState} createNewColumn={createNewColumn} createNewCard={createNewCard} deleteColumn={deleteColumn} />
           <DragOverlay dropAnimation={dropAnimation}>
             {!activeDragItemType && null}
             {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
