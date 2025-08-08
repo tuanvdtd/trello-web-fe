@@ -6,12 +6,14 @@ import App from "./App";
 import theme from "./theme";
 import { ToastContainer } from 'react-toastify';
 import { ConfirmProvider } from "material-ui-confirm";
+import { Provider } from 'react-redux';
+import { store } from '~/redux/store';
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 root.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <ThemeProvider theme={theme}>
       <ConfirmProvider defaultOptions ={{confirmationButtonProps: { color:"error", variant: "contained" },
       cancellationButtonProps: { color: "inherit", variant: "outlined" },
@@ -21,5 +23,5 @@ root.render(
         <ToastContainer theme="colored" />
       </ConfirmProvider>
     </ThemeProvider>
-  </React.StrictMode>
+  </Provider>
 );
