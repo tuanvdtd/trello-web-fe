@@ -10,14 +10,23 @@ import  { useState } from "react";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
+import { cloneDeep } from "lodash"
+import{ createNewColumnAPI } from "~/apis/index";
+import { generatePlaceholderCard } from '~/utils/formatter'
+import {updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { useDispatch, useSelector } from 'react-redux';
 
-function ListColumn({ columns, createNewColumn, createNewCard, deleteColumn }) {
+function ListColumn({ columns }) {
   const [openForm, setOpenForm] = useState(false);
   
   const handleToggleForm = () => {
     setOpenForm(!openForm);
   }
   const [newColumnTitle, setNewColumnTitle] = useState("");
+  // Board
+  const dispatch = useDispatch();
+  const board = useSelector(selectCurrentActiveBoard);
+
   const addColumn = async () => {
     if(!newColumnTitle) {
       toast.error("Column title cannot be empty!");
@@ -28,11 +37,27 @@ function ListColumn({ columns, createNewColumn, createNewCard, deleteColumn }) {
       title: newColumnTitle
     };
 
-    await createNewColumn(newColumnData);
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id
+    });
+    
+
+    // Tạo một card giả để phục vụ kéo thả dnd khi tạo mới column mà chưa có card nào
+    const card = generatePlaceholderCard(createdColumn._id);
+    createdColumn.cards = [card];
+    createdColumn.cardOrderIds = [card._id];
+    
+    // Cập nhật lại state bên Fe, tránh gọi lại api fetchBoardDetailsAPI  gây mất thời gian
+    const updateBoard = cloneDeep(board);
+    updateBoard.columns.push(createdColumn)
+    updateBoard.columnOrderIds.push(createdColumn._id);
+    // setBoard(updateBoard);
+    dispatch(updateCurrentActiveBoard(updateBoard));
+
     // After successful addition, reset the form
     setNewColumnTitle("");
     handleToggleForm();
-    
   }
 
   return (
@@ -54,7 +79,7 @@ function ListColumn({ columns, createNewColumn, createNewCard, deleteColumn }) {
           }}
         >
           {columns?.map((column) => {
-            return <Column key={column?._id} column={column} createNewCard={createNewCard} deleteColumn={deleteColumn} />;
+            return <Column key={column?._id} column={column} />;
           })}
           {!openForm
             ?

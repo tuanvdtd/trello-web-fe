@@ -15,7 +15,6 @@ import Button from "@mui/material/Button";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import ListCard from "./ListCard/ListCard";
-// import { mapOrder } from "~/utils/sort";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TextField from "@mui/material/TextField";
@@ -26,8 +25,12 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import AddCardOutlinedIcon from '@mui/icons-material/AddCardOutlined';
 import { toast } from "react-toastify";
 import { useConfirm } from "material-ui-confirm";
+import { cloneDeep } from "lodash"
+import{ createNewCardAPI, deleteColumnAPI } from "~/apis/index";
+import {updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { useDispatch, useSelector } from 'react-redux';
 
-function Column({ column, createNewCard, deleteColumn }) {
+function Column({ column }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -62,6 +65,9 @@ function Column({ column, createNewCard, deleteColumn }) {
     setOpenForm(!openForm);
   }
   const [newCardTitle, setNewCardTitle] = useState("");
+  // Board
+  const dispatch = useDispatch();
+  const board = useSelector(selectCurrentActiveBoard);
 
   const addCard = async () => {
     if(!newCardTitle) {
@@ -73,7 +79,26 @@ function Column({ column, createNewCard, deleteColumn }) {
       title: newCardTitle,
       columnId: column._id
     }
-    await createNewCard(newCardData);
+    const createdCard = await createNewCardAPI({
+      ...newCardData,
+      boardId: board._id,
+    });
+    
+    // Cập nhật lại state bên Fe, tránh gọi lại api fetchBoardDetailsAPI  gây mất thời gian
+    const updateBoard = cloneDeep(board);
+    const updateColumn =  updateBoard.columns.find(column => column._id === createdCard.columnId);
+    // console.log("🚀 ~ createNewCard ~ updateColumn:", updateColumn)
+    // Nếu tạo card vào 1 column rỗng thì xóa placeholder card đi
+    if(updateColumn.cards.some(card => card.isPlaceHolderCard)) {
+      updateColumn.cards= [createdCard];
+      updateColumn.cardOrderIds = [createdCard._id];
+    } else {
+      // Nếu column đã có card thì push card mới vào cuối mảng
+    updateColumn.cards.push(createdCard);
+    updateColumn.cardOrderIds.push(createdCard._id);
+    }
+    // setBoard(updateBoard);
+    dispatch(updateCurrentActiveBoard(updateBoard));
     // After successful addition, reset the form
     setNewCardTitle("");
     handleToggleForm();
@@ -94,9 +119,16 @@ function Column({ column, createNewCard, deleteColumn }) {
     });
 
     if (confirmed) {
-      console.log(column.title);
+      // console.log(column.title);
       // Call the API to delete the column
-      deleteColumn(column._id);
+      const updateBoard = cloneDeep(board);
+        updateBoard.columns = updateBoard.columns.filter(col => col._id !== column._id);
+        updateBoard.columnOrderIds = updateBoard.columnOrderIds.filter(id => id !== column._id);
+        // setBoard(updateBoard);
+        dispatch(updateCurrentActiveBoard(updateBoard));
+        deleteColumnAPI(column._id).then(() => {
+          toast.success("Column deleted successfully!");
+        })
       // toast.success("Column deleted successfully!");
       return;
     }
