@@ -320,7 +320,7 @@ function Column({ column }) {
                sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap:1 }}
              >
               <Button variant="contained" color="success" size="small"
-              onClick = {addCard}
+              onClick = {addCard} className="interceptor-loading"
               // sx ={{boxShadow: "none",
               //   border:'0.5px solid',
               //   borderColor: (theme) => theme.palette.success.main,

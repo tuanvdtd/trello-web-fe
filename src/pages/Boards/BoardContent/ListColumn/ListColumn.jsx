@@ -149,7 +149,7 @@ function ListColumn({ columns }) {
                sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
              >
               <Button variant="contained" color="success" size="small"
-              onClick = {addColumn}
+              onClick = {addColumn} className="interceptor-loading"
               // sx ={{boxShadow: "none",
               //   border:'0.5px solid',
               //   borderColor: (theme) => theme.palette.success.main,
