@@ -8,20 +8,23 @@ import { ToastContainer } from 'react-toastify';
 import { ConfirmProvider } from "material-ui-confirm";
 import { Provider } from 'react-redux';
 import { store } from '~/redux/store';
+import { BrowserRouter } from 'react-router-dom'
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 root.render(
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <ConfirmProvider defaultOptions ={{confirmationButtonProps: { color:"error", variant: "contained" },
-      cancellationButtonProps: { color: "inherit", variant: "outlined" },
-      allowClose: false}}>
-        <CssBaseline />
-        <App />
-        <ToastContainer theme="colored" />
-      </ConfirmProvider>
-    </ThemeProvider>
-  </Provider>
+  <BrowserRouter basename="/">
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <ConfirmProvider defaultOptions ={{confirmationButtonProps: { color:"error", variant: "contained" },
+        cancellationButtonProps: { color: "inherit", variant: "outlined" },
+        allowClose: false}}>
+          <CssBaseline />
+          <App />
+          <ToastContainer theme="colored" />
+        </ConfirmProvider>
+      </ThemeProvider>
+    </Provider>
+  </BrowserRouter>
 );
