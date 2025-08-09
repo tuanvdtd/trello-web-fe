@@ -20,6 +20,7 @@ import { fetchBoardDetailsAPI,
   selectCurrentActiveBoard
 } from '~/redux/activeBoard/activeBoardSlice'
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom'
 
 
 
@@ -27,12 +28,15 @@ function Board() {
   // const [board, setBoard] = useState(null);
   const dispatch = useDispatch();
   const board = useSelector(selectCurrentActiveBoard);
+  // Bắt buộc phải lấy đúng tên boardId từ URL params để gọi API
+  const { boardId } = useParams();
+  // console.log(boardId);
 
   useEffect(() => {
-    const boardId = '6890683a0cef70ebaeac757a';
+    // const boardId = '6890683a0cef70ebaeac757a';
     // Call API
     dispatch(fetchBoardDetailsAPI(boardId));
-  }, [dispatch]);
+  }, [dispatch, boardId]);
 
   const moveColumnDnd =  (dnd) => {
     const dndColumnIds = dnd.map((column) => column._id);
