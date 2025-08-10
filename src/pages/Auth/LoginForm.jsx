@@ -18,7 +18,11 @@ import {FIELD_REQUIRED_MESSAGE,
   PASSWORD_CONFIRMATION_MESSAGE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
-import { useSearchParams, Navigate } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { loginUserAPI } from '~/redux/user/userSlice'
+import { toast } from 'react-toastify'
+
 
 function LoginForm() {
   const { register, handleSubmit, formState: { errors }}  = useForm();
@@ -26,8 +30,23 @@ function LoginForm() {
   const registeredEmail = searchParams.get('registeredEmail');
   const verifiedEmail = searchParams.get('verifiedEmail');
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+
   const submitLogIn = (data) => {
-    console.log('thanh cong', data);
+    const { email, password } = data;
+    toast.promise(
+      dispatch(loginUserAPI({ email, password })),
+      {
+       pending: "Logging in...",
+      }
+    ).then((res) => {
+      console.log(res);
+      if(!res.error) {
+        navigate('/');
+      }
+   });
   };
   
 
@@ -49,17 +68,17 @@ function LoginForm() {
             Trello Web Clone
           </Box>
           <Box sx={{ marginTop: '1em', display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: '0 1em' }}>
-            {registeredEmail &&
+            {verifiedEmail &&
               <Alert severity="success" sx={{ '.MuiAlert-message': { overflow: 'hidden' } }}>
                 Your email&nbsp;
-                <Typography variant="span" sx={{ fontWeight: 'bold', '&:hover': { color: '#fdba26' } }}>{registeredEmail}</Typography>
+                <Typography variant="span" sx={{ fontWeight: 'bold', '&:hover': { color: '#fdba26' } }}>{verifiedEmail}</Typography>
                 &nbsp;has been verified.<br />Now you can login to enjoy our services! Have a good day!
               </Alert>
             }
-            {verifiedEmail &&
+            {registeredEmail && 
               <Alert severity="info" sx={{ '.MuiAlert-message': { overflow: 'hidden' } }}>
                 An email has been sent to&nbsp;
-                <Typography variant="span" sx={{ fontWeight: 'bold', '&:hover': { color: '#fdba26' } }}>{verifiedEmail}</Typography>
+                <Typography variant="span" sx={{ fontWeight: 'bold', '&:hover': { color: '#fdba26' } }}>{registeredEmail}</Typography>
                 <br />Please check and verify your account before logging in!
               </Alert>
             }

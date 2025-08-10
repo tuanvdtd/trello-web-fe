@@ -25,7 +25,7 @@ function RegisterForm() {
   const navigate = useNavigate();
 
   const submitRegister = (data) => {
-    console.log('thanh cong', data);
+    // console.log('thanh cong', data);
     const { email, password } = data;
     toast.promise(
       registerUserAPI({ email, password }),
