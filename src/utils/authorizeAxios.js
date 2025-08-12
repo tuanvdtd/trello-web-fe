@@ -1,6 +1,14 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { interceptorLoadingElements } from '~/utils/formatter'
+import { refreshTokenAPI } from '~/apis/index'
+import { logoutUserAPI } from "~/redux/user/userSlice";
+
+
+let axiosReduxStore
+export const injectStore = mainStore => {
+  axiosReduxStore = mainStore
+}
 
 let authorizedAxiosInstance = axios.create();
 
@@ -15,6 +23,7 @@ authorizedAxiosInstance.defaults.withCredentials = true;
 authorizedAxiosInstance.interceptors.request.use((config) => {
     // Do something before request is sent
     // Chặn user click vào các phần tử có class 'interceptor-loading'
+
     interceptorLoadingElements(true);
     return config;
   }, (error) => {
@@ -24,16 +33,49 @@ authorizedAxiosInstance.interceptors.request.use((config) => {
   // { synchronous: true, runWhen: () => /* This function returns true */ }
 );
 
+let requestTokenPromise = null;
+
 // Add a response interceptor
 authorizedAxiosInstance.interceptors.response.use((response) => {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
+
     interceptorLoadingElements(false);
     return response;
   }, (error) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     interceptorLoadingElements(false);
+
+    if(error.response?.status === 401) {
+      axiosReduxStore.dispatch(logoutUserAPI(false));
+    }
+
+    const originalRequest = error.config;
+
+    if(error.response?.status === 410 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      if(!requestTokenPromise) {
+        requestTokenPromise = refreshTokenAPI()
+        .then((data) => {
+          return data?.accessToken;
+        })
+        .catch((error) => {
+          // console.error('Error refreshing token:', error);
+          // Nếu refresh token không thành công, logout user
+          axiosReduxStore.dispatch(logoutUserAPI(false));
+          return Promise.reject(error);
+        })
+        .finally(() => {
+          requestTokenPromise = null;
+        });
+      }
+      return requestTokenPromise.then(() => {
+        // Sau khi refresh token thành công, gửi lại request ban đầu bị lỗi do token hết hạn
+        return authorizedAxiosInstance(originalRequest);
+      });
+    }
+
     let errorMessage = error?.message;
     if(error.response?.data?.message) {
       errorMessage = error.response.data.message;

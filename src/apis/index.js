@@ -54,3 +54,8 @@ export const registerUserAPI = async (data) => {
   toast.success("Your account has been registered successfully! Please check your email to verify your account!", {theme:"colored"});
   return response.data;
 };
+
+export const refreshTokenAPI = async () => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/v1/users/refresh_token`);
+  return response.data;
+};
