@@ -5,6 +5,7 @@ import Auth from '~/pages/Auth/Auth'
 import AccountVerification from '~/pages/Auth/AccountVerification'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
+import  Settings  from '~/pages/Settings/Settings'
 
 const ProtectedRoute = ({user}) => {
   if (!user) {
@@ -26,6 +27,8 @@ export default function App() {
       <Route element={<ProtectedRoute user={currUser} />}>
         {/* Nếu đã login thì mới có thể truy cập vào route con này */}
         <Route path='/boards/:boardId' element={<Board />} />
+        <Route path='/settings/account' element={<Settings />} />
+        <Route path='/settings/security' element={<Settings />} />
       </Route>
 
       {/* Authentication */}

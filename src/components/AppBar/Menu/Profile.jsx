@@ -6,7 +6,6 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
@@ -14,7 +13,8 @@ import Logout from "@mui/icons-material/Logout";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentUser } from "~/redux/user/userSlice";
 import { logoutUserAPI } from "~/redux/user/userSlice";
-import { useConfirm } from 'material-ui-confirm'
+import { useConfirm } from 'material-ui-confirm';
+import { Link } from 'react-router-dom'
 
 export default function Profile() {
 
@@ -105,11 +105,13 @@ export default function Profile() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem sx = {{
-          '&:hover' : { color : 'primary.main', '& .avatar_profile' : {color: 'primary.main'} },
-        }} >
-          <Avatar src={currUser?.avatar} className="avatar_profile"/> Profile
-        </MenuItem>
+        <Link to="/settings/account" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <MenuItem sx={{
+            '&:hover': { color: 'primary.main', '& .avatar_profile': { color: 'primary.main' } },
+          }} >
+            <Avatar src={currUser?.avatar} className="avatar_profile" /> Profile
+          </MenuItem>
+        </Link>
         <Divider />
         <MenuItem >
           <ListItemIcon>

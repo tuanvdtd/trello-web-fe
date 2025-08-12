@@ -15,7 +15,19 @@ export const loginUserAPI = createAsyncThunk(
   'user/login',
   async (userData) => {
     const response = await authorizedAxiosInstance.post(`${API_ROOT}/v1/users/login`, userData);
-    return response.data;
+    // return response.data;
+    // eslint-disable-next-line no-unused-vars
+    const { accessToken, refreshToken, ...userInfo } = response.data
+    return userInfo
+  }
+)
+
+export const updateUserAPI = createAsyncThunk(
+  'user/update',
+  async (userData) => {
+    const response = await authorizedAxiosInstance.put(`${API_ROOT}/v1/users/update`, userData);
+    // return response.data;
+    return response.data
   }
 )
 
@@ -43,9 +55,13 @@ export const userSlice = createSlice({
       // action.payload là dữ liệu trả về từ API (response.data)
       state.currentUser = user;
     })
-     builder.addCase(logoutUserAPI.fulfilled, (state) => {
+    builder.addCase(logoutUserAPI.fulfilled, (state) => {
       // action.payload là dữ liệu trả về từ API (response.data)
       state.currentUser = null;
+    })
+    builder.addCase(updateUserAPI.fulfilled, (state, action) => {
+      // action.payload là dữ liệu trả về từ API (response.data)
+      state.currentUser = action.payload;
     })
   }
 })

@@ -4,7 +4,7 @@ import { interceptorLoadingElements } from '~/utils/formatter'
 import { refreshTokenAPI } from '~/apis/index'
 import { logoutUserAPI } from "~/redux/user/userSlice";
 
-
+// Lệnh này để gọi hàm trong main.jsx => giúp file js này có thể gọi dispatch() của redux (bình thường chỉ có thể gọi trong jsx)
 let axiosReduxStore
 export const injectStore = mainStore => {
   axiosReduxStore = mainStore

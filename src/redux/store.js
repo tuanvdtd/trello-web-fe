@@ -10,6 +10,8 @@ import { combineReducers } from 'redux'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
+// dùng redux-persist để cấu hình lưu trữ Redux state để khi f5 state sẽ không bị set trở về mặc định
+// Lưu trữ Redux state vào local storage
 const rootPersistConfig = {
   key: 'root',
   storage : storage,
@@ -25,5 +27,5 @@ const persistedReducer = persistReducer(rootPersistConfig, reducers)
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }) // Cấu hình middleware đảm bảo tính tương thích giữa persist và redux-toolkit
 })

@@ -14,6 +14,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import { injectStore } from '~/utils/authorizeAxios';
 
+// persistor is used to persist the Redux store across page reload
 let persistor = persistStore(store);
 injectStore(store);
 
