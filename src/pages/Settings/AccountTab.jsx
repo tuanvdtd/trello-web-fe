@@ -79,12 +79,25 @@ function AccountTab() {
     let reqData = new FormData()
     reqData.append('avatar', e.target?.files[0])
     // Cách để log được dữ liệu thông qua FormData
-    console.log('reqData: ', reqData)
-    for (const value of reqData.values()) {
-      console.log('reqData Value: ', value)
-    }
+    // console.log('reqData: ', reqData)
+    // for (const value of reqData.values()) {
+    //   console.log('reqData Value: ', value)
+    // }
 
     // Gọi API...
+    toast.promise(
+      dispatch(updateUserAPI(reqData)),
+      {
+        pending: 'Uploading...',
+      }
+    ).then(res => {
+      if (!res.error) {
+        toast.success('Avatar updated successfully!', { theme: 'colored' })
+      }
+      // cần clear giá trị fileInput, nếu không thì nếu gọi api lỗi mà upload lại thì kh có value nữa
+      e.target.value = ''
+    })
+  
   }
 
   return (
