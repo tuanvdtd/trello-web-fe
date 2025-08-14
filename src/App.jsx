@@ -22,7 +22,7 @@ export default function App() {
       {/* Chưa làm trang home => Tạm thời redirect về trang board đầu tiên */}
       {/* Khi dùng navigate và dùng replace thì sẽ không giữ lại '/' trong history, khi ta back lại bằng mũi tên trên trình duyệt sẽ quay lại trang trước đó, không phải trang '/' nữa */}
       {/* Nếu kh dùng replace thì khi back lại sẽ quay về trang '/' rồi nó lại tự navigate về trang board đầu tiên, nghĩa là luôn luôn ở trang board, không thể back lại */}
-      <Route path='/' element={<Navigate to='/boards/6890683a0cef70ebaeac757a' replace={true} />} />
+      <Route path='/' element={<Navigate to='/boards' replace={true} />} />
 
       {/* Route này bảo vệ các route con, nếu chưa có user thì không thể vào các route con bên trong */}
       <Route element={<ProtectedRoute user={currUser} />}>

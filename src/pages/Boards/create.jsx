@@ -145,7 +145,7 @@ function SidebarCreateBoardModal() {
                       input: {
                         startAdornment: (
                           <InputAdornment position="start">
-                            <DescriptionOutlinedIcon fontSize="small" sx={{ '&.MuiSvgIcon-root': { color: 'initial' } }}/>
+                            <DescriptionOutlinedIcon fontSize="small" sx={{ '&.MuiSvgIcon-root': { color: 'black' } }}/>
                           </InputAdornment>
                         )
                       }
