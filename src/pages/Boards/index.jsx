@@ -79,6 +79,13 @@ function Boards() {
 
   }, [location.search])
 
+  const handleCreateBoardSuccess = () => {
+    fetchBoardsAPI(location.search).then(res => {
+      setBoards(res.boards || [])
+      setTotalBoards(res.totalBoards || 0)
+    })
+  }
+
   // Lúc chưa tồn tại boards > đang chờ gọi api thì hiện loading
   if (!boards) {
     return <PageLoadingSpinner caption="Loading Boards..." />
@@ -106,7 +113,7 @@ function Boards() {
             </Stack>
             <Divider sx={{ my: 1 }} />
             <Stack direction="column" spacing={1}>
-              <SidebarCreateBoardModal />
+              <SidebarCreateBoardModal handleCreateBoardSuccess={handleCreateBoardSuccess} />
             </Stack>
           </Grid>
 
