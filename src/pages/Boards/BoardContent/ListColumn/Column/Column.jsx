@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -29,6 +29,8 @@ import { cloneDeep } from "lodash"
 import{ createNewCardAPI, deleteColumnAPI } from "~/apis/index";
 import {updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { useDispatch, useSelector } from 'react-redux';
+import ToggleFocusInput from '~/components/Form/ToggleFocusInput';
+import { updateColumnDetailsAPI } from '~/apis/index';
 
 function Column({ column }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -140,6 +142,19 @@ function Column({ column }) {
 
   }
 
+  const updateColumnTitle = (newTitle) => {
+    //
+    console.log('New column title: ', newTitle)
+    updateColumnDetailsAPI(column._id, { title: newTitle }).then(() => {
+      // Handle success
+      const updateBoard = cloneDeep(board);
+      const updateColumn = updateBoard.columns.find(c => c._id === column._id);
+      updateColumn.title = newTitle;
+      // setBoard(updateBoard);
+      dispatch(updateCurrentActiveBoard(updateBoard));
+    })
+  }
+
   return (
     <>
       <div ref={setNodeRef} style={styleDnDColumn} {...attributes}>
@@ -168,7 +183,7 @@ function Column({ column }) {
               justifyContent: "space-between",
             }}
           >
-            <Typography
+            {/* <Typography
               variant="h6"
               sx={{
                 fontWeight: "bold",
@@ -177,7 +192,12 @@ function Column({ column }) {
               }}
             >
               {column?.title}
-            </Typography>
+            </Typography> */}
+            <ToggleFocusInput
+              value={column?.title}
+              onChangedValue={updateColumnTitle}
+              data-no-dnd="true" // fix lỗi bôi đen text bị nhả sang kéo thả
+            />
             <Box>
               <Tooltip title="More Actions">
                 <KeyboardArrowDownIcon
