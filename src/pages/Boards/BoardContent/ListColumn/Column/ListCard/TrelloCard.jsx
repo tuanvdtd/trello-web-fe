@@ -11,8 +11,11 @@ import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
+import { useDispatch } from 'react-redux';
 
 function TrelloCard({ card }) {
+  const dispatch = useDispatch();
   const {
     attributes,
     listeners,
@@ -40,6 +43,7 @@ function TrelloCard({ card }) {
   return (
     <>
       <Card
+        onClick={() => dispatch(updateCurrentActiveCard(card))}
         ref={setNodeRef}
         style={styleDnDCard}
         {...attributes}

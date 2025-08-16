@@ -2,10 +2,11 @@
 import React, { useEffect } from "react";
 import Container from "@mui/material/Container";
 import AppBar from "~/components/AppBar/AppBar";
-import BoardBar from "~/pages/Boards/BoardBar";
+import BoardBar from "~/pages/Boards/BoardBar/BoardBar";
 import BoardContent from "~/pages/Boards/BoardContent/BoardContent";
 // import { mockData } from "~/apis/mockdata";
 // import { mapOrder } from "~/utils/sort";
+import ActiveCard from "~/components/Modal/ActiveCard/ActiveCard";
 import{
   updateColumnDetailsAPI,
   updateBoardDetailsAPI,
@@ -21,6 +22,7 @@ import { fetchBoardDetailsAPI,
 } from '~/redux/activeBoard/activeBoardSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom'
+import { selectCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 
 
 
@@ -28,6 +30,7 @@ function Board() {
   // const [board, setBoard] = useState(null);
   const dispatch = useDispatch();
   const board = useSelector(selectCurrentActiveBoard);
+  const activeCard = useSelector(selectCurrentActiveCard);
   // Bắt buộc phải lấy đúng tên boardId từ URL params để gọi API
   const { boardId } = useParams();
   // console.log(boardId);
@@ -92,6 +95,7 @@ function Board() {
   return (
     <>
       <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
+        {activeCard && <ActiveCard />}
         <AppBar />
         <BoardBar board={board} />
         <BoardContent 
