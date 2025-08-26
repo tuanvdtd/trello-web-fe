@@ -38,6 +38,15 @@ export const activeBoardSlice = createSlice({
       // update lại dữ liệu currentActiveBoard trong state
       // state.currentActiveBoard = action.payload
       state.currentActiveBoard = fullBoard
+    },
+    updateCardInBoard: (state, action) => {
+      const board = state.currentActiveBoard;
+      const updateCard = action.payload;
+      const column = board.columns.find(col => col._id === updateCard.columnId);
+      const activeCard = column.cards.find(c => c._id === updateCard._id);
+      Object.keys(updateCard).forEach(key => {
+        activeCard[key] = updateCard[key];
+      })
     }
   },
   // extraReducers là nơi xử lí dữ liệu bất đồng bộ
@@ -62,6 +71,8 @@ export const activeBoardSlice = createSlice({
           column.cards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
         }
       });
+      // lấy ra tất cả users trong board (owners và members) để tiện cho việc search thành viên khi thêm thẻ
+      board.allUsers = board.owners.concat(board.members);
       // action.payload là dữ liệu trả về từ API (response.data)
       state.currentActiveBoard = board;
     })
@@ -70,7 +81,7 @@ export const activeBoardSlice = createSlice({
 
 // Actions: là nơi dành cho các component bên dưới gọi bằng dispatch() tới nó để cập nhật dữ liệu thông qua reducer chạy đồng bộ
 // actions là các hàm được tạo ra từ reducers bên trên, mỗi hàm tương ứng với một action
-export const { updateCurrentActiveBoard } = activeBoardSlice.actions
+export const { updateCurrentActiveBoard, updateCardInBoard } = activeBoardSlice.actions
 
 //Selectors: là nơi dành cho các component bên dưới gọi bằng hook userSelector để lấy dữ liệu từ state (trong kho Redux Store) về
 export const selectCurrentActiveBoard = (state) => {

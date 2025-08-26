@@ -197,6 +197,7 @@ function Column({ column }) {
               value={column?.title}
               onChangedValue={updateColumnTitle}
               data-no-dnd="true" // fix lỗi bôi đen text bị nhả sang kéo thả
+              id={`toggle-focus-input-controlled-${column._id}`}
             />
             <Box>
               <Tooltip title="More Actions">

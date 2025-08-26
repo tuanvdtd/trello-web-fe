@@ -135,7 +135,7 @@ function BoardBar({ board }) {
               <Avatar alt="tuan" src="/static/images/avatar/1.jpg" />
             </Tooltip>
           </AvatarGroup> */}
-          <BoardUserGroup />
+          <BoardUserGroup boardUsers={board.allUsers} />
 
         </Box>
       </Box>

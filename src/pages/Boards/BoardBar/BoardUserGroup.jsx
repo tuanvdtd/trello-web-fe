@@ -21,14 +21,14 @@ function BoardUserGroup({ boardUsers = [], limit = 5 }) {
   return (
     <Box sx={{ display: 'flex', gap: '4px' }}>
       {/* Hiển thị giới hạn số lượng user theo số limit */}
-      {[...Array(16)].map((_, index) => {
+      {boardUsers.map((user, index) => {
         if (index < limit) {
           return (
-            <Tooltip title="trungquandev" key={index}>
+            <Tooltip title={user.displayName} key={index}>
               <Avatar
                 sx={{ width: 34, height: 34, cursor: 'pointer' }}
-                alt="trungquandev"
-                src="https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png"
+                alt={user.displayName}
+                src={user.avatar}
               />
             </Tooltip>
           )
@@ -36,7 +36,7 @@ function BoardUserGroup({ boardUsers = [], limit = 5 }) {
       })}
 
       {/* Nếu số lượng users nhiều hơn limit thì hiện thêm +number */}
-      {[...Array(16)].length > limit &&
+      {boardUsers.length > limit &&
         <Tooltip title="Show more">
           <Box
             aria-describedby={popoverId}
@@ -55,7 +55,7 @@ function BoardUserGroup({ boardUsers = [], limit = 5 }) {
               backgroundColor: '#a4b0be'
             }}
           >
-            +{[...Array(16)].length - limit}
+            +{boardUsers.length - limit}
           </Box>
         </Tooltip>
       }
@@ -69,12 +69,12 @@ function BoardUserGroup({ boardUsers = [], limit = 5 }) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
         <Box sx={{ p: 2, maxWidth: '235px', display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-          {[...Array(16)].map((_, index) =>
-            <Tooltip title="trungquandev" key={index}>
+          {boardUsers.map((user, index) =>
+            <Tooltip title={user.displayName} key={index}>
               <Avatar
                 sx={{ width: 34, height: 34, cursor: 'pointer' }}
-                alt=""
-                src="https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png"
+                alt={user.displayName}
+                src={user.avatar}
               />
             </Tooltip>
           )}
@@ -83,5 +83,13 @@ function BoardUserGroup({ boardUsers = [], limit = 5 }) {
     </Box>
   )
 }
+//68ad311d52489645bc94c28e
+//68ad312b52489645bc94c28f
+//68ad313352489645bc94c290
+//68ad313852489645bc94c291
+//68ad313d52489645bc94c292
+//68ad314352489645bc94c293
+//68ad314952489645bc94c294
+//68ad315052489645bc94c295
 
 export default BoardUserGroup

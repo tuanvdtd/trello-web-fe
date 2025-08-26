@@ -53,8 +53,7 @@ authorizedAxiosInstance.interceptors.response.use((response) => {
 
     const originalRequest = error.config;
 
-    if(error.response?.status === 410 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    if(error.response?.status === 410 && originalRequest) {
       if(!requestTokenPromise) {
         requestTokenPromise = refreshTokenAPI()
         .then((data) => {

@@ -10,7 +10,7 @@ function Auth() {
   // console.log(location)
   const isLogin = location.pathname === '/login'
   const isRegister = location.pathname === '/register'
-
+  // Nếu vẫn còn thông tin user trong storage thì không cần phải vào trang đăng nhập hay đăng ký nữa mà vào thẳng trang / luôn
   const currUser = useSelector(selectCurrentUser)
   if (currUser) {
     // If user is logged in, redirect to home page
