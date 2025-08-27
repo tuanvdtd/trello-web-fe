@@ -49,7 +49,7 @@ export const createNewCardAPI = async (newCardData) => {
 
 export const updateCardDetailsAPI = async (cardId, updateData) => {
   const response = await authorizedAxiosInstance.put(`${API_ROOT}/v1/cards/${cardId}`, updateData);
-  toast.success("Card updated successfully!", { theme: "colored" });
+  // toast.success("Card updated successfully!", { theme: "colored" });
   return response.data;
 };
 
@@ -76,3 +76,10 @@ export const fetchBoardsAPI = async (searchPath) => {
   const res = await authorizedAxiosInstance.get(`${API_ROOT}/v1/boards${searchPath}`);
   return res.data;
 }
+
+//------------------------------------------
+export const inviteUserToBoardAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/v1/invitations/board`, data);
+  return response.data;
+}
+//------------------------------------------

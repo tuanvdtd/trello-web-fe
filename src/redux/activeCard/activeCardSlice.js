@@ -5,7 +5,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 // Khởi tạo giá trị của một cái slice ban đầu trong Redux
 const initialState = {
-  currentActiveCard: null
+  currentActiveCard: null,
+  isShowActiveCardModal: false
 }
 
 // Các hành động gọi api bất đồng bộ và cập nhật dữ liệu vào redux dùng Middleware createAsyncThunk đi kèm với extraReducers 
@@ -24,8 +25,9 @@ export const activeCardSlice = createSlice({
   initialState,
   // reducers là nơi xử lí dữ liệu đồng bộ
   reducers: {
-     clearCurrentActiveCard: (state) => {
-      state.currentActiveCard = null
+     hideAndClearCurrentActiveCard: (state) => {
+      state.currentActiveCard = null,
+      state.isShowActiveCardModal = false
     },
     updateCurrentActiveCard: (state, action) => {
 
@@ -38,7 +40,10 @@ export const activeCardSlice = createSlice({
       // update lại dữ liệu currentActiveCard trong state
       // state.currentActiveCard = action.payload
       state.currentActiveCard = fullCard
-    }
+    },
+    showActiveCardModal: (state) => {
+      state.isShowActiveCardModal = true
+    },
   },
   // extraReducers là nơi xử lí dữ liệu bất đồng bộ
   // extraReducers: (builder) => {
@@ -47,11 +52,15 @@ export const activeCardSlice = createSlice({
 
 // Actions: là nơi dành cho các component bên dưới gọi bằng dispatch() tới nó để cập nhật dữ liệu thông qua reducer chạy đồng bộ
 // actions là các hàm được tạo ra từ reducers bên trên, mỗi hàm tương ứng với một action
-export const { updateCurrentActiveCard, clearCurrentActiveCard } = activeCardSlice.actions
+export const { updateCurrentActiveCard, hideAndClearCurrentActiveCard, showActiveCardModal } = activeCardSlice.actions
 
 //Selectors: là nơi dành cho các component bên dưới gọi bằng hook userSelector để lấy dữ liệu từ state (trong kho Redux Store) về
 export const selectCurrentActiveCard = (state) => {
   return state.activeCard.currentActiveCard
+}
+
+export const selectShowActiveCardModal = (state) => {
+  return state.activeCard.isShowActiveCardModal
 }
 
 // Export default reducer để kho lưu trữ Redux Store có thể sử dụng

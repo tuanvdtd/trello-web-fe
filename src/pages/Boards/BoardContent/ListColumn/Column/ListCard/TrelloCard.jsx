@@ -11,7 +11,7 @@ import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
+import { updateCurrentActiveCard, showActiveCardModal } from '~/redux/activeCard/activeCardSlice'
 import { useDispatch } from 'react-redux';
 
 function TrelloCard({ card }) {
@@ -43,7 +43,12 @@ function TrelloCard({ card }) {
   return (
     <>
       <Card
-        onClick={() => dispatch(updateCurrentActiveCard(card))}
+        onClick={() => {
+          // Gán currentActiveCard vào redux
+          dispatch(updateCurrentActiveCard(card))
+          // Mở modal hiển thị chi tiết card
+          dispatch(showActiveCardModal())
+        }}
         ref={setNodeRef}
         style={styleDnDCard}
         {...attributes}
@@ -68,17 +73,17 @@ function TrelloCard({ card }) {
         </CardContent>
         {isShowCardActions() && (
           <CardActions sx={{ p: "0 4px 8px 4px" }}>
-            {!!card?.memberIds.length && (
+            {!!card?.memberIds?.length && (
               <Button size="small" startIcon={<GroupIcon />}>
                 {card?.memberIds.length}
               </Button>
             )}
-            {!!card?.comments.length && (
+            {!!card?.comments?.length && (
               <Button size="small" startIcon={<ModeCommentIcon />}>
                 {card?.comments.length}
               </Button>
             )}
-            {!!card?.attachments.length && (
+            {!!card?.attachments?.length && (
               <Button size="small" startIcon={<AttachmentIcon />}>
                 {card?.attachments.length}
               </Button>

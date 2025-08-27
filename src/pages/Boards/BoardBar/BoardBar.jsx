@@ -6,13 +6,14 @@ import VpnLockIcon from "@mui/icons-material/VpnLock";
 import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import BoltIcon from "@mui/icons-material/Bolt";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import Avatar from "@mui/material/Avatar";
-import AvatarGroup from "@mui/material/AvatarGroup";
+// import Avatar from "@mui/material/Avatar";
+// import AvatarGroup from "@mui/material/AvatarGroup";
 import Tooltip from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
+// import Button from "@mui/material/Button";
+// import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { capitalizeFirstLetter } from "~/utils/formatter";
 import BoardUserGroup from "./BoardUserGroup";
+import InviteBoardUser from "./InviteBoardUser";
 
 const MenuStyle = {
   color: "white",
@@ -84,7 +85,7 @@ function BoardBar({ board }) {
           />
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Button
+          {/* <Button
             variant="outlined"
             startIcon={<PersonAddIcon />}
             sx={{
@@ -96,7 +97,9 @@ function BoardBar({ board }) {
             }}
           >
             Invite
-          </Button>
+          </Button> */}
+          <InviteBoardUser boardId={board._id} />
+
           {/* <AvatarGroup
             max={4}
             sx={{
