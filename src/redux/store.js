@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { activeBoardReducer } from './activeBoard/activeBoardSlice'
 import { userReducer } from './user/userSlice'
 import { activeCardReducer } from './activeCard/activeCardSlice'
+import { activeNotificationReducer } from './activeNotification/activeNotificationSlice'
 
 // https://stackoverflow.com/questions/61704805/getting-an-error-a-non-serializable-value-was-detected-in-the-state-when-using/63244831#63244831
 // https://edvins.io/how-to-use-redux-persist-with-redux-toolkit
@@ -22,7 +23,8 @@ const rootPersistConfig = {
 const reducers = combineReducers({
   activeBoard: activeBoardReducer,
   user: userReducer,
-  activeCard: activeCardReducer
+  activeCard: activeCardReducer,
+  activeNotification: activeNotificationReducer
 })
 
 const persistedReducer = persistReducer(rootPersistConfig, reducers)

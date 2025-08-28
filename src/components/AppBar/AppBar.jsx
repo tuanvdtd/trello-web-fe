@@ -11,8 +11,8 @@ import Starred from "./Menu/Starred";
 import TemPlates from "./Menu/Templates";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Badge from "@mui/material/Badge";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+// import Badge from "@mui/material/Badge";
+// import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Profile from "./Menu/Profile";
@@ -21,6 +21,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
+import Notifications from "./Notifications/Notifications";
 
 function AppBar() {
   const [searchValue, setSearchValue] = useState("");
@@ -125,12 +126,16 @@ function AppBar() {
               },
             }}
           />
+          {/* Theme */}
           <ToggleTheme />
-          <Tooltip title="Notifications">
+
+          {/* Notification */}
+          {/* <Tooltip title="Notifications">
             <Badge color="warning" variant="dot" sx={{ cursor: "pointer" }}>
               <NotificationsNoneIcon sx={{ color: "white" }} />
             </Badge>
-          </Tooltip>
+          </Tooltip> */}
+          <Notifications />
           <Tooltip title="Help">
             <HelpOutlineIcon sx={{ cursor: "pointer", color: "white" }} />
           </Tooltip>
