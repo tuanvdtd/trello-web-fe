@@ -80,6 +80,7 @@ export const fetchBoardsAPI = async (searchPath) => {
 //------------------------------------------
 export const inviteUserToBoardAPI = async (data) => {
   const response = await authorizedAxiosInstance.post(`${API_ROOT}/v1/invitations/board`, data);
+  toast.success("Invitation sent successfully!", {position: "bottom-left"});
   return response.data;
 }
 //------------------------------------------
