@@ -81,7 +81,7 @@ authorizedAxiosInstance.interceptors.response.use((response) => {
     }
     // Hiển thị thông báo lỗi, ngoại trừ lỗi 410
     if(error.response?.status !== 410) {
-      toast.error(errorMessage);
+      toast.error(errorMessage, {position: "bottom-left"});
     }
     // console.error('Response error:', error);
     return Promise.reject(error);

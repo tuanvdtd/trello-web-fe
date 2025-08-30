@@ -14,7 +14,10 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import DoneIcon from '@mui/icons-material/Done'
 import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectCurrentNotifications, fetchNotificationsAPI } from '~/redux/activeNotification/activeNotificationSlice'
+import { selectCurrentNotifications, fetchNotificationsAPI, updateNotificationStatusAPI, addNotification } from '~/redux/activeNotification/activeNotificationSlice'
+import { selectCurrentUser } from '~/redux/user/userSlice'
+import { socketIoInstance } from '~/main'
+import { useNavigate } from 'react-router-dom'
 
 const BOARD_INVITATION_STATUS = {
   PENDING: 'PENDING',
@@ -25,23 +28,47 @@ const BOARD_INVITATION_STATUS = {
 function Notifications() {
   const dispatch = useDispatch()
   const notifications = useSelector(selectCurrentNotifications)
+  const currentUser = useSelector(selectCurrentUser)
+  const navigate = useNavigate()
+
+  const [newNotification, setNewNotification] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const handleClickNotificationIcon = (event) => {
     setAnchorEl(event.currentTarget)
+    setNewNotification(false)
 
   }
   const handleClose = () => {
     setAnchorEl(null)
   }
 
-  const updateBoardInvitation = (status) => {
+  const updateBoardInvitation = (invitationId, status) => {
     console.log('status: ', status)
+    dispatch(updateNotificationStatusAPI({invitationId, status})).then(res => {
+      console.log(res)
+      const invitation = res.payload
+      if (invitation.boardInvitation.status === BOARD_INVITATION_STATUS.ACCEPTED) {
+        navigate(`/boards/${invitation.boardInvitation.boardId}`)
+      }
+    })
   }
 
   useEffect(() => {
     dispatch(fetchNotificationsAPI())
-  }, [dispatch])
+    const functions = (invitation) => {
+      if (invitation.inviteeId === currentUser._id) {
+        dispatch(addNotification(invitation))
+        setNewNotification(true)
+      }
+    }
+
+    // Lấy Be_InviteUserToBoard tư Be sau khi broadcast
+    socketIoInstance.on('Be_InviteUserToBoard', functions)
+    return () => {
+      socketIoInstance.off('Be_InviteUserToBoard', functions)
+    }
+  }, [dispatch, currentUser._id])
 
   return (
     <Box>
@@ -49,7 +76,7 @@ function Notifications() {
         <Badge
           color="warning"
           // variant="none"
-          variant="dot"
+          variant={newNotification ? 'dot' : 'none'}
           sx={{ cursor: 'pointer' }}
           id="basic-button-open-notification"
           aria-controls={open ? 'basic-notification-menu' : undefined}
@@ -59,7 +86,7 @@ function Notifications() {
         >
           <NotificationsNoneIcon sx={{
             // color: 'white'
-            color: 'yellow'
+            color:  newNotification ? 'yellow' : 'white'
           }} />
         </Badge>
       </Tooltip>
@@ -94,8 +121,8 @@ function Notifications() {
                   <Box><GroupAddIcon fontSize="small" /></Box>
                   <Box><strong>{notification.inviter.displayName}</strong> had invited you to join the board <strong>{notification.board.title}</strong></Box>
                 </Box>
-
-                {/* Khi Status của thông báo này là PENDING thì sẽ hiện 2 Button */}
+              {/* Khi Status của thông báo này là PENDING thì sẽ hiện 2 Button */}
+              { notification.boardInvitation.status === BOARD_INVITATION_STATUS.PENDING && 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
                   <Button
                     className="interceptor-loading"
@@ -103,7 +130,7 @@ function Notifications() {
                     variant="contained"
                     color="success"
                     size="small"
-                    onClick={() => updateBoardInvitation(BOARD_INVITATION_STATUS.ACCEPTED)}
+                    onClick={() => updateBoardInvitation(notification._id, BOARD_INVITATION_STATUS.ACCEPTED)}
                   >
                     Accept
                   </Button>
@@ -113,16 +140,20 @@ function Notifications() {
                     variant="contained"
                     color="secondary"
                     size="small"
-                    onClick={() => updateBoardInvitation(BOARD_INVITATION_STATUS.REJECTED)}
+                    onClick={() => updateBoardInvitation(notification._id, BOARD_INVITATION_STATUS.REJECTED)}
                   >
                     Reject
                   </Button>
                 </Box>
+                }
 
                 {/* Khi Status của thông báo này là ACCEPTED hoặc REJECTED thì sẽ hiện thông tin đó lên */}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
-                  <Chip icon={<DoneIcon />} label="Accepted" color="success" size="small" />
+                  {notification.boardInvitation.status === BOARD_INVITATION_STATUS.ACCEPTED &&
+                  <Chip icon={<DoneIcon />} label="Accepted" color="success" size="small" /> }
+                  {notification.boardInvitation.status === BOARD_INVITATION_STATUS.REJECTED &&
                   <Chip icon={<NotInterestedIcon />} label="Rejected" size="small" />
+                  }
                 </Box>
 
                 {/* Thời gian của thông báo */}

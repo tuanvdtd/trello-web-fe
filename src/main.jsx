@@ -18,23 +18,33 @@ import { injectStore } from '~/utils/authorizeAxios';
 let persistor = persistStore(store);
 injectStore(store);
 
+// cấu hình socketio
+import { io } from "socket.io-client";
+import { API_ROOT } from "./utils/constants";
+export const socketIoInstance = io(API_ROOT)
+
 const rootElement = document.getElementById("root");
-const root = createRoot(rootElement);
+// Tránh tạo lại khi reload
+if (!rootElement._reactRoot) {
+  rootElement._reactRoot = createRoot(rootElement);
+}
+
+const root = rootElement._reactRoot;
 
 root.render(
-  <BrowserRouter basename="/">
-    <Provider store={store}>
+  <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider theme={theme}>
-          <ConfirmProvider defaultOptions ={{confirmationButtonProps: { color:"error", variant: "contained" },
-          cancellationButtonProps: { color: "inherit", variant: "outlined" },
-          allowClose: false}}>
-            <CssBaseline />
-            <App />
-            <ToastContainer theme="colored" />
-          </ConfirmProvider>
-        </ThemeProvider>
+        <BrowserRouter basename="/">
+          <ThemeProvider theme={theme}>
+            <ConfirmProvider defaultOptions ={{confirmationButtonProps: { color:"error", variant: "contained" },
+            cancellationButtonProps: { color: "inherit", variant: "outlined" },
+            allowClose: false}}>
+              <CssBaseline />
+              <App />
+              <ToastContainer theme="colored" />
+            </ConfirmProvider>
+          </ThemeProvider>
+      </BrowserRouter>
       </PersistGate>
     </Provider>
-  </BrowserRouter>
 );
