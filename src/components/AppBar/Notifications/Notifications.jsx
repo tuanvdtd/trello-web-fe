@@ -16,7 +16,7 @@ import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectCurrentNotifications, fetchNotificationsAPI, updateNotificationStatusAPI, addNotification } from '~/redux/activeNotification/activeNotificationSlice'
 import { selectCurrentUser } from '~/redux/user/userSlice'
-import { socketIoInstance } from '~/main'
+import { socketIoInstance } from '~/socketClientn'
 import { useNavigate } from 'react-router-dom'
 
 const BOARD_INVITATION_STATUS = {
