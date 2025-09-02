@@ -10,18 +10,19 @@ import Recent from "./Menu/Recent";
 import Starred from "./Menu/Starred";
 import TemPlates from "./Menu/Templates";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 // import Badge from "@mui/material/Badge";
 // import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Profile from "./Menu/Profile";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
+// import InputAdornment from "@mui/material/InputAdornment";
+// import SearchIcon from "@mui/icons-material/Search";
+// import CloseIcon from "@mui/icons-material/Close";
+// import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import Notifications from "./Notifications/Notifications";
+import AutoCompleteSearchBoard from "./SearchBoards/AutoCompleteSearchBoard";
 
 function AppBar() {
   const [searchValue, setSearchValue] = useState("");
@@ -81,7 +82,7 @@ function AppBar() {
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <TextField
+          {/* <TextField
             id="outlined-search"
             label="Search ..."
             type="text"
@@ -125,7 +126,8 @@ function AppBar() {
                 },
               },
             }}
-          />
+          /> */}
+          <AutoCompleteSearchBoard />
           {/* Theme */}
           <ToggleTheme />
 

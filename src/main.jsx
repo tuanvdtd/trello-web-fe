@@ -34,7 +34,7 @@ const root = rootElement._reactRoot;
 root.render(
   <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter basename="/">
+        <BrowserRouter basename="/" future={{ v7_startTransition: true , v7_relativeSplatPath: true}}>
           <ThemeProvider theme={theme}>
             <ConfirmProvider defaultOptions ={{confirmationButtonProps: { color:"error", variant: "contained" },
             cancellationButtonProps: { color: "inherit", variant: "outlined" },
