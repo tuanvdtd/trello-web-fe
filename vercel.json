@@ -12,6 +12,5 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-   "//comment": "build command: cross-env BUILD_MODE=production vite build --base=./ sửa thành build command: cross-env BUILD_MODE=production vite build --base=/ mới có thể reload page trên vercel"
+  ]
 }
