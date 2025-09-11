@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env BUILD_MODE=dev vite --host",
+    "//comment": "build command: cross-env BUILD_MODE=production vite build --base=./ sửa thành build command: cross-env BUILD_MODE=production vite build --base=/ mới có thể reload page trên vercel",
     "build": "cross-env BUILD_MODE=production vite build --base=/",
     "lint": "eslint .",
     "preview": "vite preview"
