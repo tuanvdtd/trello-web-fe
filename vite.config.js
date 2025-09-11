@@ -11,4 +11,5 @@ export default defineConfig({
   resolve: {
     alias: [{ find: "~", replacement: "/src" }],
   },
+  base: "/", // fix vercel reload page (404 not found)
 });
