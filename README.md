@@ -1,20 +1,23 @@
-# React + Vite
+# Trello Web FE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend của ứng dụng web giống Trello, xây dựng bằng React và Vite.
 
-Currently, two official plugins are available:
+## 🚀 Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Client: https://trello-web-beige.vercel.app  
+- Server/Backend: https://trello-api-express.onrender.com  
 
-## Expanding the ESLint configuration
+## 👤 Account Test
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Email: `chuhoi091.dt@gmail.com`  
+- Password: `tuan1234`
 
-## Run
-1.Server: https://trello-api-express.onrender.com
-2.Client: https://trello-web-beige.vercel.app
+## 🛠️ Công nghệ sử dụng
 
-## Account test
-Email: chuhoi091.dt@gmail.com
-Password: tuan1234
+- **React** — để xây dựng UI component dựa trên component-based architecture  
+- **Vite** — bundler / dev-server để phát triển nhanh, hỗ trợ HMR  
+- **JavaScript (ES6+)** — ngôn ngữ chính  
+- **ESLint** — kiểm tra chất lượng code, quy chuẩn coding  
+- **Vite config** tùy chỉnh qua `vite.config.js`  
+- **jsconfig.json** để hỗ trợ alias, cấu hình import đường dẫn nếu cần  
+- Triển khai frontend trên **Vercel**  
