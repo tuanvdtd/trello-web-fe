@@ -10,6 +10,8 @@ import Tooltip from "@mui/material/Tooltip";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
+import Switch from '@mui/material/Switch';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentUser } from "~/redux/user/userSlice";
 import { logoutUserAPI } from "~/redux/user/userSlice";
@@ -119,11 +121,22 @@ export default function Profile() {
           </ListItemIcon>
           Add another account
         </MenuItem>
-        <MenuItem >
+         <Link to="/settings/account" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <MenuItem >
+            <ListItemIcon>
+              <Settings fontSize="small" />
+            </ListItemIcon>
+            Settings
+          </MenuItem>
+         </Link>
+        <MenuItem sx={{
+            '&:hover': { color: 'primary.main', '& .twofa_icon': { color: 'primary.main' } },
+          }}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <AdminPanelSettingsIcon fontSize="small" className="twofa_icon" />
           </ListItemIcon>
-          Settings
+          2 Factor Authentication
+          <Switch color="primary" />
         </MenuItem>
         <MenuItem onClick={handleLogout} sx = {{
           '&:hover' : { color : 'warning.dark', '& .logout_icon' : {color: 'warning.dark'} },

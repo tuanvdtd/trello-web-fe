@@ -42,9 +42,12 @@ function BoardBar({ board }) {
           justifyContent: "space-between",
           gap: 2,
           overflowX: "auto",
-          bgcolor: (theme) =>
-            theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
+          // bgcolor: (theme) =>
+          //   theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
+          backdropFilter: "blur(8px)", // Làm mờ nền phía sau
+          WebkitBackdropFilter: "blur(8px)", // Hỗ trợ Safari
           borderBottom: "1px solid white",
+          
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>

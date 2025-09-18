@@ -287,9 +287,10 @@ function BoardContent({ board, moveColumnDnd, moveCardInSameColumnDnd, moveCardT
         onDragEnd={handleDragEnd}
       >
         <Box
+          // component="img"
           sx={{
-            bgcolor: (theme) =>
-              theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
+            // bgcolor: (theme) =>
+            //   theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
             height: (theme) => theme.trello.boardContentHeight,
             width: "100%",
             p: "10px 0",

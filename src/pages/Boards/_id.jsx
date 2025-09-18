@@ -96,14 +96,24 @@ function Board() {
       <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
         {<ActiveCard />}
         <AppBar />
+        <Box sx = {{
+            height: (theme) => theme.trello.boardBarHeight + theme.trello.boardContentHeight,
+            width: "100%",
+            backgroundImage: `url("https://res.cloudinary.com/dtyn8fyyv/image/upload/v1756229653/card-covers/lixatpgqoo0rxwwqtzgd.jpg")`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",}}>
+
         <BoardBar board={board} />
         <BoardContent 
           board={board}
-
+          
           moveColumnDnd={moveColumnDnd}
           moveCardInSameColumnDnd={moveCardInSameColumnDnd}
           moveCardToDiffColumnDnd={moveCardToDiffColumnDnd}
-        />
+          />
+        </Box>
       </Container>
     </>
   );

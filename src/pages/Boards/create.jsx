@@ -72,7 +72,6 @@ function SidebarCreateBoardModal({ handleCreateBoardSuccess }) {
     }
   }
 
-  // <>...</> nhắc lại cho bạn anof chưa biết hoặc quên nhé: nó là React Fragment, dùng để bọc các phần tử lại mà không cần chỉ định DOM Node cụ thể nào cả.
   return (
     <>
       <SidebarItem onClick={handleOpenModal}>

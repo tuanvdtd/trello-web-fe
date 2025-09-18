@@ -20,7 +20,7 @@ import CardMedia from '@mui/material/CardMedia'
 import Pagination from '@mui/material/Pagination'
 import PaginationItem from '@mui/material/PaginationItem'
 import { Link, useLocation } from 'react-router-dom'
-import randomColor from 'randomcolor'
+// import randomColor from 'randomcolor'
 import SidebarCreateBoardModal from './create'
 import { fetchBoardsAPI } from '~/apis'
 import { DEFAULT_ITEMS_PER_PAGE, DEFAULT_PAGE } from '~/utils/constants'
@@ -59,7 +59,7 @@ function Boards() {
   const query = new URLSearchParams(location.search)
   /**
    * Lấy giá trị page từ query, default sẽ là 1 nếu không tồn tại page từ url.
-   * Nhắc lại kiến thức cơ bản hàm parseInt cần tham số thứ 2 là Hệ thập phân (hệ đếm cơ số 10) để đảm bảo chuẩn số cho phân trang
+   * hàm parseInt cần tham số thứ 2 là Hệ thập phân (hệ đếm cơ số 10) để đảm bảo chuẩn số cho phân trang
    */
   const page = parseInt(query.get('page') || '1', 10)
 
@@ -95,7 +95,7 @@ function Boards() {
     <Container disableGutters maxWidth={false}>
       <AppBar />
       <Box sx={{ paddingX: 2, my: 4 }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={10}>
           <Grid size = {{ xs: 12, sm: 3 }}>
             <Stack direction="column" spacing={1}>
               <SidebarItem className="active">
@@ -130,10 +130,10 @@ function Boards() {
               <Grid container spacing={2}>
                 {boards.map(b =>
                   <Grid  xs={2} sm={3} md={4} key={b._id}>
-                    <Card sx={{ width: '250px' }}>
+                    <Card sx={{ width: '250px', boxShadow: 3, borderRadius: '10px', '&:hover': { boxShadow: 5 , transform: 'scale(1.05)'}, transition: 'transform 0.2s' }}>
                       {/* Ý tưởng mở rộng về sau làm ảnh Cover cho board nhé */}
-                      {/* <CardMedia component="img" height="100" image="https://picsum.photos/100" /> */}
-                      <Box sx={{ height: '50px', backgroundColor: randomColor() }}></Box>
+                      <CardMedia component="img" height="120" image="https://res.cloudinary.com/dtyn8fyyv/image/upload/v1756229653/card-covers/lixatpgqoo0rxwwqtzgd.jpg" />
+                      {/* <Box sx={{ height: '50px', backgroundColor: randomColor() }}></Box> */}
 
                       <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
                         <Typography gutterBottom variant="h6" component="div">

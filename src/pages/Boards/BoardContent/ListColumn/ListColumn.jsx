@@ -111,9 +111,11 @@ function ListColumn({ columns }) {
            <Box sx={{ 
               minWidth: "250px",
               maxWidth: "250px",
-              bgcolor: "#ffffff3d",
+              // bgcolor: "#ffffff3d",
+              bgcolor: (theme) =>
+              theme.palette.mode === "dark" ? "#333643" : "#ebecf0",
               mx: 2,
-              p: 1,
+              p: 1.5,
               borderRadius: "6px",
               height: "fit-content", 
               display: "flex",
@@ -128,22 +130,26 @@ function ListColumn({ columns }) {
                autoFocus
                value={newColumnTitle}
                onChange={(e) => setNewColumnTitle(e.target.value)}
-               sx={{
-                 "& label": {
-                   color: "white",
-                 },
-                 "& input": { color: "white" },
-                 "& label.Mui-focused": { color: "white" },
-                 "& .MuiOutlinedInput-root": {
-                   "& fieldset": {
-                     borderColor: "white",
-                   },
-                   "&:hover fieldset": { borderColor: "white" },
-                   "&.Mui-focused fieldset": {
-                     borderColor: "white",
-                   },
-                 },
-               }}
+              //  sx={{
+              //    "& label": {
+              //      color: "black",
+              //    },
+              //    "& input": { color: "black" },
+              //    "& label.Mui-focused": { color: "black" },
+              //    "& .MuiOutlinedInput-root": {
+              //      "& fieldset": {
+              //        borderColor: "blue",
+              //      },
+              //      "&:hover fieldset": { borderColor: "black" },
+              //      "&.Mui-focused fieldset": {
+              //        borderColor: "blue",
+              //      },
+              //    },
+              //  }}
+              sx={{"& input": { 
+                // color: (theme) => theme.palette.primary.main,
+                bgcolor: (theme) => (theme.palette.mode === "dark" ? "#333643" : "white"),
+                   }}}
              />
              <Box
                sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
@@ -159,7 +165,7 @@ function ListColumn({ columns }) {
                     fontSize="small"
                     onClick={handleToggleForm}
                     sx={{
-                      color: "white",
+                      // color: "black",
                       cursor: "pointer",
                       mr:1,
                       '&:hover' : {color: (theme) => theme.palette.warning.light}
