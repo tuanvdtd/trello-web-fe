@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -14,6 +14,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { capitalizeFirstLetter } from "~/utils/formatter";
 import BoardUserGroup from "./BoardUserGroup";
 import InviteBoardUser from "./InviteBoardUser";
+import BackgroundSelector from "~/components/BackgroundSelector";
 
 const MenuStyle = {
   color: "white",
@@ -27,9 +28,17 @@ const MenuStyle = {
   "&:hover": {
     bgcolor: "primary.50",
   },
+  fontSize: "15px",
+  fontWeight: 500,
 };
 
 function BoardBar({ board }) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedBackground, setSelectedBackground] = useState(null);
+  const handleBackgroundSelect = (background) => {
+    setSelectedBackground(background);
+    console.log('Selected background:', background);
+  }
   return (
     <>
       <Box
@@ -47,7 +56,6 @@ function BoardBar({ board }) {
           backdropFilter: "blur(8px)", // Làm mờ nền phía sau
           WebkitBackdropFilter: "blur(8px)", // Hỗ trợ Safari
           borderBottom: "1px solid white",
-          
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
@@ -76,9 +84,15 @@ function BoardBar({ board }) {
 
           <Chip
             icon={<BoltIcon />}
-            label="Automation"
+            label="Settings"
             clickable
             sx={MenuStyle}
+            onClick={() => setModalOpen(true)}
+          />
+          <BackgroundSelector
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            onSelect={handleBackgroundSelect}
           />
           <Chip
             icon={<FilterListIcon />}

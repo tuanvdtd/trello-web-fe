@@ -67,11 +67,13 @@ function InviteBoardUser({boardId}) {
             <Typography variant="span" sx={{ fontWeight: 'bold', fontSize: '16px' }}>Invite User To This Board!</Typography>
             <Box>
               <TextField
-                autoFocus
+                // autoFocus
                 fullWidth
                 label="Enter email to invite..."
                 type="text"
                 variant="outlined"
+                autoFocus
+                autoComplete='off'
                 {...register('inviteeEmail', {
                   required: FIELD_REQUIRED_MESSAGE,
                   pattern: { value: EMAIL_RULE, message: EMAIL_RULE_MESSAGE }
