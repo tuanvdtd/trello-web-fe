@@ -132,7 +132,27 @@ function Boards() {
                   <Grid  xs={2} sm={3} md={4} key={b._id}>
                     <Card sx={{ width: '250px', boxShadow: 3, borderRadius: '10px', '&:hover': { boxShadow: 5 , transform: 'scale(1.05)'}, transition: 'transform 0.2s' }}>
                       {/* Ý tưởng mở rộng về sau làm ảnh Cover cho board nhé */}
-                      <CardMedia component="img" height="120" image="https://res.cloudinary.com/dtyn8fyyv/image/upload/v1756229653/card-covers/lixatpgqoo0rxwwqtzgd.jpg" />
+                      {b?.background?.backgroundType === 'image' ? (
+                        <CardMedia component="img" height="120" image={b.background.backgroundUrl} />
+                      ) : b?.background?.backgroundType === 'gradient' ? (
+                        <CardMedia
+                          component="div"
+                          sx={{
+                            height: 120,
+                            backgroundImage: b.background.backgroundUrl,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                          }}
+                        />
+                      ) : (
+                        <CardMedia
+                          component="div"
+                          sx={{
+                            height: 120,
+                            backgroundColor: b?.background?.backgroundUrl || '#1976d2'
+                          }}
+                        />
+                      )}
                       {/* <Box sx={{ height: '50px', backgroundColor: randomColor() }}></Box> */}
 
                       <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>

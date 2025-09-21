@@ -40,6 +40,7 @@ function Board() {
     dispatch(fetchBoardDetailsAPI(boardId));
   }, [dispatch, boardId]);
 
+
   const moveColumnDnd =  (dnd) => {
     const dndColumnIds = dnd.map((column) => column._id);
     const updateBoard = cloneDeep(board);
@@ -99,7 +100,11 @@ function Board() {
         <Box sx = {{
             height: (theme) => theme.trello.boardBarHeight + theme.trello.boardContentHeight,
             width: "100%",
-            backgroundImage: `url("https://res.cloudinary.com/dtyn8fyyv/image/upload/v1756229653/card-covers/lixatpgqoo0rxwwqtzgd.jpg")`,
+            backgroundImage: board?.background?.backgroundType === 'image' ? `url(${board.background.backgroundUrl})` :
+                             board?.background?.backgroundType === 'gradient' ? board.background.backgroundUrl :
+                            'none',
+            backgroundColor: board?.background?.backgroundType === 'color' ? board.background.backgroundUrl : (theme) =>
+            theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",

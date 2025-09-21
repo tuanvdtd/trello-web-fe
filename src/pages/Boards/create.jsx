@@ -127,7 +127,7 @@ function SidebarCreateBoardModal({ handleCreateBoardSuccess }) {
                       input: {
                         startAdornment: (
                           <InputAdornment position="start">
-                            <AbcIcon fontSize="small" sx={{ '&.MuiSvgIcon-root': { color: 'initial' } }} />
+                            <AbcIcon fontSize="small" sx={{ '&.MuiSvgIcon-root': { color: 'inherit' } }} />
                           </InputAdornment>
                         )
                       }
@@ -153,7 +153,7 @@ function SidebarCreateBoardModal({ handleCreateBoardSuccess }) {
                       input: {
                         startAdornment: (
                           <InputAdornment position="start">
-                            <DescriptionOutlinedIcon fontSize="small" sx={{ '&.MuiSvgIcon-root': { color: 'black' } }}/>
+                            <DescriptionOutlinedIcon fontSize="small" sx={{ '&.MuiSvgIcon-root': { color: 'inherit' } }}/>
                           </InputAdornment>
                         )
                       }

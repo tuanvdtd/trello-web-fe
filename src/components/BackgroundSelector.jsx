@@ -11,6 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -18,14 +19,20 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import VisuallyHiddenInput from '~/components/Form/VisuallyHiddenInput'
 
-import { FIELD_REQUIRED_MESSAGE, singleFileValidator } from '~/utils/validators';
+import { singleFileValidator } from '~/utils/validators';
 import { toast } from 'react-toastify';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { updateBoardDetailsAPI } from '~/apis';
+import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice';
+import { cloneDeep } from 'lodash';
 
-const BackgroundSelector = ({ open, onClose, onSelect }) => {
+
+const BackgroundSelector = ({ open, onClose, boardId }) => {
   const [tabValue, setTabValue] = useState(-1);
   const [searchValue, setSearchValue] = useState('');
-
+  const dispatch = useDispatch();
+  const board = useSelector(selectCurrentActiveBoard);
   // Dữ liệu màu gradient
   const gradientColors = [
     { id: 1, gradient: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)', icon: '🦋' },
@@ -60,15 +67,26 @@ const BackgroundSelector = ({ open, onClose, onSelect }) => {
     setTabValue(newValue);
   };
 
-  const handleColorSelect = (gradient) => {
-    onSelect({ type: 'gradient', value: gradient });
+
+  const callUpdateBoardDetailsAPI = async (updateData) => {
+    const updatedBoard = await updateBoardDetailsAPI(boardId, updateData);
+    // Cập nhật lại store
+    const updatedBoardInStore = cloneDeep(board);
+    updatedBoardInStore.background = updatedBoard.background;
+    dispatch(updateCurrentActiveBoard(updatedBoardInStore));
+    return updatedBoard;
+  }
+  const handleDefaultSelect = (type, defaultImage) => {
+    // onSelect({ type: 'gradient', value: gradient });
+    // onClose();
+
+    // Gọi API cập nhật nền cho board
+    // console.log('Selected background: ', defaultImage);
+    const updateBackgroundBoard = { backgroundType: type, defaultImage: defaultImage }
+    callUpdateBoardDetailsAPI({ updateBackgroundBoard })
     onClose();
   };
 
-  const handleImageSelect = (imageUrl) => {
-    onSelect({ type: 'image', value: imageUrl });
-    onClose();
-  };
 
   const uploadBackground = (e) => {
       // Lấy file thông qua e.target?.files[0] và validate nó trước khi xử lý
@@ -81,22 +99,35 @@ const BackgroundSelector = ({ open, onClose, onSelect }) => {
   
       // Sử dụng FormData để xử lý dữ liệu liên quan tới file khi gọi API
       let reqData = new FormData()
-      reqData.append('avatar', e.target?.files[0])
+      reqData.append('backgroundBoard', e.target?.files[0])
       // Cách để log được dữ liệu thông qua FormData
-      console.log('reqData: ', reqData)
-      for (const value of reqData.values()) {
-        console.log('reqData Value: ', value)
-      }
+      // console.log('reqData: ', reqData)
+      // for (const value of reqData.values()) {
+      //   console.log('reqData Value: ', value)
+      // }
   
       // Gọi API...
+      toast.promise(
+        callUpdateBoardDetailsAPI(reqData).finally(() => {
+          e.target.value = ''
+          onClose();
+        }),
+        {
+          pending: 'Uploading...',
+        }
+      ).then(res => {
+        if (!res.error) {
+          toast.success('Background updated successfully!', { theme: 'colored' })
+        }
+      })
     }
 
   const renderColorTab = () => (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 1.5 }}>
       {/* Gradient Colors */}
-      <Grid container spacing={1} sx={{ mb: 3 }}>
+      <Grid container spacing={1} >
         {gradientColors.map((color) => (
-          <Grid item xs={6} key={color.id}>
+          <Grid item xs={6} key={color.id} >
             <Card
               sx={{
                 height: 90,
@@ -107,20 +138,22 @@ const BackgroundSelector = ({ open, onClose, onSelect }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '24px',
                 transition: 'transform 0.2s',
                 '&:hover': {
                   transform: 'scale(1.05)'
-                }
+                },
+                position: 'relative',
               }}
-              onClick={() => handleColorSelect(color.gradient)}
+              onClick={() => handleDefaultSelect('gradient', color.gradient)}
             >
-              {color.icon}
+              <Typography variant="h6" sx={{ color: 'white', textShadow: '0 0 5px rgba(0,0,0,0.3)', position: 'absolute', bottom: 8, left: 8 }}>
+                {color.icon}
+              </Typography>
             </Card>
           </Grid>
         ))}
       </Grid>
-
+      <Divider sx={{ marginY: 2 }} />
       {/* Solid Colors */}
       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
         {solidColors.map((color, index) => (
@@ -134,10 +167,10 @@ const BackgroundSelector = ({ open, onClose, onSelect }) => {
               cursor: 'pointer',
               transition: 'transform 0.2s',
               '&:hover': {
-                transform: 'scale(1.1)'
+                transform: 'scale(1.05)'
               }
             }}
-            onClick={() => handleColorSelect(color)}
+            onClick={() => handleDefaultSelect('color', color)}
           />
         ))}
       </Box>
@@ -145,7 +178,7 @@ const BackgroundSelector = ({ open, onClose, onSelect }) => {
   );
 
   const renderImageTab = () => (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 1.5 }}>
       {/* Search Box */}
       <TextField
         fullWidth
@@ -155,7 +188,7 @@ const BackgroundSelector = ({ open, onClose, onSelect }) => {
         sx={{ mb: 2 }}
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
+            <InputAdornment position="start"  sx={{'& .MuiSvgIcon-root': { color: 'inherit' } }}>
               <SearchIcon />
             </InputAdornment>
           ),
@@ -176,15 +209,13 @@ const BackgroundSelector = ({ open, onClose, onSelect }) => {
                   transform: 'scale(1.05)'
                 }
               }}
-              onClick={() => handleImageSelect(image.url)}
+              onClick={() => handleDefaultSelect('image', image.url)}
             >
               <CardMedia
                 component="img"
-                width='150'
-                height="90"
                 image={image.url}
                 alt={image.alt}
-                sx={{ objectFit: 'cover' }}
+                sx={{ objectFit: 'cover', height: 90, width: 150 }}
               />
             </Card>
           </Grid>
@@ -317,7 +348,14 @@ const BackgroundSelector = ({ open, onClose, onSelect }) => {
           </Box>
         {tabValue === -1 && renderCustomTab()}
         {/* Content */}
-        <Box sx={{ flex: 1, overflowY: 'auto' }}>
+        <Box sx={{ flex: 1, overflowY: 'auto', p: "0 5px 5px 5px",
+            m: "0 5px",
+            overflowX: "hidden", "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#ced0da",
+            },
+            "&::-webkit-scrollbar-thumb:hover": {
+              backgroundColor: "#bfc2cf",
+            }, }}>
           {tabValue === 0 && renderColorTab()}
           {tabValue === 1 && renderImageTab()}
           {/* {tabValue === 2 && renderCustomTab()} */}

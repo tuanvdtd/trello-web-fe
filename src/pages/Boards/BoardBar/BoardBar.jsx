@@ -34,11 +34,11 @@ const MenuStyle = {
 
 function BoardBar({ board }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedBackground, setSelectedBackground] = useState(null);
-  const handleBackgroundSelect = (background) => {
-    setSelectedBackground(background);
-    console.log('Selected background:', background);
-  }
+  // const handleBackgroundSelect = (background) => {
+    
+  //   // Xử lý nền được chọn ở đây
+  //   console.log('Selected background:', background);
+  // }
   return (
     <>
       <Box
@@ -51,14 +51,13 @@ function BoardBar({ board }) {
           justifyContent: "space-between",
           gap: 2,
           overflowX: "auto",
-          // bgcolor: (theme) =>
-          //   theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
+          bgcolor: "rgba(0, 0, 0, 0.32)", // Nền đen với độ mờ
           backdropFilter: "blur(8px)", // Làm mờ nền phía sau
           WebkitBackdropFilter: "blur(8px)", // Hỗ trợ Safari
           borderBottom: "1px solid white",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, }}>
           <Tooltip title={board?.description}>
           <Chip
             icon={<DashboardIcon />}
@@ -92,7 +91,8 @@ function BoardBar({ board }) {
           <BackgroundSelector
             open={modalOpen}
             onClose={() => setModalOpen(false)}
-            onSelect={handleBackgroundSelect}
+            // onSelect={handleBackgroundSelect}
+            boardId={board?._id}
           />
           <Chip
             icon={<FilterListIcon />}
