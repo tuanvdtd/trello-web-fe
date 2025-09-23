@@ -23,9 +23,14 @@ import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import { Link } from "react-router-dom";
 import Notifications from "./Notifications/Notifications";
 import AutoCompleteSearchBoard from "./SearchBoards/AutoCompleteSearchBoard";
+import CreateBoard from "../CreateBoard/createBoard";
 
 function AppBar() {
-  const [searchValue, setSearchValue] = useState("");
+  // const [searchValue, setSearchValue] = useState("");
+    const [showCreate, setShowCreate] = useState(false);
+    const handleShowCreate = () => {
+    setShowCreate(!showCreate);
+  };
   return (
     <>
       <Box
@@ -75,11 +80,15 @@ function AppBar() {
               variant="outlined"
               startIcon={<LibraryAddIcon />}
               sx={{ color: "white", border: "none" }}
+              onClick={handleShowCreate}
             >
               Create
             </Button>
           </Box>
         </Box>
+        {showCreate && (
+          <CreateBoard showCreate={handleShowCreate} />
+        )}
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {/* <TextField
