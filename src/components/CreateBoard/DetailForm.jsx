@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -11,34 +11,51 @@ import CardContent from "@mui/material/CardContent";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
+import { createNewBoardAPI } from '~/apis'
+import { BOARD_TYPES } from '~/utils/constants'
+import { FIELD_REQUIRED_MESSAGE } from '~/utils/validators'
+import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 
 import PublicIcon from "@mui/icons-material/Public";
 import LockIcon from "@mui/icons-material/Lock";
+import { useForm, Controller } from 'react-hook-form'
+import { useNavigate } from "react-router-dom";
 
 
-const DetailForm = ({ item, event }) => {
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    type: 'public',
-    workspace: ''
-  });
+const DetailForm = ({ template, backtoShowModel , handleCloseModal}) => {
+  const navigate = useNavigate();
+  const { control, register, handleSubmit, watch, formState: { errors } } = useForm({
+    defaultValues: {
+      title: '',
+      description: '',
+      type: BOARD_TYPES.PUBLIC
+    }
+  })
+  // watch form values để preview live
+  const watchedValues = watch()
 
-  const handleInputChange = (field) => (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: e.target.value
-    }));
-  };
 
-  const handleSubmit = () => {
-    console.log('Form submitted:', formData);
-    event();
-  };
+  const submitCreateNewBoard = async (data) => {
+    const { title, description, type } = data
+    // console.log('Board title: ', title)
+    // console.log('Board description: ', description)
+    // console.log('Board type: ', type)
+    // console.log('model: ', template.name)
+
+    try {
+      const newBoard = await createNewBoardAPI({ title, description, type, template: template.name })
+      handleCloseModal()
+      navigate(`/boards/${newBoard._id}`);
+      
+    } catch (error) {
+      console.error('Failed to create board: ', error)
+    }
+  }
 
   return (
+    <form onSubmit={handleSubmit(submitCreateNewBoard)}>
     <Box sx={{ p: 4 }}>
-      <Grid container spacing={10}>
+      <Grid container spacing={8}>
         {/* Form Section */}
         <Grid item size={{ xs: 12, md: 8 }}>
           <Stack spacing={3}>
@@ -49,87 +66,106 @@ const DetailForm = ({ item, event }) => {
             <TextField
               fullWidth
               label="Project Title"
-              value={formData.title}
-              onChange={handleInputChange('title')}
+              // type='text'
               placeholder="Enter your project title"
               variant="outlined"
+              {...register('title', {
+                    required: FIELD_REQUIRED_MESSAGE,
+                    minLength: { value: 3, message: 'Min Length is 3 characters' },
+                    maxLength: { value: 50, message: 'Max Length is 50 characters' }
+                  })}
+                  error={!!errors['title']}
             />
+            <FieldErrorAlert errors={errors} fieldName={'title'} />
 
             <TextField
               fullWidth
               multiline
               rows={4}
               label="Project Description"
-              value={formData.description}
-              onChange={handleInputChange('description')}
               placeholder="Describe your project goals and objectives"
               variant="outlined"
+              {...register('description', {
+                      required: FIELD_REQUIRED_MESSAGE,
+                      minLength: { value: 3, message: 'Min Length is 3 characters' },
+                      maxLength: { value: 255, message: 'Max Length is 255 characters' }
+                    })}
+                    error={!!errors['description']}
             />
-
+             <FieldErrorAlert errors={errors} fieldName={'description'} />
             {/* Visibility */}
             <Box>
               <Typography variant="h6" fontWeight="bold" gutterBottom>
                 Visibility
               </Typography>
-              <RadioGroup
-                value={formData.type}
-                onChange={handleInputChange('type')}
-              >
-                <Paper 
-                  variant="outlined" 
-                  sx={{ 
-                    p: 2, 
-                    mb: 2,
-                    border: formData.type === 'public' ? 2 : 1,
-                    borderColor: formData.type === 'public' ? 'primary.main' : 'divider'
-                  }}
+               <Controller
+                  name="type"
+                  defaultValue={BOARD_TYPES.PUBLIC}
+                  control={control}
+                  render={({ field }) => (
+                <RadioGroup
+                  {...field}
+                  row
+                  value={field.value}
+                  onChange={(event, value) => field.onChange(value)}
+                  sx={{ display: 'flex', flexDirection: 'column' }}
                 >
-                  <FormControlLabel
-                    value="public"
-                    control={<Radio />}
-                    label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <PublicIcon />
-                        <Box>
-                          <Typography variant="subtitle1" fontWeight="bold">
-                            Public
-                          </Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            Anyone can see this project
-                          </Typography>
+                  <Paper 
+                    variant="outlined" 
+                    sx={{ 
+                      p: 2, 
+                      mb: 2,
+                      border: field.value === BOARD_TYPES.PUBLIC ? 2 : 1,
+                      borderColor: field.value === BOARD_TYPES.PUBLIC ? 'primary.main' : 'divider'
+                    }}
+                  >
+                    <FormControlLabel
+                      value={BOARD_TYPES.PUBLIC}
+                      control={<Radio />}
+                      label={
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <PublicIcon />
+                          <Box>
+                            <Typography variant="subtitle1" fontWeight="bold">
+                              Public
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
+                              Anyone can see this project
+                            </Typography>
+                          </Box>
                         </Box>
-                      </Box>
-                    }
-                  />
-                </Paper>
+                      }
+                    />
+                  </Paper>
 
-                <Paper 
-                  variant="outlined" 
-                  sx={{ 
-                    p: 2,
-                    border: formData.type === 'private' ? 2 : 1,
-                    borderColor: formData.type === 'private' ? 'primary.main' : 'divider'
-                  }}
-                >
-                  <FormControlLabel
-                    value="private"
-                    control={<Radio />}
-                    label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <LockIcon />
-                        <Box>
-                          <Typography variant="subtitle1" fontWeight="bold">
-                            Private
-                          </Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            Only you can see this project
-                          </Typography>
+                  <Paper 
+                    variant="outlined" 
+                    sx={{ 
+                      p: 2,
+                      border: field.value === BOARD_TYPES.PRIVATE ? 2 : 1,
+                      borderColor: field.value === BOARD_TYPES.PRIVATE ? 'primary.main' : 'divider'
+                    }}
+                  >
+                    <FormControlLabel
+                      value={BOARD_TYPES.PRIVATE}
+                      control={<Radio />}
+                      label={
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <LockIcon />
+                          <Box>
+                            <Typography variant="subtitle1" fontWeight="bold">
+                              Private
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
+                              Only you can see this project
+                            </Typography>
+                          </Box>
                         </Box>
-                      </Box>
-                    }
-                  />
-                </Paper>
-              </RadioGroup>
+                      }
+                    />
+                  </Paper>
+                </RadioGroup>)}
+                />
             </Box>
 
             {/* Action Buttons */}
@@ -188,18 +224,18 @@ const DetailForm = ({ item, event }) => {
                 >
                   <Box
                     component="img"
-                    src={item?.icon}
-                    alt={item?.name}
+                    src={template?.icon}
+                    alt={template?.name}
                     sx={{ width: 50, height: 50 }}
                   />
                 </Box>
 
                 <Typography variant="h6" fontWeight="bold">
-                  {formData.title || 'Your Project Title'}
+                  {watchedValues.title || 'Your Project Title'}
                 </Typography>
 
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                  {formData.description || 'Your project description will appear here'}
+                  {watchedValues.description || 'Your project description will appear here'}
                 </Typography>
 
                 <Box sx={{ 
@@ -213,13 +249,13 @@ const DetailForm = ({ item, event }) => {
                     sx={{ 
                       px: 2, 
                       py: 0.5, 
-                      bgcolor: formData.type === 'public' ? 'success.light' : 'grey.200'
+                      bgcolor: watchedValues.type === 'public' ? 'success.light' : 'grey.200'
                     }}
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                      {formData.type === 'public' ? <PublicIcon fontSize="small" /> : <LockIcon fontSize="small" />}
+                      {watchedValues.type === 'public' ? <PublicIcon fontSize="small" /> : <LockIcon fontSize="small" />}
                       <Typography variant="caption" fontWeight="bold">
-                        {formData.type === 'public' ? 'Public' : 'Private'}
+                        {watchedValues.type === 'public' ? 'Public' : 'Private'}
                       </Typography>
                     </Box>
                   </Paper>
@@ -231,7 +267,7 @@ const DetailForm = ({ item, event }) => {
               <Button
                 variant="outlined"
                 size="large"
-                onClick={event}
+                onClick={backtoShowModel}
                 sx={{ flex: 1 }}
               >
                 Cancel
@@ -239,7 +275,7 @@ const DetailForm = ({ item, event }) => {
               <Button
                 variant="contained"
                 size="large"
-                onClick={handleSubmit}
+                type="submit"
                 sx={{
                   flex: 1,
                   background: 'linear-gradient(45deg, #2196F3 30%, #9C27B0 90%)',
@@ -254,6 +290,7 @@ const DetailForm = ({ item, event }) => {
         </Grid>
       </Grid>
     </Box>
+      </form>
   );
 };
 

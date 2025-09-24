@@ -69,17 +69,18 @@ function CreateBoard({ showCreate }) {
       {/* Header */}
       <Box sx={{ 
         display: 'flex', 
-        justifyContent: 'space-between', 
+        justifyContent: 'end', 
+        alignItems: 'center',
         py: 1,
         px: 2, 
-        bgcolor: 'grey.100' 
+         background: 'linear-gradient(90deg, #7B1FA2 0%, #2196F3 50%, #7B1FA2 100%)',
       }}>
-         <Typography variant="h4" fontWeight="bold" gutterBottom>
+         {/* <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ color: 'white', ml: 1 }}>
             Create New Project
-          </Typography>
-        <IconButton onClick={showCreate}>
-          <CloseIcon sx={{ fontSize: 32, color: 'grey.800' }} />
-        </IconButton>
+          </Typography> */}
+
+          <CloseIcon sx={{ fontSize: 32, color: 'white', cursor: 'pointer', '&:hover': { border: '2px solid lightgray', borderRadius: 4 } }} onClick={showCreate}/>
+
       </Box>
 
       <Box sx={{ display: 'flex', height: 'calc(100% - 80px)' }}>
@@ -88,8 +89,11 @@ function CreateBoard({ showCreate }) {
           {/* <Typography variant="h4" fontWeight="bold" gutterBottom>
             Create New Project
           </Typography> */}
+          <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ ml: 1 }}>
+            Create New Project
+          </Typography>
 
-          <List sx={{ mt: 0 }}>
+          <List sx={{ mt: 2 }}>
             {projectList.map((item) => (
               <ListItem key={item.id} disablePadding sx={{ mb: 1 }}>
                 <ListItemButton
@@ -217,8 +221,7 @@ function CreateBoard({ showCreate }) {
                           // overflow: 'hidden',
                           // textOverflow: 'ellipsis',
                           // whiteSpace: 'nowrap',
-                          maxWidth: 550,
-                          minWidth: 200
+                          maxWidth: 550
                         }}
                       >
                         {item.description1}
@@ -311,7 +314,7 @@ function CreateBoard({ showCreate }) {
 
         {showForm && (
           <Box sx={{ height: '100%', overflow: 'auto' }}>
-            <DetailForm item={selectedModel} event={handleShowModel} />
+            <DetailForm template={selectedModel} backtoShowModel={handleShowModel} handleCloseModal={showCreate} />
           </Box>
         )}
       </Box>
@@ -332,8 +335,8 @@ function CreateBoard({ showCreate }) {
     >
       <Box
         sx={{
-          width: '70vw',
-          height: showModel ? 'auto' : '80vh',
+          width: '75vw',
+          height: showModel ? 'auto' : '90vh',
           maxHeight: '90vh',
           bgcolor: 'background.paper',
           borderRadius: 3,

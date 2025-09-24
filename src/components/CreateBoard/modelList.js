@@ -8,11 +8,12 @@ import Scrum2 from "~/assets/modelBoard/scrum2.png";
 import Extreme1 from "~/assets/modelBoard/extreme1.png";
 import Extreme2 from "~/assets/modelBoard/extreme2.png";
 import Custom from "~/assets/modelBoard/custom.png";
+import { TEMPLATE_TYPES } from "~/utils/constants";
 
 const modelList = [
   {
     id: 1,
-    name: "Kanban",
+    name: TEMPLATE_TYPES.KANBAN,
     icon: Kanban,
     description:
       "Kanban is all about helping teams visualize their work, limit work currently in progress, and maximize efficiency. Use the Kanban template to increase planning flexibility, reduce bottlenecks and promote transparency throughout the development cycle.",
@@ -31,7 +32,7 @@ const modelList = [
   },
   {
     id: 2,
-    name: "Scrum",
+    name: TEMPLATE_TYPES.SCRUM,
     icon: Scrum,
     description:
       "The Scrum template helps teams work together using sprints to break down large, complex projects into bite-sized pieces of value. Encourage your team to learn through incremental delivery, self-organize while working on a problem, and regularly reflect on their wins and losses to continuously improve.",
@@ -49,7 +50,7 @@ const modelList = [
   },
   {
     id: 3,
-    name: "Extreme Program",
+    name: TEMPLATE_TYPES.EXTREME,
     icon: Extreme,
     description:
       "Extreme Programming (XP) is an Agile software development methodology that focuses on delivering high-quality software through frequent and continuous feedback, collaboration, and adaptation.",
@@ -67,7 +68,7 @@ const modelList = [
   },
   {
     id: 4,
-    name: "Custom",
+    name: TEMPLATE_TYPES.CUSTOM,
     icon: Custom,
     description:
       "Create a custom workflow that fits your team's unique process. Use the board to limit work in progress",

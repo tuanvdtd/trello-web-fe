@@ -16,6 +16,7 @@ import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { createNewBoardAPI } from '~/apis'
+import { BOARD_TYPES } from '~/utils/constants'
 
 import { styled } from '@mui/material/styles'
 const SidebarItem = styled(Box)(({ theme }) => ({
@@ -36,10 +37,6 @@ const SidebarItem = styled(Box)(({ theme }) => ({
 }))
 
 // BOARD_TYPES tương tự bên model phía Back-end (nếu cần dùng nhiều nơi thì hãy đưa ra file constants, không thì cứ để ở đây)
-const BOARD_TYPES = {
-  PUBLIC: 'public',
-  PRIVATE: 'private'
-}
 
 /**
  * Bản chất của cái component SidebarCreateBoardModal này chúng ta sẽ trả về một cái SidebarItem để hiển thị ở màn Board List cho phù hợp giao diện bên đó, đồng thời nó cũng chứa thêm một cái Modal để xử lý riêng form create board nhé.
@@ -67,6 +64,7 @@ function SidebarCreateBoardModal({ handleCreateBoardSuccess }) {
       await createNewBoardAPI({ title, description, type })
       handleCloseModal()
       handleCreateBoardSuccess()
+      
     } catch (error) {
       console.error('Failed to create board: ', error)
     }
@@ -152,8 +150,8 @@ function SidebarCreateBoardModal({ handleCreateBoardSuccess }) {
                     slotProps={{
                       input: {
                         startAdornment: (
-                          <InputAdornment position="start">
-                            <DescriptionOutlinedIcon fontSize="small" sx={{ '&.MuiSvgIcon-root': { color: 'inherit' } }}/>
+                          <InputAdornment position="start" sx={{ '& .MuiSvgIcon-root': { color: 'inherit' } }}>
+                            <DescriptionOutlinedIcon fontSize="small"/>
                           </InputAdornment>
                         )
                       }

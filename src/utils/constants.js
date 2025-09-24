@@ -21,3 +21,15 @@ export const CARD_MEMBER_ACTIONS = {
   ADD: 'ADD',
   REMOVE: 'REMOVE'
 }
+
+export const BOARD_TYPES = {
+  PUBLIC: 'public',
+  PRIVATE: 'private'
+}
+
+export const TEMPLATE_TYPES = {
+  KANBAN: 'Kanban',
+  CUSTOM: 'Custom',
+  SCRUM: 'Scrum',
+  EXTREME: 'Extreme'
+}

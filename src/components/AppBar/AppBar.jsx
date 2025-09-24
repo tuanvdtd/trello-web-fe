@@ -23,7 +23,7 @@ import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import { Link } from "react-router-dom";
 import Notifications from "./Notifications/Notifications";
 import AutoCompleteSearchBoard from "./SearchBoards/AutoCompleteSearchBoard";
-import CreateBoard from "../CreateBoard/createBoard";
+import CreateBoard from "~/components/CreateBoard/CreateBoard";
 
 function AppBar() {
   // const [searchValue, setSearchValue] = useState("");
