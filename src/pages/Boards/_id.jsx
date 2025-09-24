@@ -1,5 +1,5 @@
 //Board Details Page
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import AppBar from "~/components/AppBar/AppBar";
 import BoardBar from "~/pages/Boards/BoardBar/BoardBar";
@@ -23,11 +23,13 @@ import { fetchBoardDetailsAPI,
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom'
 // import { selectCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
+import BoardSkeleton from "~/components/Skeleton/BoardSkeleton"
 
 
 
 function Board() {
   // const [board, setBoard] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const board = useSelector(selectCurrentActiveBoard);
   // Bắt buộc phải lấy đúng tên boardId từ URL params để gọi API
@@ -37,7 +39,8 @@ function Board() {
   useEffect(() => {
     // const boardId = '6890683a0cef70ebaeac757a';
     // Call API
-    dispatch(fetchBoardDetailsAPI(boardId));
+    setIsLoading(true);
+    dispatch(fetchBoardDetailsAPI(boardId)).finally(() => setIsLoading(false));
   }, [dispatch, boardId]);
 
 
@@ -84,11 +87,12 @@ function Board() {
    
   }
 
-  if (!board) return (
-    <Box sx={{ display: 'flex' , justifyContent: 'center', alignItems: 'center', height: '100vh' ,width:'100vw', gap: 2 }}>
-      <CircularProgress />
-      <Typography>Loading board...</Typography>
-    </Box>
+  if (isLoading || !board) return (
+    // <Box sx={{ display: 'flex' , justifyContent: 'center', alignItems: 'center', height: '100vh' ,width:'100vw', gap: 2 }}>
+    //   <CircularProgress />
+    //   <Typography>Loading board...</Typography>
+    // </Box>
+    <BoardSkeleton />
   );
 
   // Nếu board đã được load thành công thì hiển thị giao diện Board
