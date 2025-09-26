@@ -194,6 +194,7 @@ function Column({ column }) {
               {column?.title}
             </Typography> */}
             <ToggleFocusInput
+              data-tour="column-header"
               value={column?.title}
               onChangedValue={updateColumnTitle}
               data-no-dnd="true" // fix lỗi bôi đen text bị nhả sang kéo thả
@@ -296,7 +297,7 @@ function Column({ column }) {
               alignItems: "center",
               justifyContent: "space-between",
             }}>
-            <Button onClick={handleToggleForm} startIcon={<AddCardIcon />}>Add new Card</Button>
+            <Button data-tour="add-card" onClick={handleToggleForm} startIcon={<AddCardIcon />}>Add new Card</Button>
             <Tooltip title="Drag to move">
               <DragHandleIcon sx={{ cursor: "pointer" }} />
             </Tooltip>

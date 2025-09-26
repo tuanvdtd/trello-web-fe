@@ -95,6 +95,7 @@ function ListColumn({ columns }) {
             }}
           >
             <Button
+              data-tour="add-column"
               startIcon={<NoteAddIcon />}
               sx={{
                 color: "white",

@@ -45,8 +45,10 @@ const DetailForm = ({ template, backtoShowModel , handleCloseModal}) => {
     try {
       const newBoard = await createNewBoardAPI({ title, description, type, template: template.name })
       handleCloseModal()
-      navigate(`/boards/${newBoard._id}`);
-      
+      navigate(`/boards/${newBoard._id}`, { 
+        state: { isNewBoard: true }
+      });
+
     } catch (error) {
       console.error('Failed to create board: ', error)
     }

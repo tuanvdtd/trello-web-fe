@@ -4,6 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import App from "./App";
 import theme from "./theme";
+import './main.css'
 import { ToastContainer } from 'react-toastify';
 import { ConfirmProvider } from "material-ui-confirm";
 import { Provider } from 'react-redux';

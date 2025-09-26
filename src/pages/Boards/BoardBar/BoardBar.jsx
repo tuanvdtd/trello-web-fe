@@ -60,6 +60,7 @@ function BoardBar({ board }) {
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, }}>
           <Tooltip title={board?.description}>
           <Chip
+            data-tour="board-title"
             icon={<DashboardIcon />}
             label={board?.title}
             clickable
@@ -82,6 +83,7 @@ function BoardBar({ board }) {
           />
 
           <Chip
+            data-tour="board-menu"
             icon={<BoltIcon />}
             label="Settings"
             clickable

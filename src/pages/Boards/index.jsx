@@ -142,7 +142,7 @@ function Boards() {
                     <Card sx={{ width: '250px', boxShadow: 3, borderRadius: '10px', '&:hover': { boxShadow: 5 , transform: 'scale(1.05)'}, transition: 'transform 0.2s' }}>
                       {/* Ý tưởng mở rộng về sau làm ảnh Cover cho board nhé */}
                       {b?.background?.backgroundType === 'image' ? (
-                        <CardMedia component="img" height="120" image={b.background.backgroundUrl} />
+                        <CardMedia component="img" image={b.background.backgroundUrl} sx={{ height: 120 }} />
                       ) : b?.background?.backgroundType === 'gradient' ? (
                         <CardMedia
                           component="div"

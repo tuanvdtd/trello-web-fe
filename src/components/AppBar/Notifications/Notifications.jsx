@@ -49,7 +49,7 @@ function Notifications() {
       console.log(res)
       const invitation = res.payload
       if (invitation.boardInvitation.status === BOARD_INVITATION_STATUS.ACCEPTED) {
-        navigate(`/boards/${invitation.boardInvitation.boardId}`)
+        navigate(`/boards/${invitation.boardInvitation.boardId}`, { state: { isNewBoard: true } })
       }
     })
   }
@@ -63,7 +63,7 @@ function Notifications() {
       }
     }
 
-    // Lấy Be_InviteUserToBoard tư Be sau khi broadcast
+    // Lấy Be_InviteUserToBoard từ Be sau khi broadcast
     socketIoInstance.on('Be_InviteUserToBoard', functions)
     return () => {
       socketIoInstance.off('Be_InviteUserToBoard', functions)

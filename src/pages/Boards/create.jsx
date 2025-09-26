@@ -17,6 +17,7 @@ import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { createNewBoardAPI } from '~/apis'
 import { BOARD_TYPES } from '~/utils/constants'
+import { useNavigate } from 'react-router-dom'
 
 import { styled } from '@mui/material/styles'
 const SidebarItem = styled(Box)(({ theme }) => ({
@@ -44,6 +45,7 @@ const SidebarItem = styled(Box)(({ theme }) => ({
  */
 function SidebarCreateBoardModal({ handleCreateBoardSuccess }) {
   const { control, register, handleSubmit, reset, formState: { errors } } = useForm()
+  const navigate = useNavigate()
 
   const [isOpen, setIsOpen] = useState(false)
   const handleOpenModal = () => setIsOpen(true)
@@ -61,10 +63,11 @@ function SidebarCreateBoardModal({ handleCreateBoardSuccess }) {
     // console.log('Board type: ', type)
 
     try {
-      await createNewBoardAPI({ title, description, type })
+      const board = await createNewBoardAPI({ title, description, type })
       handleCloseModal()
       handleCreateBoardSuccess()
-      
+      navigate(`/boards/${board._id}`, { state: { isNewBoard: true } })
+
     } catch (error) {
       console.error('Failed to create board: ', error)
     }

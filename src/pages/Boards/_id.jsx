@@ -24,7 +24,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom'
 // import { selectCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 import BoardSkeleton from "~/components/Skeleton/BoardSkeleton"
-
+import { useLocation } from "react-router-dom";
+import { createBoardTour } from "~/utils/driverConfig";
 
 
 function Board() {
@@ -35,6 +36,11 @@ function Board() {
   // Bắt buộc phải lấy đúng tên boardId từ URL params để gọi API
   const { boardId } = useParams();
   // console.log(boardId);
+  const location = useLocation();
+  
+  // Check nếu board mới được tạo
+  const isNewBoard = location.state?.isNewBoard || false;
+  // console.log('isNewBoard: ', isNewBoard);
 
   useEffect(() => {
     // const boardId = '6890683a0cef70ebaeac757a';
@@ -42,6 +48,38 @@ function Board() {
     setIsLoading(true);
     dispatch(fetchBoardDetailsAPI(boardId)).finally(() => setIsLoading(false));
   }, [dispatch, boardId]);
+
+  useEffect(() => {
+    if (!isLoading && board && isNewBoard) {
+      // Check xem user đã xem tour chưa
+      const hasSeenTour = localStorage.getItem(`board-tour-${board._id}`) === 'true';
+      
+      if (!hasSeenTour) {
+        // Delay một chút để đảm bảo DOM đã render
+        const timer = setTimeout(() => {
+          const driverObj = createBoardTour(board._id);
+          driverObj.drive();
+          
+          // // Mark tour as seen for this board
+          // localStorage.setItem(`board-tour-${boardId}`, 'true');
+        }, 1000);
+
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [isLoading, board, isNewBoard]);
+
+  useEffect(() => {
+    const allKeys = Object.keys(localStorage);
+    const boardTourKeys = allKeys.filter(key => key.startsWith('board-tour-'));
+
+    boardTourKeys.forEach(key => {
+      if (key !== `board-tour-${boardId}`) {
+        localStorage.removeItem(key);
+      }
+    });
+  }, [boardId]);
+
 
 
   const moveColumnDnd =  (dnd) => {
