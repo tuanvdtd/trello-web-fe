@@ -51,7 +51,7 @@ function Boards() {
   // Tổng toàn bộ số lượng bản ghi boards có trong Database mà phía BE trả về để FE dùng tính toán phân trang
   const [totalBoards, setTotalBoards] = useState(null)
 
-  const [isLoading, setIsLoading] = useState(false) 
+  const [isLoading, setIsLoading] = useState(false)
 
   // Xử lý phân trang từ url với MUI: https://mui.com/material-ui/react-pagination/#router-integration
   const location = useLocation()
@@ -138,8 +138,8 @@ function Boards() {
             {!isLoading && boards?.length > 0 && (
               <Grid container spacing={2}>
                 {boards.map(b =>
-                  <Grid  xs={2} sm={3} md={4} key={b._id}>
-                    <Card sx={{ width: '250px', boxShadow: 3, borderRadius: '10px', '&:hover': { boxShadow: 5 , transform: 'scale(1.05)'}, transition: 'transform 0.2s' }}>
+                  <Grid xs={2} sm={3} md={4} key={b._id}>
+                    <Card sx={{ width: '250px', boxShadow: 3, borderRadius: '10px', '&:hover': { boxShadow: 5, transform: 'scale(1.05)' }, transition: 'transform 0.2s' }}>
                       {/* Ý tưởng mở rộng về sau làm ảnh Cover cho board nhé */}
                       {b?.background?.backgroundType === 'image' ? (
                         <CardMedia component="img" image={b.background.backgroundUrl} sx={{ height: 120 }} />
@@ -191,7 +191,7 @@ function Boards() {
                     </Card>
                   </Grid>
                 )}
-              </Grid> 
+              </Grid>
             )}
 
             {/* Trường hợp gọi API và có totalBoards trong Database trả về thì render khu vực phân trang  */}

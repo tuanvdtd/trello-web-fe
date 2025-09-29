@@ -27,7 +27,6 @@ import { updateBoardDetailsAPI } from '~/apis';
 import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice';
 import { cloneDeep } from 'lodash';
 
-
 const BackgroundSelector = ({ open, onClose, boardId }) => {
   const [tabValue, setTabValue] = useState(-1);
   const [searchValue, setSearchValue] = useState('');
@@ -283,15 +282,15 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            p: 1.5,
+            p: 1.5
             // borderBottom: 1,
             // borderColor: 'divider'
           }}
         >
-          <IconButton onClick={() => { setTabValue(-1) }} size="small">
+          <IconButton onClick={() => { setTabValue(-1) }} size="small" disabled={tabValue === -1}>
             <ArrowBackIcon />
           </IconButton>
-          <Typography variant="h6">
+          <Typography variant="h6" sx={{ textAlign: 'center' }}>
             {tabValue === 0 ? 'Màu sắc' : tabValue === 1 ? 'Ảnh' : 'Thay đổi hình nền'}
           </Typography>
           <IconButton onClick={onClose} size="small">
@@ -300,62 +299,63 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
         </Box>
 
         {/* Tabs */}
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={tabValue} onChange={handleTabChange}
-              sx={{ px: 1,
-                '& .MuiTab-root': {
-                  paddingX: '8px',
-                  marginX: 'auto' // giảm padding
-                },
-              }} >
-              <Tab
-                label={
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Box
-                      sx={{
-                        width: 150,
-                        height: 90,
-                        background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4)',
-                        borderRadius: 2,
-                        mb: 0.5,
-                        mx: 'auto'
-                      }}
-                    />
-                    <Typography variant="caption">Màu</Typography>
-                  </Box>
-                }
-              />
-              <Tab
-                label={
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Box
-                      sx={{
-                        width: 150,
-                        height: 90,
-                        backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=100)',
-                        backgroundSize: 'cover',
-                        borderRadius: 2,
-                        mb: 0.5,
-                        mx: 'auto'
-                      }}
-                    />
-                    <Typography variant="caption">Ảnh</Typography>
-                  </Box>
-                }
-              />
-            </Tabs>
-            {/* <Divider /> */}
-          </Box>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={tabValue} onChange={handleTabChange}
+            sx={{ px: 1,
+              '& .MuiTab-root': {
+                paddingX: '8px',
+                marginX: 'auto' // giảm padding
+              },
+            }} >
+            <Tab
+              label={
+                <Box sx={{ textAlign: 'center' }}>
+                  <Box
+                    sx={{
+                      width: 150,
+                      height: 90,
+                      background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4)',
+                      borderRadius: 2,
+                      mb: 0.5,
+                      mx: 'auto'
+                    }}
+                  />
+                  <Typography variant="caption">Màu</Typography>
+                </Box>
+              }
+            />
+            <Tab
+              label={
+                <Box sx={{ textAlign: 'center' }}>
+                  <Box
+                    sx={{
+                      width: 150,
+                      height: 90,
+                      backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=100)',
+                      backgroundSize: 'cover',
+                      borderRadius: 2,
+                      mb: 0.5,
+                      mx: 'auto'
+                    }}
+                  />
+                  <Typography variant="caption">Ảnh</Typography>
+                </Box>
+              }
+            />
+          </Tabs>
+          {/* <Divider /> */}
+        </Box>
         {tabValue === -1 && renderCustomTab()}
         {/* Content */}
-        <Box sx={{ flex: 1, overflowY: 'auto', p: "0 5px 5px 5px",
-            m: "0 5px",
-            overflowX: "hidden", "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#ced0da",
-            },
-            "&::-webkit-scrollbar-thumb:hover": {
-              backgroundColor: "#bfc2cf",
-            }, }}>
+        <Box sx={{ flex: 1, overflowY: 'auto', p: '0 5px 5px 5px',
+          m: '0 5px',
+          overflowX: 'hidden', '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#ced0da'
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: '#bfc2cf'
+          }
+        }}>
           {tabValue === 0 && renderColorTab()}
           {tabValue === 1 && renderImageTab()}
           {/* {tabValue === 2 && renderCustomTab()} */}

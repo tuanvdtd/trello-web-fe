@@ -1,16 +1,16 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import GroupIcon from "@mui/icons-material/Group";
-import ModeCommentIcon from "@mui/icons-material/ModeComment";
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import React from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import GroupIcon from '@mui/icons-material/Group';
+import ModeCommentIcon from '@mui/icons-material/ModeComment';
+import AttachmentIcon from '@mui/icons-material/Attachment';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { updateCurrentActiveCard, showActiveCardModal } from '~/redux/activeCard/activeCardSlice'
 import { useDispatch } from 'react-redux';
 
@@ -26,12 +26,13 @@ function TrelloCard({ card }) {
   } = useSortable({ id: card._id, data: { ...card } });
 
   const styleDnDCard = {
-    touchAction: "none",
+    touchAction: 'none',
     transform: CSS.Translate.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : undefined,
-    border: isDragging ? "1px solid #2980b9" : undefined,
-  };
+    border: isDragging ? '1px solid #2980b9' : undefined,
+    // cursor: isDragging ? 'grabbing' : 'grab'
+  }
 
   const isShowCardActions = () => {
     return (
@@ -53,26 +54,28 @@ function TrelloCard({ card }) {
         style={styleDnDCard}
         {...attributes}
         {...listeners}
+        // className={`dnd-draggable ${card?.isPlaceHolderCard ? '' : 'dnd-card'}`}
         sx={{
-          cursor: "pointer",
-          boxShadow: "0 1px 1px rgba(0, 0, 0, 0.2)",
-          overflow: card?.isPlaceHolderCard ? "hidden" : "unset",
+          // cursor: card?.isPlaceHolderCard ? 'default' : 'grab', // Conditional cursor
+          cursor: 'pointer',
+          boxShadow: '0 1px 1px rgba(0, 0, 0, 0.2)',
+          overflow: card?.isPlaceHolderCard ? 'hidden' : 'unset',
           // overflow: "unset",
           // display: card?.isPlaceHolderCard ? "none" : "block",
-          height: card?.isPlaceHolderCard ? "0px" : "unset",
+          height: card?.isPlaceHolderCard ? '0px' : 'unset',
           // border: "1px solid transparent",
-          border: card?.isPlaceHolderCard ? "unset" : "1px solid transparent",
-          "&:hover": {
+          border: card?.isPlaceHolderCard ? 'unset' : '1px solid transparent',
+          '&:hover': {
             borderColor: (theme) => theme.palette.primary.main,
           },
         }}
       >
         {card?.cover && <CardMedia sx={{ height: 140 }} image={card?.cover} />}
-        <CardContent sx={{ p: 1.5, "&:last-child": { p: 1.5 } }}>
+        <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
           <Typography>{card?.title}</Typography>
         </CardContent>
         {isShowCardActions() && (
-          <CardActions sx={{ p: "0 4px 8px 4px" }}>
+          <CardActions sx={{ p: '0 4px 8px 4px' }}>
             {!!card?.memberIds?.length && (
               <Button size="small" startIcon={<GroupIcon />}>
                 {card?.memberIds.length}

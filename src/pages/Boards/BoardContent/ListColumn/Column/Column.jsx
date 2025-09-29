@@ -1,32 +1,32 @@
-import React from "react";
-import { useState } from "react";
-import Box from "@mui/material/Box";
+import React from 'react';
+import { useState } from 'react';
+import Box from '@mui/material/Box';
 // import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ContentCut from "@mui/icons-material/ContentCut";
-import Cloud from "@mui/icons-material/Cloud";
-import Tooltip from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
-import AddCardIcon from "@mui/icons-material/AddCard";
-import DragHandleIcon from "@mui/icons-material/DragHandle";
-import ListCard from "./ListCard/ListCard";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import TextField from "@mui/material/TextField";
-import CloseIcon from "@mui/icons-material/Close";
-import ContentCopy from "@mui/icons-material/ContentCopy";
-import ContentPaste from "@mui/icons-material/ContentPaste";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ContentCut from '@mui/icons-material/ContentCut';
+import Cloud from '@mui/icons-material/Cloud';
+import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
+import AddCardIcon from '@mui/icons-material/AddCard';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
+import ListCard from './ListCard/ListCard';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import TextField from '@mui/material/TextField';
+import CloseIcon from '@mui/icons-material/Close';
+import ContentCopy from '@mui/icons-material/ContentCopy';
+import ContentPaste from '@mui/icons-material/ContentPaste';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import AddCardOutlinedIcon from '@mui/icons-material/AddCardOutlined';
-import { toast } from "react-toastify";
-import { useConfirm } from "material-ui-confirm";
-import { cloneDeep } from "lodash"
-import{ createNewCardAPI, deleteColumnAPI } from "~/apis/index";
+import { toast } from 'react-toastify';
+import { useConfirm } from 'material-ui-confirm';
+import { cloneDeep } from 'lodash'
+import { createNewCardAPI, deleteColumnAPI } from '~/apis/index';
 import {updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import ToggleFocusInput from '~/components/Form/ToggleFocusInput';
@@ -43,37 +43,38 @@ function Column({ column }) {
   };
 
   const orderedCards = column.cards;
-  
+
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-    isDragging,
-  } = useSortable({ id: column._id, data: { ...column } });
+    isDragging
+  } = useSortable({ id: column._id, data: { ...column } })
 
   const styleDnDColumn = {
-    touchAction: "none",
+    touchAction: 'none',
     transform: CSS.Translate.toString(transform),
     transition,
-    height: "100%",
+    height: '100%',
     opacity: isDragging ? 0.5 : undefined,
-  };
+    // cursor: isDragging ? 'grabbing' : 'grab'
+  }
 
   const [openForm, setOpenForm] = useState(false);
-  
+
   const handleToggleForm = () => {
     setOpenForm(!openForm);
   }
-  const [newCardTitle, setNewCardTitle] = useState("");
+  const [newCardTitle, setNewCardTitle] = useState('');
   // Board
   const dispatch = useDispatch();
   const board = useSelector(selectCurrentActiveBoard);
 
   const addCard = async () => {
     if(!newCardTitle) {
-      toast.error("Card title cannot be empty!");
+      toast.error('Card title cannot be empty!');
       return;
     }
     // Call the API to add the new card
@@ -85,33 +86,33 @@ function Column({ column }) {
       ...newCardData,
       boardId: board._id,
     });
-    
+
     // Cập nhật lại state bên Fe, tránh gọi lại api fetchBoardDetailsAPI  gây mất thời gian
     const updateBoard = cloneDeep(board);
     const updateColumn =  updateBoard.columns.find(column => column._id === createdCard.columnId);
     // console.log("🚀 ~ createNewCard ~ updateColumn:", updateColumn)
     // Nếu tạo card vào 1 column rỗng thì xóa placeholder card đi
-    if(updateColumn.cards.some(card => card.isPlaceHolderCard)) {
+    if (updateColumn.cards.some(card => card.isPlaceHolderCard)) {
       updateColumn.cards= [createdCard];
       updateColumn.cardOrderIds = [createdCard._id];
     } else {
       // Nếu column đã có card thì push card mới vào cuối mảng
-    updateColumn.cards.push(createdCard);
-    updateColumn.cardOrderIds.push(createdCard._id);
+      updateColumn.cards.push(createdCard);
+      updateColumn.cardOrderIds.push(createdCard._id);
     }
     // setBoard(updateBoard);
     dispatch(updateCurrentActiveBoard(updateBoard));
     // After successful addition, reset the form
-    setNewCardTitle("");
+    setNewCardTitle('');
     handleToggleForm();
   }
 
   const confirm = useConfirm();
   const handleDeleteColumn = async () => {
     const { confirmed } = await confirm({
-      title: "Are you sure you want to delete this column?",
-      confirmationText: "Delete",
-      cancellationText: "Cancel",
+      title: 'Are you sure you want to delete this column?',
+      confirmationText: 'Delete',
+      cancellationText: 'Cancel',
       // confirmationButtonProps: { color:"error", variant: "contained" },
       // cancellationButtonProps: { color: "inherit", variant: "outlined" },
       // allowClose: false,
@@ -129,14 +130,14 @@ function Column({ column }) {
         // setBoard(updateBoard);
         dispatch(updateCurrentActiveBoard(updateBoard));
         deleteColumnAPI(column._id).then(() => {
-          toast.success("Column deleted successfully!");
+          toast.success('Column deleted successfully!');
         })
       // toast.success("Column deleted successfully!");
       return;
     }
 
     else {
-      toast.info("You cancelled the delete action!");
+      toast.info('You cancelled the delete action!');
       return;
     }
 
@@ -157,19 +158,27 @@ function Column({ column }) {
 
   return (
     <>
-      <div ref={setNodeRef} style={styleDnDColumn} {...attributes}>
+      <div ref={setNodeRef} style={styleDnDColumn} {...attributes} className="dnd-draggable">
         <Box
           {...listeners}
           sx={{
-            minWidth: "300px",
-            maxWidth: "300px",
+            minWidth: '300px',
+            maxWidth: '300px',
             bgcolor: (theme) =>
-              theme.palette.mode === "dark" ? "#333643" : "#ebecf0",
+              theme.palette.mode === 'dark' ? '#333643' : '#ebecf0',
             ml: 2,
-            borderRadius: "6px",
-            height: "fit-content",
+            borderRadius: '6px',
+            height: 'fit-content',
             maxHeight: (theme) =>
-              `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`,
+              `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`
+            // Thêm cursor styles
+            // cursor: 'grab',
+            // '&:hover': {
+            //   cursor: 'grab'
+            // },
+            // '&:active': {
+            //   cursor: 'grabbing'
+            // }
           }}
         >
           {/* Column Header */}
@@ -177,10 +186,10 @@ function Column({ column }) {
             sx={{
               height: (theme) => theme.trello.columnHeaderHeight,
               p: 2,
-              display: "flex",
-              direction: "col",
-              alignItems: "center",
-              justifyContent: "space-between",
+              display: 'flex',
+              direction: 'col',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}
           >
             {/* <Typography
@@ -205,10 +214,10 @@ function Column({ column }) {
                 <KeyboardArrowDownIcon
                   onClick={handleClick}
                   id="basic-icon-title"
-                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-controls={open ? 'basic-menu' : undefined}
                   aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  sx={{ cursor: "pointer" }}
+                  aria-expanded={open ? 'true' : undefined}
+                  sx={{ cursor: 'pointer' }}
                 />
               </Tooltip>
               <Menu
@@ -219,7 +228,7 @@ function Column({ column }) {
                 onClick={handleClose}
                 slotProps={{
                   list: {
-                    "aria-labelledby": "basic-icon-title",
+                    'aria-labelledby': 'basic-icon-title',
                   },
                 }}
               >
@@ -245,13 +254,13 @@ function Column({ column }) {
                 <MenuItem>
                   <ListItemIcon>
                     <ContentCopy fontSize="small" />
-                      </ListItemIcon>
-                    <ListItemText>Copy</ListItemText> 
+                  </ListItemIcon>
+                  <ListItemText>Copy</ListItemText> 
                 </MenuItem>
                 <MenuItem>
                   <ListItemIcon>
                     <ContentPaste fontSize="small" />
-                    </ListItemIcon>
+                  </ListItemIcon>
                   <ListItemText>Paste</ListItemText>
                 </MenuItem>
                 <Divider />
@@ -284,29 +293,29 @@ function Column({ column }) {
             sx={{
               height: (theme) => theme.trello.columnFooterHeight,
               p: 2,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}
           >
             {!openForm 
             ?
             <Box  sx={{
               width: '100%',
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}>
             <Button data-tour="add-card" onClick={handleToggleForm} startIcon={<AddCardIcon />}>Add new Card</Button>
             <Tooltip title="Drag to move">
-              <DragHandleIcon sx={{ cursor: "pointer" }} />
+              <DragHandleIcon sx={{ cursor: isDragging ? 'grabbing' : 'grab' }} />
             </Tooltip>
             </Box>
             :
             <Box sx={{
               width: '100%',
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
               gap: 1
             }}>
              <TextField
@@ -319,27 +328,27 @@ function Column({ column }) {
                 value={newCardTitle}
                 onChange={(e) => setNewCardTitle(e.target.value)}
                 sx={{
-                  "& label": {
-                    color: "text.primary",
+                  '& label': {
+                    color: 'text.primary',
                   },
-                  "& input": { color: (theme) => theme.palette.primary.main,
-                    bgcolor: (theme) => (theme.palette.mode === "dark" ? "#333643" : "white"),
+                  '& input': { color: (theme) => theme.palette.primary.main,
+                    bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : 'white'),
                    },
-                  "& label.Mui-focused": { color: (theme) => theme.palette.primary.main },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
+                  '& label.Mui-focused': { color: (theme) => theme.palette.primary.main },
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
                       borderColor: (theme) => theme.palette.primary.main,
                     },
-                    "&:hover fieldset": { borderColor: (theme) => theme.palette.primary.main },
-                    "&.Mui-focused fieldset": {
+                    '&:hover fieldset': { borderColor: (theme) => theme.palette.primary.main },
+                    '&.Mui-focused fieldset': {
                       borderColor: (theme) => theme.palette.primary.main,
                     },
                   },
-                   "& .MuiOutlinedInput-input": {borderRadius: 1},
+                   '& .MuiOutlinedInput-input': {borderRadius: 1},
                 }}
               />
                <Box
-               sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap:1 }}
+               sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap:1 }}
              >
               <Button variant="contained" color="success" size="small"
               onClick = {addCard} className="interceptor-loading"
@@ -353,7 +362,7 @@ function Column({ column }) {
                     onClick={handleToggleForm}
                     sx={{
                       color: (theme) => theme.palette.warning.light,
-                      cursor: "pointer",
+                      cursor: 'pointer',
                     }}
                   />
              </Box>

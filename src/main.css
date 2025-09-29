@@ -102,3 +102,35 @@
 .driver-popover.driverjs-theme .driver-popover-arrow-side-bottom.driver-popover-arrow {
   border-bottom-color: #fde047;
 }
+
+//-----------------------------------------------------
+/* DnD Kit Cursor Styles */
+.dnd-dragging {
+  cursor: grabbing !important;
+}
+
+.dnd-draggable {
+  cursor: grab !important;
+}
+
+.dnd-draggable:hover {
+  cursor: grab !important;
+}
+
+.dnd-draggable:active {
+  cursor: grabbing !important;
+}
+
+/* Disable user selection during drag */
+.dnd-no-select {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+/* Apply grabbing cursor to entire body during drag */
+body.dragging,
+body.dragging * {
+  cursor: grabbing !important;
+}
