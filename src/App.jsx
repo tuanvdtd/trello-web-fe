@@ -7,13 +7,22 @@ import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import Settings from '~/pages/Settings/Settings'
 import Boards from '~/pages/Boards/index'
+import Home from '~/pages/Home/Home'
 
 const ProtectedRoute = ({ user }) => {
   if (!user) {
-    return <Navigate to="/login" replace={true} />
+    return <Navigate to="/" replace={true} />
   }
   else return <Outlet /> // nếu có user trong storage thì chuyển xuống các route con trong route cha
 }
+
+const LoginedRedirect = ({ user }) => {
+  if (user) {
+    return <Navigate to="/boards" replace={true} />
+  }
+  else return <Outlet />
+}
+
 export default function App() {
   const currUser = useSelector(selectCurrentUser)
 
@@ -22,7 +31,12 @@ export default function App() {
       {/* Chưa làm trang home => Tạm thời redirect về trang board đầu tiên */}
       {/* Khi dùng navigate và dùng replace thì sẽ không giữ lại '/' trong history, khi ta back lại bằng mũi tên trên trình duyệt sẽ quay lại trang trước đó, không phải trang '/' nữa */}
       {/* Nếu kh dùng replace thì khi back lại sẽ quay về trang '/' rồi nó lại tự navigate về trang board đầu tiên, nghĩa là luôn luôn ở trang board, không thể back lại */}
-      <Route path='/' element={<Navigate to='/boards' replace={true} />} />
+      <Route element= {<LoginedRedirect user={currUser} />} >
+        <Route path='/'
+          // element={<Navigate to='/boards' replace={true} />}
+          element= {<Home />}
+        />
+      </Route>
 
       {/* Route này bảo vệ các route con, nếu chưa có user thì không thể vào các route con bên trong */}
       <Route element={<ProtectedRoute user={currUser} />}>

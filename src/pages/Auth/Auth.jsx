@@ -15,7 +15,7 @@ function Auth() {
   const currUser = useSelector(selectCurrentUser)
   if (currUser) {
     // If user is logged in, redirect to home page
-    return <Navigate to="/" replace={true} />
+    return <Navigate to="/boards" replace={true} />
   }
 
   return (

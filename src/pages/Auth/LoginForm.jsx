@@ -5,14 +5,14 @@ import Avatar from '@mui/material/Avatar'
 import LockIcon from '@mui/icons-material/Lock'
 import Typography from '@mui/material/Typography'
 // import { Card as MuiCard } from '@mui/material'
-import MuiCard from '@mui/material/Card';
+import MuiCard from '@mui/material/Card'
 import { ReactComponent as TrelloIcon } from '~/assets/trello.svg'
 import CardActions from '@mui/material/CardActions'
 import TextField from '@mui/material/TextField'
 import Zoom from '@mui/material/Zoom'
 import Alert from '@mui/material/Alert'
-import { useForm } from "react-hook-form"
-import {FIELD_REQUIRED_MESSAGE,
+import { useForm } from 'react-hook-form'
+import { FIELD_REQUIRED_MESSAGE,
   EMAIL_RULE, EMAIL_RULE_MESSAGE,
   PASSWORD_RULE, PASSWORD_RULE_MESSAGE,
   PASSWORD_CONFIRMATION_MESSAGE
@@ -25,30 +25,30 @@ import { toast } from 'react-toastify'
 
 
 function LoginForm() {
-  const { register, handleSubmit, formState: { errors }}  = useForm();
-  let [searchParams] = useSearchParams();
-  const registeredEmail = searchParams.get('registeredEmail');
-  const verifiedEmail = searchParams.get('verifiedEmail');
+  const { register, handleSubmit, formState: { errors } } = useForm()
+  let [searchParams] = useSearchParams()
+  const registeredEmail = searchParams.get('registeredEmail')
+  const verifiedEmail = searchParams.get('verifiedEmail')
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
 
   const submitLogIn = (data) => {
-    const { email, password } = data;
+    const { email, password } = data
     toast.promise(
       dispatch(loginUserAPI({ email, password })),
       {
-       pending: "Logging in...",
+        pending: 'Logging in...'
       }
     ).then((res) => {
-      console.log(res);
-      if(!res.error) {
-        navigate('/');
+      // console.log(res)
+      if (!res.error) {
+        navigate('/boards', { replace: true })
       }
-   });
-  };
-  
+    })
+  }
+
 
   return (
     // <form>
@@ -75,7 +75,7 @@ function LoginForm() {
                 &nbsp;has been verified.<br />Now you can login to enjoy our services! Have a good day!
               </Alert>
             }
-            {registeredEmail && 
+            {registeredEmail &&
               <Alert severity="info" sx={{ '.MuiAlert-message': { overflow: 'hidden' } }}>
                 An email has been sent to&nbsp;
                 <Typography variant="span" sx={{ fontWeight: 'bold', '&:hover': { color: '#fdba26' } }}>{registeredEmail}</Typography>

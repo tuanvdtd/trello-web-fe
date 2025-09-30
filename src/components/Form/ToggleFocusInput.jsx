@@ -1,45 +1,200 @@
 import { useState } from 'react'
 import TextField from '@mui/material/TextField'
 
-// Một Trick xử lý css khá hay trong việc làm UI UX khi cần ẩn hiện một cái input: Hiểu đơn giản là thay vì phải tạo biến State để chuyển đổi qua lại giữa thẻ Input và Text thông thường thì chúng ta sẽ CSS lại cho cái thẻ Input trông như text bình thường, chỉ khi click và focus vào nó thì style lại trở về như cái input ban đầu.
-// Controlled Input trong MUI: https://mui.com/material-ui/react-text-field/#uncontrolled-vs-controlled
-function ToggleFocusInput({ value, onChangedValue, inputFontSize = '16px', ...props }) {
+// // Một Trick xử lý css khá hay trong việc làm UI UX khi cần ẩn hiện một cái input: Hiểu đơn giản là thay vì phải tạo biến State để chuyển đổi qua lại giữa thẻ Input và Text thông thường thì chúng ta sẽ CSS lại cho cái thẻ Input trông như text bình thường, chỉ khi click và focus vào nó thì style lại trở về như cái input ban đầu.
+// // Controlled Input trong MUI: https://mui.com/material-ui/react-text-field/#uncontrolled-vs-controlled
+// function ToggleFocusInput({ value, onChangedValue, inputFontSize = '16px', sx, ...props }) {
+//   const [inputValue, setInputValue] = useState(value)
+
+//   // Blur là khi chúng ta không còn Focus vào phần tử nữa thì sẽ trigger hành động ở đây.
+//   const triggerBlur = () => {
+//     // Support Trim cái dữ liệu State inputValue cho đẹp luôn sau khi blur ra ngoài
+//     setInputValue(inputValue.trim())
+
+//     // Nếu giá trị không có gì thay đổi hoặc Nếu user xóa hết nội dung thì set lại giá trị gốc ban đầu theo value từ props và return luôn không làm gì thêm
+//     if (!inputValue || inputValue.trim() === value) {
+//       setInputValue(value)
+//       return
+//     }
+
+//     // console.log('value: ', value)
+//     // console.log('inputValue: ', inputValue)
+//     // Khi giá trị có thay đổi ok thì gọi lên func ở Props cha để xử lý
+//     onChangedValue(inputValue)
+//   }
+
+//   return (
+//     <TextField
+//       id="toggle-focus-input-controlled"
+//       // fullWidth
+//       type="text"
+//       variant='outlined'
+//       size="small"
+//       value={inputValue}
+//       onChange={(event) => { setInputValue(event.target.value) }}
+//       onBlur={triggerBlur}
+//       {...props}
+//       // Magic here :D
+//       sx={{
+//         ...sx,
+//         width:'50px',
+//         '& label': {},
+//         '& input': { fontSize: inputFontSize, fontWeight: 'bold', width: 'auto' },
+//         '& .MuiOutlinedInput-root': {
+//           backgroundColor: 'transparent',
+//           '& fieldset': { borderColor: 'transparent' }
+//         },
+//         '& .MuiOutlinedInput-root:hover': {
+//           borderColor: 'transparent',
+//           '& fieldset': { borderColor: 'transparent' }
+//         },
+//         '& .MuiOutlinedInput-root.Mui-focused': {
+//           backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#33485D' : 'white',
+//           '& fieldset': { borderColor: 'primary.main' }
+//         },
+//         '& .MuiOutlinedInput-input': {
+//           px: '6px',
+//           overflow: 'hidden',
+//           whiteSpace: 'nowrap',
+//           textOverflow: 'ellipsis',
+//           width: 'auto'
+//         }
+//       }}
+//     />
+//   )
+// }
+
+// export default ToggleFocusInput
+
+
+// ToggleFocusInput.jsx
+// import { useState, useRef, useEffect } from 'react'
+// import TextField from '@mui/material/TextField'
+
+// function ToggleFocusInput({ value, onChangedValue, inputFontSize = '16px', sx, ...props }) {
+//   const [inputValue, setInputValue] = useState(value)
+//   const [inputWidth, setInputWidth] = useState('auto')
+//   const hiddenSpanRef = useRef(null)
+
+//   // Update width dựa trên hidden span
+//   useEffect(() => {
+//     if (hiddenSpanRef.current) {
+//       const width = hiddenSpanRef.current.offsetWidth
+//       setInputWidth(Math.max(width + 32, 60)) // minimum 60px
+//     }
+//   }, [inputValue])
+
+//   const triggerBlur = () => {
+//     setInputValue(inputValue.trim())
+
+//     if (!inputValue || inputValue.trim() === value) {
+//       setInputValue(value)
+//       return
+//     }
+
+//     onChangedValue(inputValue)
+//   }
+
+//   return (
+//     <>
+//       {/* Hidden span để measure text width */}
+//       <span
+//         ref={hiddenSpanRef}
+//         style={{
+//           visibility: 'hidden',
+//           position: 'absolute',
+//           whiteSpace: 'nowrap',
+//           fontSize: inputFontSize,
+//           fontWeight: 'bold',
+//           fontFamily: 'Roboto', // Match với MUI default font
+//           padding: '0 6px', // Match với input padding
+//         }}
+//       >
+//         {inputValue || value || ' '}
+//       </span>
+
+//       <TextField
+//         id="toggle-focus-input-controlled"
+//         variant='outlined'
+//         size="small"
+//         value={inputValue}
+//         onChange={(event) => { setInputValue(event.target.value) }}
+//         onBlur={triggerBlur}
+//         {...props}
+//         sx={{
+//           ...sx,
+//           width: `${inputWidth}px`,
+//           '& label': {},
+//           '& input': { 
+//             fontSize: inputFontSize, 
+//             fontWeight: 'bold',
+//           },
+//           '& .MuiOutlinedInput-root': {
+//             backgroundColor: 'transparent',
+//             '& fieldset': { borderColor: 'transparent' }
+//           },
+//           '& .MuiOutlinedInput-root:hover': {
+//             borderColor: 'transparent',
+//             '& fieldset': { borderColor: 'transparent' }
+//           },
+//           '& .MuiOutlinedInput-root.Mui-focused': {
+//             backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#33485D' : 'white',
+//             '& fieldset': { borderColor: 'primary.main' }
+//           },
+//           '& .MuiOutlinedInput-input': {
+//             px: '6px',
+//             overflow: 'hidden',
+//             whiteSpace: 'nowrap',
+//             textOverflow: 'ellipsis',
+//           }
+//         }}
+//       />
+//     </>
+//   )
+// }
+
+// export default ToggleFocusInput
+
+
+// ToggleFocusInput.jsx - CSS only approach
+function ToggleFocusInput({ value, onChangedValue, inputFontSize = '16px', color = '', sx, ...props }) {
   const [inputValue, setInputValue] = useState(value)
 
-  // Blur là khi chúng ta không còn Focus vào phần tử nữa thì sẽ trigger hành động ở đây.
   const triggerBlur = () => {
-    // Support Trim cái dữ liệu State inputValue cho đẹp luôn sau khi blur ra ngoài
     setInputValue(inputValue.trim())
 
-    // Nếu giá trị không có gì thay đổi hoặc Nếu user xóa hết nội dung thì set lại giá trị gốc ban đầu theo value từ props và return luôn không làm gì thêm
     if (!inputValue || inputValue.trim() === value) {
       setInputValue(value)
       return
     }
 
-    // console.log('value: ', value)
-    // console.log('inputValue: ', inputValue)
-    // Khi giá trị có thay đổi ok thì gọi lên func ở Props cha để xử lý
     onChangedValue(inputValue)
   }
 
   return (
     <TextField
       id="toggle-focus-input-controlled"
-      fullWidth
       variant='outlined'
       size="small"
       value={inputValue}
       onChange={(event) => { setInputValue(event.target.value) }}
       onBlur={triggerBlur}
       {...props}
-      // Magic here :D
       sx={{
+        width: 'fit-content',
+        minWidth: '60px',
+        cursor: 'pointer',
         '& label': {},
-        '& input': { fontSize: inputFontSize, fontWeight: 'bold' },
+        '& input': {
+          fontSize: inputFontSize,
+          fontWeight: 'bold',
+          width: `${(inputValue || value || '').length + 0.5}ch`, // ch unit = character width
+          minWidth: '4ch',
+          color: color || 'inherit'
+        },
         '& .MuiOutlinedInput-root': {
           backgroundColor: 'transparent',
-          '& fieldset': { borderColor: 'transparent' }
+          '& fieldset': { borderColor: 'transparent', color: color }
         },
         '& .MuiOutlinedInput-root:hover': {
           borderColor: 'transparent',
@@ -47,14 +202,19 @@ function ToggleFocusInput({ value, onChangedValue, inputFontSize = '16px', ...pr
         },
         '& .MuiOutlinedInput-root.Mui-focused': {
           backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#33485D' : 'white',
-          '& fieldset': { borderColor: 'primary.main' }
+          '& fieldset': { borderColor: 'primary.main' },
+          // Khi focus - dùng màu mặc định của MUI
+          '& .MuiOutlinedInput-input': {
+            color: (theme) => theme.palette.mode === 'dark' ? '#fff' : '#000'
+          }
         },
         '& .MuiOutlinedInput-input': {
           px: '6px',
           overflow: 'hidden',
           whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis'
-        }
+          textOverflow: 'ellipsis',
+        },
+        ...sx
       }}
     />
   )

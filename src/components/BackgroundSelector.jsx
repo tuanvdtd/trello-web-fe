@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
+import React, { useState } from 'react'
+import Box from '@mui/material/Box'
+import Modal from '@mui/material/Modal'
+import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
+import Tab from '@mui/material/Tab'
+import Tabs from '@mui/material/Tabs'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
+import Card from '@mui/material/Card'
+import CardMedia from '@mui/material/CardMedia'
+import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
 
-import CloseIcon from '@mui/icons-material/Close';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import SearchIcon from '@mui/icons-material/Search'
+import AddIcon from '@mui/icons-material/Add'
 import VisuallyHiddenInput from '~/components/Form/VisuallyHiddenInput'
 
-import { singleFileValidator } from '~/utils/validators';
-import { toast } from 'react-toastify';
+import { singleFileValidator } from '~/utils/validators'
+import { toast } from 'react-toastify'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { updateBoardDetailsAPI } from '~/apis';
-import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice';
-import { cloneDeep } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux'
+import { updateBoardDetailsAPI } from '~/apis'
+import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { cloneDeep } from 'lodash'
 
 const BackgroundSelector = ({ open, onClose, boardId }) => {
-  const [tabValue, setTabValue] = useState(-1);
-  const [searchValue, setSearchValue] = useState('');
-  const dispatch = useDispatch();
-  const board = useSelector(selectCurrentActiveBoard);
+  const [tabValue, setTabValue] = useState(-1)
+  const [searchValue, setSearchValue] = useState('')
+  const dispatch = useDispatch()
+  const board = useSelector(selectCurrentActiveBoard)
   // Dữ liệu màu gradient
   const gradientColors = [
     { id: 1, gradient: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)', icon: '🦋' },
@@ -44,12 +44,12 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
     { id: 8, gradient: 'linear-gradient(135deg, #4caf50 0%, #66bb6a 100%)', icon: '🌿' },
     { id: 9, gradient: 'linear-gradient(135deg, #607d8b 0%, #90a4ae 100%)', icon: '🎯' },
     { id: 10, gradient: 'linear-gradient(135deg, #d32f2f 0%, #f44336 100%)', icon: '🚀' }
-  ];
+  ]
 
   // Dữ liệu màu đơn sắc
   const solidColors = [
     '#1976d2', '#f57c00', '#388e3c', '#d32f2f', '#7b1fa2'
-  ];
+  ]
 
   // Dữ liệu hình ảnh mẫu
   const sampleImages = [
@@ -60,20 +60,19 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
     { id: 5, url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400', alt: 'Building architecture' },
     { id: 7, url: 'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=400', alt: 'Ocean waves' },
     { id: 8, url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400', alt: 'Night mountain' }
-  ];
+  ]
 
   const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
-
+    setTabValue(newValue)
+  }
 
   const callUpdateBoardDetailsAPI = async (updateData) => {
-    const updatedBoard = await updateBoardDetailsAPI(boardId, updateData);
+    const updatedBoard = await updateBoardDetailsAPI(boardId, updateData)
     // Cập nhật lại store
-    const updatedBoardInStore = cloneDeep(board);
-    updatedBoardInStore.background = updatedBoard.background;
-    dispatch(updateCurrentActiveBoard(updatedBoardInStore));
-    return updatedBoard;
+    const updatedBoardInStore = cloneDeep(board)
+    updatedBoardInStore.background = updatedBoard.background
+    dispatch(updateCurrentActiveBoard(updatedBoardInStore))
+    return updatedBoard
   }
   const handleDefaultSelect = (type, defaultImage) => {
     // onSelect({ type: 'gradient', value: gradient });
@@ -83,43 +82,43 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
     // console.log('Selected background: ', defaultImage);
     const updateBackgroundBoard = { backgroundType: type, defaultImage: defaultImage }
     callUpdateBoardDetailsAPI({ updateBackgroundBoard })
-    onClose();
-  };
+    onClose()
+  }
 
 
   const uploadBackground = (e) => {
-      // Lấy file thông qua e.target?.files[0] và validate nó trước khi xử lý
-      console.log('e.target?.files[0]: ', e.target?.files[0])
-      const error = singleFileValidator(e.target?.files[0])
-      if (error) {
-        toast.error(error)
-        return
-      }
-  
-      // Sử dụng FormData để xử lý dữ liệu liên quan tới file khi gọi API
-      let reqData = new FormData()
-      reqData.append('backgroundBoard', e.target?.files[0])
-      // Cách để log được dữ liệu thông qua FormData
-      // console.log('reqData: ', reqData)
-      // for (const value of reqData.values()) {
-      //   console.log('reqData Value: ', value)
-      // }
-  
-      // Gọi API...
-      toast.promise(
-        callUpdateBoardDetailsAPI(reqData).finally(() => {
-          e.target.value = ''
-          onClose();
-        }),
-        {
-          pending: 'Uploading...',
-        }
-      ).then(res => {
-        if (!res.error) {
-          toast.success('Background updated successfully!', { theme: 'colored' })
-        }
-      })
+    // Lấy file thông qua e.target?.files[0] và validate nó trước khi xử lý
+    // console.log('e.target?.files[0]: ', e.target?.files[0])
+    const error = singleFileValidator(e.target?.files[0])
+    if (error) {
+      toast.error(error)
+      return
     }
+
+    // Sử dụng FormData để xử lý dữ liệu liên quan tới file khi gọi API
+    let reqData = new FormData()
+    reqData.append('backgroundBoard', e.target?.files[0])
+    // Cách để log được dữ liệu thông qua FormData
+    // console.log('reqData: ', reqData)
+    // for (const value of reqData.values()) {
+    //   console.log('reqData Value: ', value)
+    // }
+
+    // Gọi API...
+    toast.promise(
+      callUpdateBoardDetailsAPI(reqData).finally(() => {
+        e.target.value = ''
+        onClose()
+      }),
+      {
+        pending: 'Uploading...'
+      }
+    ).then(res => {
+      if (!res.error) {
+        toast.success('Background updated successfully!', { theme: 'colored' })
+      }
+    })
+  }
 
   const renderColorTab = () => (
     <Box sx={{ p: 1.5 }}>
@@ -141,7 +140,7 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
                 '&:hover': {
                   transform: 'scale(1.05)'
                 },
-                position: 'relative',
+                position: 'relative'
               }}
               onClick={() => handleDefaultSelect('gradient', color.gradient)}
             >
@@ -174,7 +173,7 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
         ))}
       </Box>
     </Box>
-  );
+  )
 
   const renderImageTab = () => (
     <Box sx={{ p: 1.5 }}>
@@ -187,10 +186,10 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
         sx={{ mb: 2 }}
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start"  sx={{'& .MuiSvgIcon-root': { color: 'inherit' } }}>
+            <InputAdornment position="start" sx={{ '& .MuiSvgIcon-root': { color: 'inherit' } }}>
               <SearchIcon />
             </InputAdornment>
-          ),
+          )
         }}
       />
 
@@ -228,7 +227,7 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
         <span style={{ color: (theme) => theme.palette.primary.main }}>Điều khoản dịch vụ</span>
       </Typography> */}
     </Box>
-  );
+  )
 
   const renderCustomTab = () => (
     <Box sx={{ p: 2, paddingBottom: 0.5 }}>
@@ -236,7 +235,7 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
         Tùy chọn
       </Typography>
       <Button
-      component="label"
+        component="label"
         sx={{
           height: 120,
           backgroundColor: '#f5f5f5',
@@ -255,7 +254,7 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
         <VisuallyHiddenInput type="file" onChange={uploadBackground} />
       </Button>
     </Box>
-  );
+  )
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -305,7 +304,7 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
               '& .MuiTab-root': {
                 paddingX: '8px',
                 marginX: 'auto' // giảm padding
-              },
+              }
             }} >
             <Tab
               label={
@@ -360,15 +359,16 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
           {tabValue === 1 && renderImageTab()}
           {/* {tabValue === 2 && renderCustomTab()} */}
         </Box>
-         {tabValue === 1 &&  
-         (<Box sx={{ px:2 }}>
-          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-         Bằng cách sử dụng hình ảnh từ Unsplash, bạn đồng ý với giấy phép và Điều khoản dịch vụ
-        </Typography>
-        </Box>)}
+        {tabValue === 1 && (
+          <Box sx={{ px:2 }}>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              Bằng cách sử dụng hình ảnh từ Unsplash, bạn đồng ý với giấy phép và Điều khoản dịch vụ
+            </Typography>
+          </Box>
+        )}
       </Box>
     </Modal>
-  );
-};
+  )
+}
 
-export default BackgroundSelector;
+export default BackgroundSelector

@@ -5,38 +5,38 @@ import Avatar from '@mui/material/Avatar'
 import LockIcon from '@mui/icons-material/Lock'
 import Typography from '@mui/material/Typography'
 // import { Card as MuiCard } from '@mui/material'
-import MuiCard from '@mui/material/Card';
+import MuiCard from '@mui/material/Card'
 import { ReactComponent as TrelloIcon } from '~/assets/trello.svg'
 import CardActions from '@mui/material/CardActions'
 import TextField from '@mui/material/TextField'
 import Zoom from '@mui/material/Zoom'
-import { useForm } from "react-hook-form"
-import {FIELD_REQUIRED_MESSAGE,
+import { useForm } from 'react-hook-form'
+import { FIELD_REQUIRED_MESSAGE,
   EMAIL_RULE, EMAIL_RULE_MESSAGE,
   PASSWORD_RULE, PASSWORD_RULE_MESSAGE,
   PASSWORD_CONFIRMATION_MESSAGE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { registerUserAPI } from '~/apis/index'
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify'
 
 function RegisterForm() {
-  const { register, handleSubmit, formState: { errors }, watch }  = useForm();
-  const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors }, watch } = useForm()
+  const navigate = useNavigate()
 
   const submitRegister = (data) => {
     // console.log('thanh cong', data);
-    const { email, password } = data;
+    const { email, password } = data
     toast.promise(
       registerUserAPI({ email, password }),
       {
-        pending: "Registering...",
+        pending: 'Registering...'
       }
     ).then((user) => {
-      navigate(`/login?registeredEmail=${user.email}`);
-    });
-  };
-   console.log(errors);
+      navigate(`/login?registeredEmail=${user.email}`)
+    })
+  }
+  // console.log(errors)
   return (
     // <form>
     <form onSubmit={handleSubmit(submitRegister)}>
@@ -101,8 +101,8 @@ function RegisterForm() {
                 {...register('password_confirmation', {
                   validate: (value) => {
                     if (value !== watch('password')) {
-                      return PASSWORD_CONFIRMATION_MESSAGE;
-                    } else return true;
+                      return PASSWORD_CONFIRMATION_MESSAGE
+                    } else return true
                   }
                 })}
               />

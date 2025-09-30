@@ -89,9 +89,10 @@ function ListColumn({ columns }) {
                 minWidth: '250px',
                 maxWidth: '250px',
                 bgcolor: '#ffffff3d',
+                // bgcolor:'rgba(0, 0, 0, 0.6)',
                 mx: 2,
                 borderRadius: '6px',
-                height: 'fit-content',
+                height: 'fit-content'
               }}
             >
               <Button
@@ -102,7 +103,7 @@ function ListColumn({ columns }) {
                   width: '100%',
                   justifyContent: 'flex-start',
                   pl: 2.5,
-                  py: 1,
+                  py: 1
                 }}
               >
                 Add new column

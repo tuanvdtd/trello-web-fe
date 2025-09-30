@@ -47,7 +47,7 @@ function InviteBoardUser({boardId}) {
           onClick={handleTogglePopover}
           variant="outlined"
           startIcon={<PersonAddIcon />}
-          sx={{ color: 'white', borderColor: 'white', '&:hover': { borderColor: 'white' } }}
+          sx={{ color: 'white', fontSize: '16px', fontWeight: 500, background: 'transparent', borderColor: 'white', '&:hover': { borderColor: 'white' } }}
         >
           Invite
         </Button>
