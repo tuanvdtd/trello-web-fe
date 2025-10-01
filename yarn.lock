@@ -10,6 +10,22 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
+"@auth0/auth0-react@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.5.0.tgz#0718750ad79fa06074b674405fea13a1ee8c412d"
+  integrity sha512-o2nuJ85D4ESRybh3zbA5Dl1Oe17fRZL+/Q17b1qQdS+0QWZrXTEzTMD0wb0tYGST5rJb8rt7pVh6Tj4cWhdTCQ==
+  dependencies:
+    "@auth0/auth0-spa-js" "^2.4.1"
+
+"@auth0/auth0-spa-js@^2.4.1":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.5.0.tgz#f42c1fe4de15867d44d73c201c9bd6c464c22008"
+  integrity sha512-4Xvx2E4N2Airr1Rp+KOejdDbpj5LnfLtNZ/TaOdo7VbRGmpWAYkyGFcF9BBQSQ10rGhFn/GaBHIZECyskruAfg==
+  dependencies:
+    browser-tabs-lock "^1.2.15"
+    dpop "^2.1.1"
+    es-cookie "~1.3.2"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.27.1":
   version "7.27.1"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.27.1.tgz#200f715e66d52a23b221a9435534a91cc13ad5be"
@@ -1414,6 +1430,13 @@ brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
+browser-tabs-lock@^1.2.15:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/browser-tabs-lock/-/browser-tabs-lock-1.3.0.tgz#4c0381b47b55cd29feaaea5846b7bb97aac76053"
+  integrity sha512-g6nHaobTiT0eMZ7jh16YpD2kcjAp+PInbiVq3M1x6KKaEIVhT4v9oURNIpZLOZ3LQbQ3XYfNhMAb/9hzNLIWrw==
+  dependencies:
+    lodash ">=4.17.21"
+
 browserslist@^4.24.0:
   version "4.25.1"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.25.1.tgz#ba9e8e6f298a1d86f829c9b975e07948967bb111"
@@ -1650,6 +1673,11 @@ dotenv@^17.2.1:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.2.1.tgz#6f32e10faf014883515538dc922a0fb8765d9b32"
   integrity sha512-kQhDYKZecqnM0fCnzI5eIv5L4cAe/iRI+HqMbO/hbRdTAeXDG+M9FjipUxNfbARuEg4iHIbhnhs78BCHNbSxEQ==
 
+dpop@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/dpop/-/dpop-2.1.1.tgz#f132df2bdf97b8fd5f13afe14ef659d072d8d051"
+  integrity sha512-J0Of2JTiM4h5si0tlbPQ/lkqfZ5wAEVkKYBhkwyyANnPJfWH4VsR5uIkZ+T+OSPIwDYUg1fbd5Mmodd25HjY1w==
+
 driver.js@^1.3.6:
   version "1.3.6"
   resolved "https://registry.yarnpkg.com/driver.js/-/driver.js-1.3.6.tgz#de80839bb52aa77de2a53e9b4013210da8fc6793"
@@ -1709,6 +1737,11 @@ error-ex@^1.3.1:
   integrity sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==
   dependencies:
     is-arrayish "^0.2.1"
+
+es-cookie@~1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/es-cookie/-/es-cookie-1.3.2.tgz#80e831597f72a25721701bdcb21d990319acd831"
+  integrity sha512-UTlYYhXGLOy05P/vKVT2Ui7WtC7NiRzGtJyAKKn32g5Gvcjn7KAClLPWlipCtxIus934dFg9o9jXiBL0nP+t9Q==
 
 es-define-property@^1.0.1:
   version "1.0.1"
@@ -2519,7 +2552,7 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@^4.17.21:
+lodash@>=4.17.21, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==

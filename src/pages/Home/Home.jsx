@@ -31,67 +31,55 @@ function Home() {
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
+        className='py-4 px-6 flex justify-between items-center border-b border-gray-200 sticky top-0 bg-white z-1000'
       >
-        <Box sx={{
-          py: 2,
-          px: 3,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: '1px solid #e0e0e0',
-          position: 'sticky',
-          top: 0,
-          bgcolor: 'white',
-          zIndex: 1000
-        }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Box
-              sx={{
-                width: 32,
-                height: 32,
-                bgcolor: '#0079bf',
-                borderRadius: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: '18px'
-              }}
-            >
-              T
-            </Box>
-            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#172b4d' }}>
-              Trello
-            </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box
+            sx={{
+              width: 32,
+              height: 32,
+              bgcolor: '#0079bf',
+              borderRadius: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: '18px'
+            }}
+          >
+            T
           </Box>
+          <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#172b4d' }}>
+            Trello
+          </Typography>
+        </Box>
 
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Button
-              variant="text"
-              onClick={handleLogin}
-              sx={{
-                color: '#0079bf',
-                textTransform: 'none',
-                fontSize: '16px'
-              }}
-            >
-              Log in
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleSignUp}
-              sx={{
-                bgcolor: '#0079bf',
-                textTransform: 'none',
-                fontSize: '16px',
-                borderRadius: 2,
-                px: 3
-              }}
-            >
-              Sign up
-            </Button>
-          </Box>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button
+            variant="text"
+            onClick={handleLogin}
+            sx={{
+              color: '#0079bf',
+              textTransform: 'none',
+              fontSize: '16px'
+            }}
+          >
+            Log in
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleSignUp}
+            sx={{
+              bgcolor: '#0079bf',
+              textTransform: 'none',
+              fontSize: '16px',
+              borderRadius: 2,
+              px: 3
+            }}
+          >
+            Sign up
+          </Button>
         </Box>
       </motion.div>
 
@@ -360,7 +348,7 @@ function Home() {
                 color: '#0079bf'
               },
               {
-                title: 'Lists',
+                title: 'Columns',
                 description: 'The different stages of a task. Start as simple as To Do, Doing or Done.',
                 color: '#70b500'
               },

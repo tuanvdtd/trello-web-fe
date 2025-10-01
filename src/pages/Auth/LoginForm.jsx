@@ -11,6 +11,7 @@ import CardActions from '@mui/material/CardActions'
 import TextField from '@mui/material/TextField'
 import Zoom from '@mui/material/Zoom'
 import Alert from '@mui/material/Alert'
+import Divider from '@mui/material/Divider'
 import { useForm } from 'react-hook-form'
 import { FIELD_REQUIRED_MESSAGE,
   EMAIL_RULE, EMAIL_RULE_MESSAGE,
@@ -22,6 +23,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { loginUserAPI } from '~/redux/user/userSlice'
 import { toast } from 'react-toastify'
+import { useAuth0 } from '@auth0/auth0-react'
 
 
 function LoginForm() {
@@ -32,6 +34,8 @@ function LoginForm() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const { loginWithRedirect } = useAuth0()
 
 
   const submitLogIn = (data) => {
@@ -47,6 +51,13 @@ function LoginForm() {
         navigate('/boards', { replace: true })
       }
     })
+  }
+
+  const handleGoogleLogin = () => {
+    // Redirect to Google OAuth
+    loginWithRedirect({ authorizationParams: {
+      connection: 'google-oauth2'
+    } }) // ép dùng Google SSO
   }
 
 
@@ -120,6 +131,61 @@ function LoginForm() {
               />
               <FieldErrorAlert errors={errors} fieldName="password" />
             </Box>
+          </Box>
+          {/* Divider */}
+          <Box sx={{ padding: '1em' }}>
+            <Divider sx={{ position: 'relative' }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  backgroundColor: 'white',
+                  padding: '0 16px',
+                  color: 'text.secondary',
+                  fontSize: '12px'
+                }}
+              >
+                OR
+              </Typography>
+            </Divider>
+          </Box>
+          <Box sx={{ padding: '1em 1em 1em 1em' }}>
+            <Button
+              fullWidth
+              variant="outlined"
+              size="large"
+              onClick={handleGoogleLogin}
+              sx={{
+                textTransform: 'none',
+                borderColor: '#dadce0',
+                color: '#3c4043',
+                backgroundColor: 'white',
+                fontSize: '14px',
+                fontWeight: 500,
+                height: '50px',
+                '&:hover': {
+                  backgroundColor: '#f8f9fa',
+                  borderColor: '#dadce0',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                },
+                '&:focus': {
+                  backgroundColor: '#f8f9fa'
+                }
+              }}
+              startIcon={
+                <Box
+                  component="img"
+                  src="https://developers.google.com/identity/images/g-logo.png"
+                  alt="Google"
+                  sx={{ width: 20, height: 20 }}
+                />
+              }
+            >
+              Continue with Google
+            </Button>
           </Box>
           <CardActions sx={{ padding: '0 1em 1em 1em' }}>
             <Button

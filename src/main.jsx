@@ -14,6 +14,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'
 import { injectStore } from '~/utils/authorizeAxios'
+import { Auth0Provider } from '@auth0/auth0-react'
+import { API_ROOT } from './utils/constants'
 
 // persistor is used to persist the Redux store across page reload
 let persistor = persistStore(store)
@@ -41,7 +43,22 @@ root.render(
             cancellationButtonProps: { color: 'inherit', variant: 'outlined' },
             allowClose: false }}>
             <CssBaseline />
-            <App />
+            <Auth0Provider
+              domain="dev-ggltcktr3ae4vxn5.us.auth0.com"
+              clientId="oiwRwsBn42i54z1usGVrQNhk8bMxvsyZ"
+              authorizationParams={{
+                redirect_uri: window.location.origin,
+                audience: API_ROOT
+
+              }}
+              // cacheLocation= 'localstorage' // nếu kh có dòng này thì mặc định sẽ là memory
+              // refreshToken={true}
+              // useRefreshTokens={true}
+              // useRefreshTokensFallback={true}
+              // cookieDomain='.dtt.local'
+            >
+              <App />
+            </Auth0Provider>
             <ToastContainer theme="colored" />
           </ConfirmProvider>
         </ThemeProvider>
