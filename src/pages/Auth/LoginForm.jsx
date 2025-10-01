@@ -37,6 +37,15 @@ function LoginForm() {
 
   const { loginWithRedirect } = useAuth0()
 
+  const handleGoogleLogin = () => {
+    // Redirect to Google OAuth
+    loginWithRedirect({ authorizationParams: {
+      prompt: 'select_account',
+      connection: 'google-oauth2'
+      // Force Google hiện account picker
+    } }) // ép dùng Google SSO
+  }
+
 
   const submitLogIn = (data) => {
     const { email, password } = data
@@ -53,12 +62,14 @@ function LoginForm() {
     })
   }
 
-  const handleGoogleLogin = () => {
-    // Redirect to Google OAuth
-    loginWithRedirect({ authorizationParams: {
-      connection: 'google-oauth2'
-    } }) // ép dùng Google SSO
-  }
+  // const handleGoogleLogin = () => {
+  //   // Redirect to Google OAuth
+  //   loginWithRedirect({ authorizationParams: {
+  //     prompt: 'select_account',
+  //     connection: 'google-oauth2'
+  //     // Force Google hiện account picker
+  //   } }) // ép dùng Google SSO
+  // }
 
 
   return (

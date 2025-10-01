@@ -8,6 +8,7 @@ import { selectCurrentUser } from '~/redux/user/userSlice'
 import Settings from '~/pages/Settings/Settings'
 import Boards from '~/pages/Boards/index'
 import Home from '~/pages/Home/Home'
+import Auth0Callback from './pages/Auth/Auth0Callback'
 
 const ProtectedRoute = ({ user }) => {
   if (!user) {
@@ -50,6 +51,7 @@ export default function App() {
       {/* Authentication */}
       <Route path='/login' element= {<Auth />} />
       <Route path='/register' element= {<Auth />} />
+      <Route path='/callback' element={<Auth0Callback />} />
       <Route path='/account/verification' element= {<AccountVerification />} />
       <Route path='*' element= {<NotFound />} />
     </Routes>
