@@ -32,6 +32,11 @@ export default function Profile() {
   const handleClose = () => {
     setAnchorEl(null)
   }
+  const [checked, setChecked] = useState(true)
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked)
+  }
 
   const confirm = useConfirm()
   const handleLogout = async () => {
@@ -75,7 +80,7 @@ export default function Profile() {
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
+        // onClick={handleClose}
         slotProps={{
           paper: {
             elevation: 0,
@@ -136,7 +141,9 @@ export default function Profile() {
             <AdminPanelSettingsIcon fontSize="small" className="twofa_icon" />
           </ListItemIcon>
           2 Factor Authentication
-          <Switch color="primary" />
+          <Switch color="primary" checked={checked}
+            onChange={handleChange}
+            slotProps={{ input: { 'aria-label': 'controlled' } }} />
         </MenuItem>
         <MenuItem onClick={handleLogout} sx = {{
           '&:hover' : { color : 'warning.dark', '& .logout_icon' : { color: 'warning.dark' } }

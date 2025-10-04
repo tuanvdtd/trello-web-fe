@@ -46,7 +46,7 @@ root.render(
               domain="dev-ggltcktr3ae4vxn5.us.auth0.com"
               clientId="oiwRwsBn42i54z1usGVrQNhk8bMxvsyZ"
               authorizationParams={{
-                redirect_uri: `${window.location.origin}/callback`,
+                redirect_uri: `${window.location.origin}/callback`
                 // audience: API_ROOT
 
               }}

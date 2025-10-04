@@ -1,16 +1,16 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Stack from "@mui/material/Stack";
+import React from 'react'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Stack from '@mui/material/Stack'
 
-import CircleIcon from "@mui/icons-material/Circle";
+import CircleIcon from '@mui/icons-material/Circle'
 
 const Introduce = ({ item, handleShowForm }) => {
   return (
@@ -42,12 +42,17 @@ const Introduce = ({ item, handleShowForm }) => {
             </Box>
 
             {/* Images and Information */}
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <Paper 
+            <Grid container spacing={3} alignItems="stretch">
+              <Grid item size={{ xs: 12, md: 6 }}>
+                <Paper
                   elevation={2}
-                  sx={{ 
-                    p: 2, 
+                  sx={{
+                    height: '100%',
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     textAlign: 'center',
                     borderRadius: 2
                   }}
@@ -69,12 +74,17 @@ const Introduce = ({ item, handleShowForm }) => {
                   />
                 </Paper>
               </Grid>
-              
-              <Grid item xs={6}>
-                <Paper 
+
+              <Grid item size={{ xs: 12, md: 6 }}>
+                <Paper
                   elevation={2}
-                  sx={{ 
-                    p: 2, 
+                  sx={{
+                    height: '100%',
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     textAlign: 'center',
                     borderRadius: 2
                   }}
@@ -104,8 +114,8 @@ const Introduce = ({ item, handleShowForm }) => {
         <Grid item size={{ xs: 12, md: 3 }}>
           <Stack spacing={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             {/* Icon */}
-            <Box sx={{ 
-              display: 'flex', 
+            <Box sx={{
+              display: 'flex',
               justifyContent: 'center',
               py: 2
             }}>
@@ -128,7 +138,7 @@ const Introduce = ({ item, handleShowForm }) => {
                     <ListItemIcon sx={{ minWidth: 20 }}>
                       <CircleIcon sx={{ fontSize: 6, color: 'text.primary' }} />
                     </ListItemIcon>
-                    <ListItemText 
+                    <ListItemText
                       primary={step}
                       primaryTypographyProps={{
                         variant: 'body2'
@@ -140,9 +150,9 @@ const Introduce = ({ item, handleShowForm }) => {
             </Paper>
 
             {/* Action Button */}
-            <Box sx={{ 
-              display: 'flex', 
-              justifyContent: 'flex-end',
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'flex-end'
               // mt: 'auto'
             }}>
               <Button
@@ -155,7 +165,7 @@ const Introduce = ({ item, handleShowForm }) => {
                   py: 1.5,
                   borderRadius: 2,
                   '&:hover': {
-                    background: 'linear-gradient(45deg, #1976D2 30%, #7B1FA2 90%)',
+                    background: 'linear-gradient(45deg, #1976D2 30%, #7B1FA2 90%)'
                   }
                 }}
               >
@@ -166,7 +176,7 @@ const Introduce = ({ item, handleShowForm }) => {
         </Grid>
       </Grid>
     </Box>
-  );
-};
+  )
+}
 
-export default Introduce;
+export default Introduce

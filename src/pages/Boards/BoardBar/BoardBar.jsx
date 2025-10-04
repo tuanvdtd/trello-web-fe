@@ -71,7 +71,7 @@ function BoardBar({ board }) {
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <Tooltip title={board?.description}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }} data-tour="board-title">
 
               {/*<Chip
               data-tour="board-title"
@@ -114,7 +114,6 @@ function BoardBar({ board }) {
                 color="white"
                 sx= {MenuStyle}
                 id={`toggle-focus-input-controlled-${board._id}`}
-                data-tour="board-title"
               />
             </Box>
             {/* <ToggleFocusInput
