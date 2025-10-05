@@ -84,3 +84,17 @@ export const inviteUserToBoardAPI = async (data) => {
   return response.data
 }
 //------------------------------------------
+export const get2FA_QRCodeAPI = async () => {
+  const res = await authorizedAxiosInstance.get(`${API_ROOT}/v1/users/get_2fa_qr_code`)
+  return res.data
+}
+
+export const setup_2FA_API = async (otpToken) => {
+  const res = await authorizedAxiosInstance.post(`${API_ROOT}/v1/users/setup_2fa`, { otpToken })
+  return res.data
+}
+
+export const verify_2FA_API = async (otpToken) => {
+  const res = await authorizedAxiosInstance.put(`${API_ROOT}/v1/users/verify_2fa`, { otpToken })
+  return res.data
+}

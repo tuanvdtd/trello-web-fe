@@ -106,9 +106,9 @@ const EmptyBoardsState = ({ onCreateBoard, onLearnMore }) => {
             borderColor: 'primary.main',
             color: 'primary.main',
             '&:hover': {
-              borderColor: 'primary.dark',
-              bgcolor: 'primary.light',
-              transform: 'translateY(-1px)'
+              // borderColor: 'primary.dark',
+              // bgcolor: 'primary.light',
+              // transform: 'translateY(-1px)'
             },
             transition: 'all 0.3s ease'
           }}
