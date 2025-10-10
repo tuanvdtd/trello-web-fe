@@ -33,7 +33,7 @@ function CardDescriptionMdEditor({cardDescriptionProp, onUpdateCardDescription})
 
   const updateCardDescription = () => {
     setMarkdownEditMode(false)
-    console.log('cardDescription: ', cardDescription)
+    // console.log('cardDescription: ', cardDescription)
     onUpdateCardDescription(cardDescription || '')
   }
 

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
@@ -31,12 +32,13 @@ import { toast } from 'react-toastify'
 import CardUserGroup from './CardUserGroup'
 import CardDescriptionMdEditor from './CardDescriptionMdEditor'
 import CardActivitySection from './CardActivitySection'
-import { useDispatch, useSelector } from 'react-redux';
-import { hideAndClearCurrentActiveCard , selectCurrentActiveCard, updateCurrentActiveCard, selectShowActiveCardModal } from '~/redux/activeCard/activeCardSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { hideAndClearCurrentActiveCard, selectCurrentActiveCard, updateCurrentActiveCard, selectShowActiveCardModal } from '~/redux/activeCard/activeCardSlice'
 import { updateCardDetailsAPI } from '~/apis'
 import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { CARD_MEMBER_ACTIONS } from '~/utils/constants'
+import { socketIoInstance } from '~/socketClient'
 
 
 import { styled } from '@mui/material/styles'
@@ -69,6 +71,33 @@ function ActiveCard() {
   const isShowActiveCardModal = useSelector(selectShowActiveCardModal)
   const userInfo = useSelector(selectCurrentUser)
 
+  useEffect(() => {
+    if (!isShowActiveCardModal || !activeCard?._id) return
+    // Join board room khi mở modal
+    socketIoInstance.emit('Fe_JoinBoard', activeCard.boardId)
+
+    // Lắng nghe event từ BE khi có update mới
+    const handleReceiveCardUpdate = (updatedCardData) => {
+      // Chỉ update nếu update đến đúng card hiện tại
+      if (updatedCardData._id === activeCard._id) {
+        // Update activeCard trong redux
+        dispatch(updateCurrentActiveCard(updatedCardData))
+        // Update card vào activeBoard trong redux
+        dispatch(updateCardInBoard(updatedCardData))
+      }
+    }
+
+    // Đăng ký lắng nghe event
+    socketIoInstance.on('Be_UpdateCard', handleReceiveCardUpdate)
+
+    // Cleanup khi component unmount hoặc modal đóng
+    return () => {
+      // Leave room khi đóng modal
+      socketIoInstance.emit('Fe_LeaveBoard', activeCard.boardId)
+      socketIoInstance.off('Be_UpdateCard', handleReceiveCardUpdate)
+    }
+  }, [isShowActiveCardModal, activeCard, dispatch])
+
   const handleCloseModal = () => {
     dispatch(hideAndClearCurrentActiveCard())
   }
@@ -78,6 +107,7 @@ function ActiveCard() {
     dispatch(updateCurrentActiveCard(updatedCard))
     // update lại card vào activeBoard trong redux
     dispatch(updateCardInBoard(updatedCard))
+    socketIoInstance.emit('Fe_UpdateCard', updatedCard)
     return updatedCard
   }
 
@@ -87,7 +117,7 @@ function ActiveCard() {
     callUpdateCardAPI({ title: newTitle.trim() })
 
   }
-   const onUpdateCardDescription = (newDescription) => {
+  const onUpdateCardDescription = (newDescription) => {
     // console.log(newDescription)
     // Gọi API...
     callUpdateCardAPI({ description: newDescription })
@@ -110,14 +140,14 @@ function ActiveCard() {
         event.target.value = ''
       }),
       {
-        pending: 'Updating...',
+        pending: 'Updating...'
       }
     )
   }
 
-  const onAddCardComment =  async (newComment) => {
+  const onAddCardComment = async (newComment) => {
     // call api
-    callUpdateCardAPI({newComment})
+    callUpdateCardAPI({ newComment })
   }
 
   const onHandleUpdateCardMembers = async (updateMemberCardData) => {
@@ -156,18 +186,19 @@ function ActiveCard() {
 
         {activeCard?.cover && 
           <Box sx={{ mb: 4 }}>
-          <img
-            style={{ width: '100%', height: '320px', borderRadius: '6px', objectFit: 'cover' }}
-            src={activeCard?.cover}
-            alt="card-cover"
-          />
-        </Box>
+            <img
+              style={{ width: '100%', height: '320px', borderRadius: '6px', objectFit: 'cover' }}
+              src={activeCard?.cover}
+              alt="card-cover"
+            />
+          </Box>
         }
         <Box sx={{ mb: 1, mt: -3, pr: 2.5, display: 'flex', alignItems: 'center', gap: 1 }}>
           <CreditCardIcon />
 
           {/* Feature 01: Xử lý tiêu đề của Card */}
           <ToggleFocusInput
+            key={`card-title-${activeCard?._id}-${Date.now()}`}
             inputFontSize='22px'
             value={activeCard?.title}
             onChangedValue={onUpdateCardTitle} />
@@ -190,7 +221,10 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 03: Xử lý mô tả của Card */}
-              <CardDescriptionMdEditor onUpdateCardDescription={onUpdateCardDescription} cardDescriptionProp={activeCard?.description} />
+              <CardDescriptionMdEditor
+                key={`card-desc-${activeCard?._id}-${Date.now()}`}
+                onUpdateCardDescription={onUpdateCardDescription}
+                cardDescriptionProp={activeCard?.description} />
             </Box>
 
             <Box sx={{ mb: 3 }}>

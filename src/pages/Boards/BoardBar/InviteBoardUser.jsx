@@ -33,7 +33,7 @@ function InviteBoardUser({boardId}) {
       // Clear thẻ input sử dụng react-hook-form bằng setValue
       setValue('inviteeEmail', null)
       setAnchorPopoverElement(null)
-      // Mời real-time
+      // Mời real-time, gửi từ fe qua be
       socketIoInstance.emit('Fe_InviteUserToBoard', invitation)
     })
 

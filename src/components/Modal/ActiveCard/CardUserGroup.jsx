@@ -9,6 +9,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useSelector } from 'react-redux'
 import { selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { CARD_MEMBER_ACTIONS } from '~/utils/constants'
+import Checkbox from '@mui/material/Checkbox'
 
 function CardUserGroup({ cardMemberIds = [], onHandleUpdateCardMembers }) {
   /**
@@ -22,6 +23,8 @@ function CardUserGroup({ cardMemberIds = [], onHandleUpdateCardMembers }) {
     if (!anchorPopoverElement) setAnchorPopoverElement(event.currentTarget)
     else setAnchorPopoverElement(null)
   }
+  // const isCardMember = (userId) => cardMemberIds.includes(userId)
+  // const [checked, setChecked] = useState(true)
 
   const activeBoard = useSelector(selectCurrentActiveBoard)
   const boardMembers = activeBoard.allUsers
@@ -32,14 +35,18 @@ function CardUserGroup({ cardMemberIds = [], onHandleUpdateCardMembers }) {
   })
 
   const handleUpdateCardMember = (userId) => {
-      //
-      const updateMemberCardData = {
-        userId: userId,
-        action: cardMemberIds.includes(userId) ? CARD_MEMBER_ACTIONS.REMOVE : CARD_MEMBER_ACTIONS.ADD
-      }
-      // console.log('updateMemberCardData:', updateMemberCardData)
-      onHandleUpdateCardMembers(updateMemberCardData)
+    //
+    const updateMemberCardData = {
+      userId: userId,
+      action: cardMemberIds.includes(userId) ? CARD_MEMBER_ACTIONS.REMOVE : CARD_MEMBER_ACTIONS.ADD
+    }
+    // console.log('updateMemberCardData:', updateMemberCardData)
+    onHandleUpdateCardMembers(updateMemberCardData)
   }
+
+  // const handleChange = (event) => {
+  //   setChecked(event.target.checked)
+  // }
 
   // Lưu ý ở đây chúng ta không dùng Component AvatarGroup của MUI bởi nó không hỗ trợ tốt trong việc chúng ta cần custom & trigger xử lý phần tử tính toán cuối, đơn giản là cứ dùng Box và CSS - Style đám Avatar cho chuẩn kết hợp tính toán một chút thôi.
   return (
@@ -90,7 +97,7 @@ function CardUserGroup({ cardMemberIds = [], onHandleUpdateCardMembers }) {
         onClose={handleTogglePopover}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
-        <Box sx={{ p: 2, maxWidth: '260px', display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+        <Box sx={{ p: 2, maxWidth: '260px', display: 'flex', flexWrap: 'wrap', flexDirection: 'column', gap: 1.5 }}>
           {boardMembers.map((user, index) =>
             <Tooltip title={user.displayName} key={index}>
               {/* Cách làm Avatar kèm badge icon: https://mui.com/material-ui/react-avatar/#with-badge */}

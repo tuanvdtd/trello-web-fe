@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 // import axios from "axios";
 import authorizedAxiosInstance from '~/utils/authorizeAxios'
-import{API_ROOT} from "~/utils/constants";
+import { API_ROOT } from '~/utils/constants'
 // import { isEmpty} from "lodash"
 
 // Khởi tạo giá trị của một cái slice ban đầu trong Redux
@@ -9,21 +9,21 @@ const initialState = {
   currentNotifications: null
 }
 
-// Các hành động gọi api bất đồng bộ và cập nhật dữ liệu vào redux dùng Middleware createAsyncThunk đi kèm với extraReducers 
+// Các hành động gọi api bất đồng bộ và cập nhật dữ liệu vào redux dùng Middleware createAsyncThunk đi kèm với extraReducers
 // https://redux-toolkit.js.org/api/createAsyncThunk
 export const fetchNotificationsAPI = createAsyncThunk(
   'activeNotification/fetchNotifications',
   async () => {
-    const response = await authorizedAxiosInstance.get(`${API_ROOT}/v1/invitations`);
-    return response.data;
+    const response = await authorizedAxiosInstance.get(`${API_ROOT}/v1/invitations`)
+    return response.data
   }
 )
 
 export const updateNotificationStatusAPI = createAsyncThunk(
   'activeNotification/updateNotificationStatus',
-  async ({invitationId, status}) => {
-    const response = await authorizedAxiosInstance.put(`${API_ROOT}/v1/invitations/board/${invitationId}`, { status });
-    return response.data;
+  async ({ invitationId, status }) => {
+    const response = await authorizedAxiosInstance.put(`${API_ROOT}/v1/invitations/board/${invitationId}`, { status })
+    return response.data
   }
 )
 
@@ -37,7 +37,6 @@ export const activeNotificationSlice = createSlice({
 
       // action.payload là chuẩn đặt tên nhận dữ liệu vào reducer, đặt tên biến fullBoard cho rõ nghĩa
       const full = action.payload
-      
       // Xử lí dữ liệu
       // ...
 
@@ -51,22 +50,22 @@ export const activeNotificationSlice = createSlice({
     },
 
     addNotification: (state, action) => {
-      const newNotification = action.payload;
+      const newNotification = action.payload
       // state.currentNotifications = Array.isArray(state.currentNotifications) ? state.currentNotifications : [];
-      state.currentNotifications.unshift(newNotification);
+      state.currentNotifications.unshift(newNotification)
     }
   },
   // extraReducers là nơi xử lí dữ liệu bất đồng bộ
   extraReducers: (builder) => {
     builder.addCase(fetchNotificationsAPI.fulfilled, (state, action) => {
-      let notifications = action.payload;
-      state.currentNotifications = Array.isArray(notifications) ? notifications.reverse() : [];
+      let notifications = action.payload
+      state.currentNotifications = Array.isArray(notifications) ? notifications.reverse() : []
     })
 
     builder.addCase(updateNotificationStatusAPI.fulfilled, (state, action) => {
-      const incomingInvitation = action.payload;
-      const getInvitation = state.currentNotifications.find(notification => notification._id === incomingInvitation._id);
-      getInvitation.boardInvitation = incomingInvitation.boardInvitation;
+      const incomingInvitation = action.payload
+      const getInvitation = state.currentNotifications.find(notification => notification._id === incomingInvitation._id)
+      getInvitation.boardInvitation = incomingInvitation.boardInvitation
     })
   }
 })

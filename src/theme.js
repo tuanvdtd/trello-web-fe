@@ -1,4 +1,3 @@
-// import { cyan, deepOrange, teal, orange } from "@mui/material/colors";
 import { createTheme } from '@mui/material/styles'
 
 const APP_BAR_HEIGHT = '58px'

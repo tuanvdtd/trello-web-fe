@@ -25,7 +25,7 @@ export const activeCardSlice = createSlice({
   initialState,
   // reducers là nơi xử lí dữ liệu đồng bộ
   reducers: {
-     hideAndClearCurrentActiveCard: (state) => {
+    hideAndClearCurrentActiveCard: (state) => {
       state.currentActiveCard = null,
       state.isShowActiveCardModal = false
     },
@@ -33,7 +33,6 @@ export const activeCardSlice = createSlice({
 
       // action.payload là chuẩn đặt tên nhận dữ liệu vào reducer, đặt tên biến fullCard cho rõ nghĩa
       const fullCard = action.payload
-      
       // Xử lí dữ liệu
       // ...
 
@@ -43,8 +42,8 @@ export const activeCardSlice = createSlice({
     },
     showActiveCardModal: (state) => {
       state.isShowActiveCardModal = true
-    },
-  },
+    }
+  }
   // extraReducers là nơi xử lí dữ liệu bất đồng bộ
   // extraReducers: (builder) => {
   // }
