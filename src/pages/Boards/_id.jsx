@@ -26,6 +26,7 @@ import { useParams } from 'react-router-dom'
 import BoardSkeleton from '~/components/Skeleton/BoardSkeleton'
 import { useLocation } from 'react-router-dom'
 import { createBoardTour } from '~/utils/driverConfig'
+import { socketIoInstance } from '~/socketClient'
 
 
 function Board() {
@@ -48,6 +49,30 @@ function Board() {
     setIsLoading(true)
     dispatch(fetchBoardDetailsAPI(boardId)).finally(() => setIsLoading(false))
   }, [dispatch, boardId])
+
+  useEffect(() => {
+    if (!boardId) return
+
+    // Join board room
+    socketIoInstance.emit('Fe_JoinBoard', boardId)
+
+    // Handle board update
+    const handleBoardUpdate = (boardData) => {
+      if (boardData._id === boardId) {
+        dispatch(updateCurrentActiveBoard(boardData))
+      }
+    }
+
+    // Register socket listeners
+    socketIoInstance.on('Be_UpdateBoard', handleBoardUpdate)
+
+    return () => {
+      // Leave board room
+      socketIoInstance.emit('Fe_LeaveBoard', boardId)
+      // Cleanup listeners
+      socketIoInstance.off('Be_UpdateBoard', handleBoardUpdate)
+    }
+  }, [boardId, dispatch])
 
   useEffect(() => {
     if (!isLoading && board && isNewBoard) {
@@ -87,7 +112,9 @@ function Board() {
     updateBoard.columns = dnd
     // setBoard(updateBoard);
     dispatch(updateCurrentActiveBoard(updateBoard))
+    // Cập nhật lại columnOrderIds trên backend
     updateBoardDetailsAPI(updateBoard._id, { columnOrderIds: dndColumnIds })
+    socketIoInstance.emit('Fe_UpdateBoard', updateBoard)
   }
 
   const moveCardInSameColumnDnd = (dndCards, dndCardIds, columnId) => {
@@ -97,7 +124,9 @@ function Board() {
     updateColumn.cards = dndCards
     // setBoard(updateBoard);
     dispatch(updateCurrentActiveBoard(updateBoard))
+    // Cập nhật lại cardOrderIds trên backend
     updateColumnDetailsAPI(updateColumn._id, { cardOrderIds: dndCardIds })
+    socketIoInstance.emit('Fe_UpdateBoard', updateBoard)
   }
 
   const moveCardToDiffColumnDnd = (cardId, preColumnId, nextColumnId, dndColumnsData) => {
@@ -120,6 +149,7 @@ function Board() {
       nextColumnId,
       nextCardOrderIds: dndColumnsData.find(column => column._id === nextColumnId).cardOrderIds
     })
+    socketIoInstance.emit('Fe_UpdateBoard', updateBoard)
 
   }
 

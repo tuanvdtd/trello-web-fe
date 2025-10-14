@@ -21,7 +21,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote'
  * Vài ví dụ Markdown từ lib
  * https://codesandbox.io/embed/markdown-editor-for-react-izdd6?fontsize=14&hidenavigation=1&theme=dark
  */
-function CardDescriptionMdEditor({cardDescriptionProp, onUpdateCardDescription}) {
+function CardDescriptionMdEditor({ cardDescriptionProp, onUpdateCardDescription }) {
   // Lấy giá trị 'dark', 'light' hoặc 'system' mode từ MUI để support phần Markdown bên dưới: data-color-mode={mode}
   // https://www.npmjs.com/package/@uiw/react-md-editor#support-dark-modenight-mode
   const { mode } = useColorScheme()

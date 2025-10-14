@@ -184,7 +184,7 @@ function ActiveCard() {
           <CancelIcon color="error" sx={{ '&:hover': { color: 'error.light' } }} onClick={handleCloseModal} />
         </Box>
 
-        {activeCard?.cover && 
+        {activeCard?.cover &&
           <Box sx={{ mb: 4 }}>
             <img
               style={{ width: '100%', height: '320px', borderRadius: '6px', objectFit: 'cover' }}
@@ -206,7 +206,7 @@ function ActiveCard() {
 
         <Grid container spacing={2} sx={{ mb: 3 }}>
           {/* Left side */}
-          <Grid size = {{xs: 12, sm: 9}}>
+          <Grid size = {{ xs: 12, sm: 9 }}>
             <Box sx={{ mb: 3 }}>
               <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Members</Typography>
 
@@ -251,10 +251,10 @@ function ActiveCard() {
               }
               {activeCard?.memberIds?.includes(userInfo._id) &&
                 <SidebarItem
-                  className="active" 
+                  className="active"
                   onClick={() => {
-                    onHandleUpdateCardMembers({ userId: userInfo._id, action: CARD_MEMBER_ACTIONS.REMOVE });
-                    dispatch(hideAndClearCurrentActiveCard());
+                    onHandleUpdateCardMembers({ userId: userInfo._id, action: CARD_MEMBER_ACTIONS.REMOVE })
+                    dispatch(hideAndClearCurrentActiveCard())
                   }}>
                   <PersonOutlineOutlinedIcon fontSize="small" />
                   Leave

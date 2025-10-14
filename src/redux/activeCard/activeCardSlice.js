@@ -9,7 +9,7 @@ const initialState = {
   isShowActiveCardModal: false
 }
 
-// Các hành động gọi api bất đồng bộ và cập nhật dữ liệu vào redux dùng Middleware createAsyncThunk đi kèm với extraReducers 
+// Các hành động gọi api bất đồng bộ và cập nhật dữ liệu vào redux dùng Middleware createAsyncThunk đi kèm với extraReducers
 // https://redux-toolkit.js.org/api/createAsyncThunk
 // export const fetchCardDetailsAPI = createAsyncThunk(
 //   'activeCard/fetchCardDetails',

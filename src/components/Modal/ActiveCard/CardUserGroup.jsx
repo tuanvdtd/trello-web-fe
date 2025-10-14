@@ -53,11 +53,11 @@ function CardUserGroup({ cardMemberIds = [], onHandleUpdateCardMembers }) {
     <Box sx={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
       {/* Hiển thị các user là thành viên của card */}
       {cardMembers.map((user, index) =>
-        <Tooltip title={user.displayName} key={index}>
+        <Tooltip title={user?.displayName} key={index}>
           <Avatar
             sx={{ width: 34, height: 34, cursor: 'pointer' }}
-            alt={user.displayName}
-            src={user.avatar}
+            alt={user?.displayName}
+            src={user?.avatar}
           />
         </Tooltip>
       )}

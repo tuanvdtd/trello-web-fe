@@ -4,14 +4,14 @@ import authorizedAxiosInstance from '~/utils/authorizeAxios'
 import { API_ROOT } from '~/utils/constants'
 import { mapOrder } from '~/utils/sort'
 import { generatePlaceholderCard } from '~/utils/formatter'
-import { isEmpty} from 'lodash'
+import { isEmpty } from 'lodash'
 
 // Khởi tạo giá trị của một cái slice ban đầu trong Redux
 const initialState = {
   currentActiveBoard: null
 }
 
-// Các hành động gọi api bất đồng bộ và cập nhật dữ liệu vào redux dùng Middleware createAsyncThunk đi kèm với extraReducers 
+// Các hành động gọi api bất đồng bộ và cập nhật dữ liệu vào redux dùng Middleware createAsyncThunk đi kèm với extraReducers
 // https://redux-toolkit.js.org/api/createAsyncThunk
 export const fetchBoardDetailsAPI = createAsyncThunk(
   'activeBoard/fetchBoardDetails',
