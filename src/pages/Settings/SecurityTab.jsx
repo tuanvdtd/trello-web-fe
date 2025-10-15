@@ -30,20 +30,20 @@ function SecurityTab() {
       </Box>,
       description: 'You have to login again after successfully changing your password. Continue?',
       confirmationText: 'Confirm',
-      confirmationButtonProps: { color:"success", variant: "contained" },
+      confirmationButtonProps: { color:'success', variant: 'contained' },
       cancellationText: 'Cancel'
-    });
-     if (confirmed) {
+    })
+    if (confirmed) {
       const { current_password, new_password } = data
 
       // Gọi API...
       toast.promise(
         dispatch(updateUserAPI({ current_password, new_password })),
         {
-          pending: 'Updating...',
+          pending: 'Updating...'
         }
       ).then(res => {
-        console.log('res: ', res)
+        // console.log('res: ', res)
         if (!res.error) {
           toast.success('Change password successfully!', { theme: 'colored' })
           dispatch(logoutUserAPI(false)) // Logout user after changing password

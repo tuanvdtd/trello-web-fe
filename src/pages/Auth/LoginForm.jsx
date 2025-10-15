@@ -129,7 +129,7 @@ function LoginForm() {
               '& .MuiOutlinedInput-root': {
                 borderRadius: { xs: 3, md: 2 },
                 backgroundColor: '#e9ecef',
-                height: { xs: 56, md: 48 },
+                height: 56,
                 '& fieldset': { border: 'none' },
                 '&:hover': { backgroundColor: '#dee2e6' },
                 '&.Mui-focused': {
@@ -173,7 +173,7 @@ function LoginForm() {
               '& .MuiOutlinedInput-root': {
                 borderRadius: { xs: 3, md: 2 },
                 backgroundColor: '#e9ecef',
-                height: { xs: 56, md: 48 },
+                height: 56,
                 '& fieldset': { border: 'none' },
                 '&:hover': { backgroundColor: '#dee2e6' },
                 '&.Mui-focused': {
