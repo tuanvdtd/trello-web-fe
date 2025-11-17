@@ -287,7 +287,7 @@ const DetailForm = ({ template, backtoShowModel, handleCloseModal }) => {
                   }
                 }}
               >
-                Create Project
+                Create
               </Button>
             </Stack>
           </Grid>

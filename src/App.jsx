@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
+import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import Board from '~/pages/Boards/_id'
 import NotFound from '~/pages/404/NotFound'
 import Auth from '~/pages/Auth/Auth'
@@ -9,7 +10,6 @@ import Settings from '~/pages/Settings/Settings'
 import Boards from '~/pages/Boards/index'
 import Home from '~/pages/Home/Home'
 import Auth0Callback from './pages/Auth/Auth0Callback'
-import ResetPasswordForm from './pages/Auth/ResetPasswordForm'
 
 const ProtectedRoute = ({ user }) => {
   if (!user) {
@@ -25,8 +25,33 @@ const LoginedRedirect = ({ user }) => {
   else return <Outlet />
 }
 
+const titleMap = {
+  '/': 'Home | My App',
+  '/boards': 'My Boards | My App',
+  '/settings/account': 'Account Settings | My App',
+  '/settings/security': 'Security Settings | My App',
+  '/login': 'Login | My App',
+  '/register': 'Sign Up | My App',
+  '/callback': 'Login with Auth0 | My App',
+  '/forgot-password': 'Forgot Password | My App',
+  '/account/verification': 'Account Verification | My App',
+  '/account/reset-password': 'Reset Password | My App'
+}
+
 export default function App() {
   const currUser = useSelector(selectCurrentUser)
+  const location = useLocation()
+
+  useEffect(() => {
+    const path = location.pathname
+
+    if (path.startsWith('/boards/') && path.split('/').length === 3) {
+      document.title = 'Board Details | My App'
+      return
+    }
+
+    document.title = titleMap[path] || 'Page Not Found | My App'
+  }, [location.pathname])
 
   return (
     <Routes>
@@ -55,7 +80,7 @@ export default function App() {
       <Route path='/forgot-password' element= {<Auth />} />
       <Route path='/callback' element={<Auth0Callback />} />
       <Route path='/account/verification' element= {<AccountVerification />} />
-      <Route path='/reset-password' element= {<ResetPasswordForm />} />
+      <Route path='/account/reset-password' element= {<Auth />} />
       <Route path='*' element= {<NotFound />} />
     </Routes>
   )

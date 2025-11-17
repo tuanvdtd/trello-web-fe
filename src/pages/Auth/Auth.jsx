@@ -4,9 +4,9 @@ import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
-import BackGroundAuth from '~/assets/auth/login-register-bg.jpg'
 import BackGroundAuth2 from '~/assets/auth/bg.jpg'
 import ForgotPassForm from './ForgotPassForm'
+import ResetPasswordForm from './ResetPasswordForm'
 
 function Auth() {
   const location = useLocation()
@@ -14,6 +14,8 @@ function Auth() {
   const isLogin = location.pathname === '/login'
   const isRegister = location.pathname === '/register'
   const isForgotPass = location.pathname === '/forgot-password'
+  const isResetPassword = location.pathname === '/account/reset-password'
+  // console.log('isReset', isResetPassword)
   // Nếu vẫn còn thông tin user trong storage thì không cần phải vào trang đăng nhập hay đăng ký nữa mà vào thẳng trang / luôn
   const currUser = useSelector(selectCurrentUser)
   if (currUser) {
@@ -39,6 +41,7 @@ function Auth() {
       {isLogin && <LoginForm />}
       {isRegister && <RegisterForm />}
       {isForgotPass && <ForgotPassForm />}
+      {isResetPassword && <ResetPasswordForm />}
     </Box>
   )
 }

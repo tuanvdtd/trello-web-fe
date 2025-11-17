@@ -35,10 +35,10 @@ const DRAWER_WIDTH = 280
 
 const MainContent = styled(Box)(({ theme }) => ({
   flexGrow: 1,
-  padding: theme.spacing(3),
+  padding: theme.spacing(1),
   [theme.breakpoints.up('md')]: {
     marginLeft: DRAWER_WIDTH,
-    padding: theme.spacing(0, 0, 0, 10)
+    padding: theme.spacing(0, 0, 0, 2)
   }
 }))
 
@@ -177,60 +177,60 @@ function Boards() {
 
           {/* Trường hợp gọi API và có boards trong Database trả về thì render danh sách boards */}
           {!isLoading && boards?.length > 0 && (
-            <Grid container spacing={2}>
+            <Grid container spacing={{ xs: 1, sm: 2, md: 2 }} rowSpacing={3} >
               {boards.map(b =>
-                // <Grid xs={2} sm={3} md={4} key={b._id}>
-                <Card key={b._id} sx={{ width: '250px', boxShadow: 3, borderRadius: '10px', '&:hover': { boxShadow: 5, transform: 'scale(1.05)' }, transition: 'transform 0.2s' }}>
-                  {/* Ý tưởng mở rộng về sau làm ảnh Cover cho board nhé */}
-                  {b?.background?.backgroundType === 'image' ? (
-                    <CardMedia component="img" image={b.background.backgroundUrl} sx={{ height: 120 }} />
-                  ) : b?.background?.backgroundType === 'gradient' ? (
-                    <CardMedia
-                      component="div"
-                      sx={{
-                        height: 120,
-                        backgroundImage: b.background.backgroundUrl,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                      }}
-                    />
-                  ) : (
-                    <CardMedia
-                      component="div"
-                      sx={{
-                        height: 120,
-                        backgroundColor: b?.background?.backgroundUrl || '#1976d2'
-                      }}
-                    />
-                  )}
-                  {/* <Box sx={{ height: '50px', backgroundColor: randomColor() }}></Box> */}
+                <Grid item size= {{ xs: 6, sm: 4, md: 4, lg: 3 }} key={b._id}>
+                  <Card sx={{ maxWidth: 300, mx: 'auto', boxShadow: 3, borderRadius: '10px', '&:hover': { boxShadow: 5, transform: 'scale(1.05)' }, transition: 'transform 0.2s' }}>
+                    {/* Ý tưởng mở rộng về sau làm ảnh Cover cho board nhé */}
+                    {b?.background?.backgroundType === 'image' ? (
+                      <CardMedia component="img" image={b.background.backgroundUrl} sx={{ height: 120 }} />
+                    ) : b?.background?.backgroundType === 'gradient' ? (
+                      <CardMedia
+                        component="div"
+                        sx={{
+                          height: 120,
+                          backgroundImage: b.background.backgroundUrl,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center'
+                        }}
+                      />
+                    ) : (
+                      <CardMedia
+                        component="div"
+                        sx={{
+                          height: 120,
+                          backgroundColor: b?.background?.backgroundUrl || '#1976d2'
+                        }}
+                      />
+                    )}
+                    {/* <Box sx={{ height: '50px', backgroundColor: randomColor() }}></Box> */}
 
-                  <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
-                    <Typography gutterBottom variant="h6" component="div">
-                      {b?.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                      {b?.description}
-                    </Typography>
-                    <Box
-                      component={Link}
-                      to={`/boards/${b._id}`}
-                      sx={{
-                        mt: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                        color: 'primary.main',
-                        '&:hover': { color: 'primary.light' }
-                      }}>
-                      Go to board <ArrowRightIcon fontSize="small" />
-                    </Box>
-                  </CardContent>
-                </Card>
-                // </Grid>
+                    <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                      <Typography gutterBottom variant="h6" component="div">
+                        {b?.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                        {b?.description}
+                      </Typography>
+                      <Box
+                        component={Link}
+                        to={`/boards/${b._id}`}
+                        sx={{
+                          mt: 1,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'flex-end',
+                          color: 'primary.main',
+                          '&:hover': { color: 'primary.light' }
+                        }}>
+                        Go to board <ArrowRightIcon fontSize="small" />
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
               )}
             </Grid>
           )}
