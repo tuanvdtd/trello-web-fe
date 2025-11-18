@@ -168,7 +168,7 @@ function ActiveCard() {
         // overflowY: 'auto',
         bgcolor: 'white',
         boxShadow: 24,
-        borderRadius: '8px',
+        borderRadius: '6px', // reduced from 8px
         border: 'none',
         outline: 0,
         padding: '40px 20px 20px',
@@ -187,7 +187,7 @@ function ActiveCard() {
         {activeCard?.cover &&
           <Box sx={{ mb: 4 }}>
             <img
-              style={{ width: '100%', height: '320px', borderRadius: '6px', objectFit: 'cover' }}
+              style={{ width: '100%', height: '320px', borderRadius: '4px', objectFit: 'cover' }} // reduced from 6px
               src={activeCard?.cover}
               alt="card-cover"
             />

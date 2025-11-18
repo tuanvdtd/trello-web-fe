@@ -12,7 +12,9 @@ import AttachmentIcon from '@mui/icons-material/Attachment'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { updateCurrentActiveCard, showActiveCardModal } from '~/redux/activeCard/activeCardSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { MessageSquare, Paperclip, UsersRound, Users } from 'lucide-react'
 
 function TrelloCard({ card }) {
   const dispatch = useDispatch()
@@ -41,6 +43,14 @@ function TrelloCard({ card }) {
       !!card?.attachments?.length
     )
   }
+
+  const activeBoard = useSelector(selectCurrentActiveBoard)
+  const boardMembers = activeBoard.allUsers
+
+  const cardMembers = card?.memberIds?.map(memberId => {
+    return boardMembers.find(user => user._id === memberId)
+  })
+
   return (
     <>
       <Card
@@ -76,7 +86,7 @@ function TrelloCard({ card }) {
         </CardContent>
         {isShowCardActions() && (
           <CardActions sx={{ p: '0 4px 8px 4px' }}>
-            {!!card?.memberIds?.length && (
+            {/* {!!card?.memberIds?.length && (
               <Button size="small" startIcon={<GroupIcon />}>
                 {card?.memberIds.length}
               </Button>
@@ -90,7 +100,48 @@ function TrelloCard({ card }) {
               <Button size="small" startIcon={<AttachmentIcon />}>
                 {card?.attachments.length}
               </Button>
-            )}
+            )} */}
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center">
+                {!!card?.memberIds?.length && (
+                  <Button className="flex items-center gap-1 text-xs">
+                    <Users className="w-3.5 h-3.5" />
+                    <span>{card?.memberIds.length}</span>
+                  </Button>
+                )}
+                {!!card?.comments?.length && (
+                  <Button className="flex items-center gap-1 text-xs">
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    <span>{card?.comments.length}</span>
+                  </Button>
+                )}
+                {!!card?.attachments?.length && (
+                  <Button className="flex items-center gap-1 text-xs">
+                    <Paperclip className="w-3.5 h-3.5" />
+                    <span>{card?.attachments.length}</span>
+                  </Button>
+                )}
+              </div>
+              {cardMembers.length > 0 && (
+                <Button className="flex -space-x-2">
+                  {cardMembers.slice(0, 2).map(user => (
+                    <img
+                      key={user._id}
+                      src={user.avatar}
+                      alt={user.username}
+                      className="w-6 h-6 rounded-full border-2 border-white ring-1 ring-gray-300"
+                      title={user.username}
+                    />
+                  ))}
+                  {cardMembers.length > 2 && (
+                    <div className={`w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs bg-gray-200 text-gray-600
+                    }`}>
+                      +{cardMembers.length - 2}
+                    </div>
+                  )}
+                </Button>
+              )}
+            </div>
           </CardActions>
         )}
       </Card>

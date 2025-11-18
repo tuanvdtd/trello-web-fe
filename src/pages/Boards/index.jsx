@@ -29,6 +29,11 @@ import CloseIcon from '@mui/icons-material/Close'
 
 import EmptyBoardsState from '~/components/EmptyBoardsState'
 import SidebarContent from '~/components/SidebarContent'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '~/redux/user/userSlice'
+import {
+  Clock
+} from 'lucide-react'
 
 
 const DRAWER_WIDTH = 280
@@ -70,6 +75,7 @@ function Boards() {
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const userId = useSelector(selectCurrentUser)._id
 
   useEffect(() => {
     // Fake tạm 16 cái item thay cho boards
@@ -180,30 +186,71 @@ function Boards() {
             <Grid container spacing={{ xs: 1, sm: 2, md: 2 }} rowSpacing={3} >
               {boards.map(b =>
                 <Grid item size= {{ xs: 6, sm: 4, md: 4, lg: 3 }} key={b._id}>
-                  <Card sx={{ maxWidth: 300, mx: 'auto', boxShadow: 3, borderRadius: '10px', '&:hover': { boxShadow: 5, transform: 'scale(1.05)' }, transition: 'transform 0.2s' }}>
+                  <Card sx={{ position: 'relative', maxWidth: 300, mx: 'auto', boxShadow: 3, borderRadius: '6px', '&:hover': { boxShadow: 5, transform: 'scale(1.05)' }, transition: 'transform 0.2s' }}>
                     {/* Ý tưởng mở rộng về sau làm ảnh Cover cho board nhé */}
                     {b?.background?.backgroundType === 'image' ? (
-                      <CardMedia component="img" image={b.background.backgroundUrl} sx={{ height: 120 }} />
+                      <Box sx={{ position: 'relative', height: 120 }}>
+                        <CardMedia component="img" image={b.background.backgroundUrl} sx={{ height: 120 }} />
+                        {/* Role Badge */}
+                        <Box sx={{ position: 'absolute', bottom: 8, left: 8 }}>
+                          <span
+                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                              b.ownerIds.includes(userId)
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-gray-100 text-gray-700'
+                            }`}
+                          >
+                            {b.ownerIds.includes(userId) ? 'Owner' : 'Member'}
+                          </span>
+                        </Box>
+                      </Box>
                     ) : b?.background?.backgroundType === 'gradient' ? (
-                      <CardMedia
-                        component="div"
-                        sx={{
-                          height: 120,
-                          backgroundImage: b.background.backgroundUrl,
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center'
-                        }}
-                      />
+                      <Box sx={{ position: 'relative', height: 120 }}>
+                        <CardMedia
+                          component="div"
+                          sx={{
+                            height: 120,
+                            backgroundImage: b.background.backgroundUrl,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                          }}
+                        />
+                        {/* Role Badge */}
+                        <Box sx={{ position: 'absolute', bottom: 8, left: 8 }}>
+                          <span
+                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                              b.ownerIds.includes(userId)
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-gray-100 text-gray-700'
+                            }`}
+                          >
+                            {b.ownerIds.includes(userId) ? 'Owner' : 'Member'}
+                          </span>
+                        </Box>
+                      </Box>
                     ) : (
-                      <CardMedia
-                        component="div"
-                        sx={{
-                          height: 120,
-                          backgroundColor: b?.background?.backgroundUrl || '#1976d2'
-                        }}
-                      />
+                      <Box sx={{ position: 'relative', height: 120 }}>
+                        <CardMedia
+                          component="div"
+                          sx={{
+                            height: 120,
+                            backgroundColor: b?.background?.backgroundUrl || '#1976d2'
+                          }}
+                        />
+                        {/* Role Badge */}
+                        <Box sx={{ position: 'absolute', bottom: 8, left: 8 }}>
+                          <span
+                            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                              b.ownerIds.includes(userId)
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-gray-100 text-gray-700'
+                            }`}
+                          >
+                            {b.ownerIds.includes(userId) ? 'Owner' : 'Member'}
+                          </span>
+                        </Box>
+                      </Box>
                     )}
-                    {/* <Box sx={{ height: '50px', backgroundColor: randomColor() }}></Box> */}
 
                     <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
                       <Typography gutterBottom variant="h6" component="div">
@@ -228,6 +275,41 @@ function Boards() {
                         }}>
                         Go to board <ArrowRightIcon fontSize="small" />
                       </Box>
+                      {b.members.length > 0 && (
+                        <div className="flex items-center justify-between">
+                          <div className="flex -space-x-2">
+                            {b.members.map((member) => (
+                              <img
+                                key={member.id}
+                                src={member.avatar}
+                                alt={member.name}
+                                className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-white dark:border-gray-800 hover:z-10 transition-all"
+                                title={member.name}
+                              />
+                            ))}
+                            {b.members.length > 5 && (
+                              <div
+                                className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 
+                                     border-white bg-gray-200 text-gray-600
+                                 flex items-center justify-center text-[10px] sm:text-xs`}
+                              >
+                                +{b.members.length - 5}
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-1 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
+                            {/* Original dynamic time display (commented out for temporary hardcode)
+                            <Clock className="w-3 h-3" />
+                            <span className="hidden sm:inline">{formatDistanceToNow(createdDate, { addSuffix: true })}</span>
+                            <span className="sm:hidden">{formatDistanceToNow(createdDate, { addSuffix: true }).replace('about ', '')}</span>
+                            */}
+                            {/* Temporary hardcoded time */}
+                            <Clock className="w-3 h-3" />
+                            <span className="hidden sm:inline">2 days ago</span>
+                            <span className="sm:hidden">2d</span>
+                          </div>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </Grid>
