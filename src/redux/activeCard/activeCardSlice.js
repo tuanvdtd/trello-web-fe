@@ -42,6 +42,12 @@ export const activeCardSlice = createSlice({
     },
     showActiveCardModal: (state) => {
       state.isShowActiveCardModal = true
+    },
+
+    addCommentToCard: (state, action) => {
+      const newComment = action.payload
+      // state.currentComments = Array.isArray(state.currentComments) ? state.currentComments : [];
+      state.currentActiveCard.comments.unshift(newComment)
     }
   }
   // extraReducers là nơi xử lí dữ liệu bất đồng bộ
@@ -51,7 +57,7 @@ export const activeCardSlice = createSlice({
 
 // Actions: là nơi dành cho các component bên dưới gọi bằng dispatch() tới nó để cập nhật dữ liệu thông qua reducer chạy đồng bộ
 // actions là các hàm được tạo ra từ reducers bên trên, mỗi hàm tương ứng với một action
-export const { updateCurrentActiveCard, hideAndClearCurrentActiveCard, showActiveCardModal } = activeCardSlice.actions
+export const { updateCurrentActiveCard, hideAndClearCurrentActiveCard, showActiveCardModal, addCommentToCard } = activeCardSlice.actions
 
 //Selectors: là nơi dành cho các component bên dưới gọi bằng hook userSelector để lấy dữ liệu từ state (trong kho Redux Store) về
 export const selectCurrentActiveCard = (state) => {

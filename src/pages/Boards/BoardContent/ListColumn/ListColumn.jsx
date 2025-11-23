@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import { cloneDeep } from 'lodash'
 import { createNewColumnAPI } from '~/apis/index'
 import { generatePlaceholderCard } from '~/utils/formatter'
-import {updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
 function ListColumn({ columns }) {
@@ -24,7 +24,7 @@ function ListColumn({ columns }) {
   }
   const [newColumnTitle, setNewColumnTitle] = useState('')
   // Board
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const board = useSelector(selectCurrentActiveBoard)
 
   const addColumn = async () => {
@@ -35,7 +35,7 @@ function ListColumn({ columns }) {
     // Call the API to add the new column
     const newColumnData = {
       title: newColumnTitle
-    };
+    }
 
     const createdColumn = await createNewColumnAPI({
       ...newColumnData,
@@ -44,9 +44,9 @@ function ListColumn({ columns }) {
 
 
     // Tạo một card giả để phục vụ kéo thả dnd khi tạo mới column mà chưa có card nào
-    const card = generatePlaceholderCard(createdColumn._id);
-    createdColumn.cards = [card];
-    createdColumn.cardOrderIds = [card._id];
+    const card = generatePlaceholderCard(createdColumn._id)
+    createdColumn.cards = [card]
+    createdColumn.cardOrderIds = [card._id]
 
     // Cập nhật lại state bên Fe, tránh gọi lại api fetchBoardDetailsAPI  gây mất thời gian
     const updateBoard = cloneDeep(board)
@@ -110,7 +110,7 @@ function ListColumn({ columns }) {
               </Button>
             </Box>
             :
-            <Box sx={{ 
+            <Box sx={{
               minWidth: '250px',
               maxWidth: '250px',
               // bgcolor: "#ffffff3d",
@@ -119,7 +119,7 @@ function ListColumn({ columns }) {
               mx: 2,
               p: 1.5,
               borderRadius: '6px',
-              height: 'fit-content', 
+              height: 'fit-content',
               display: 'flex',
               flexDirection: 'column',
               gap: 1
@@ -148,9 +148,9 @@ function ListColumn({ columns }) {
                 //      },
                 //    },
                 //  }}
-                sx={{'& input': {
+                sx={{ '& input': {
                 // color: (theme) => theme.palette.primary.main,
-                  bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : 'white'),
+                  bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : 'white')
                 } }}
               />
               <Box
@@ -170,7 +170,7 @@ function ListColumn({ columns }) {
                     // color: "black",
                     cursor: 'pointer',
                     mr:1,
-                    '&:hover' : { color: (theme) => theme.palette.warning.light}
+                    '&:hover' : { color: (theme) => theme.palette.warning.light }
                   }}
                 />
               </Box>
@@ -180,7 +180,7 @@ function ListColumn({ columns }) {
         </Box>
       </SortableContext>
     </>
-  );
+  )
 }
 
 export default ListColumn

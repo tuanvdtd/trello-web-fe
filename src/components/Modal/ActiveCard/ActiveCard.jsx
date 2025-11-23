@@ -39,9 +39,12 @@ import { updateCardInBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { CARD_MEMBER_ACTIONS } from '~/utils/constants'
 import { socketIoInstance } from '~/socketClient'
+import { createNewCommentAPI, updateCommentAPI, deleteCommentAPI } from '~/apis'
 
 
 import { styled } from '@mui/material/styles'
+import { cloneDeep } from 'lodash'
+
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -147,7 +150,45 @@ function ActiveCard() {
 
   const onAddCardComment = async (newComment) => {
     // call api
-    callUpdateCardAPI({ newComment })
+    createNewCommentAPI({ cardId: activeCard._id, ...newComment, boardId: activeCard.boardId }).then((createdComment) => {
+      // console.log('createdComment: ', createdComment)
+      // Cập nhật lại activeCard trong redux
+      const updatedCard = cloneDeep(activeCard)
+      updatedCard.comments.unshift(createdComment)
+      // Thêm comment vào activeCard trong redux
+      dispatch(updateCurrentActiveCard(updatedCard))
+      // Cập nhật lại card vào activeBoard trong redux
+      dispatch(updateCardInBoard(updatedCard))
+      // // Phát sự kiện lên server để thông báo các client khác cùng cập nhật
+      // // socketIoInstance.emit('Fe_UpdateCard', updatedCard)
+    })
+  }
+
+  const onDeleteCardComment = async (commentId) => {
+    // Cập nhật lại activeCard trong redux
+    const updatedCard = cloneDeep(activeCard)
+    deleteCommentAPI(commentId).then(() => {
+      updatedCard.comments = updatedCard.comments.filter(comment => comment._id !== commentId)
+      // Thêm comment vào activeCard trong redux
+      dispatch(updateCurrentActiveCard(updatedCard))
+      // Cập nhật lại card vào activeBoard trong redux
+      dispatch(updateCardInBoard(updatedCard))
+    })
+  }
+
+  const onUpdateCardComment = async (commentId, content) => {
+    // Cập nhật lại activeCard trong redux
+    const updatedCard = cloneDeep(activeCard)
+    updateCommentAPI(commentId, content).then((updatedComment) => {
+      const commentIndex = updatedCard.comments.findIndex(comment => comment._id === commentId)
+      if (commentIndex !== -1) {
+        updatedCard.comments[commentIndex] = updatedComment
+        // Thêm comment vào activeCard trong redux
+        dispatch(updateCurrentActiveCard(updatedCard))
+        // Cập nhật lại card vào activeBoard trong redux
+        dispatch(updateCardInBoard(updatedCard))
+      }
+    })
   }
 
   const onHandleUpdateCardMembers = async (updateMemberCardData) => {
@@ -234,7 +275,12 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 04: Xử lý các hành động, ví dụ comment vào Card */}
-              <CardActivitySection onAddCardComment={onAddCardComment} comments = {activeCard?.comments}/>
+              <CardActivitySection
+                onAddCardComment={onAddCardComment}
+                onUpdateCardComment={onUpdateCardComment}
+                comments={activeCard?.comments}
+                onDeleteCardComment={onDeleteCardComment}
+              />
             </Box>
           </Grid>
 

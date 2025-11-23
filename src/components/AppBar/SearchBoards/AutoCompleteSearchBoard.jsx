@@ -7,6 +7,11 @@ import SearchIcon from '@mui/icons-material/Search'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { useDebounceFn } from '~/customHooks/useDebounceFn'
 import { fetchBoardsAPI } from '~/apis/index'
+import Box from '@mui/material/Box'
+import ListItem from '@mui/material/ListItem'
+import ListItemAvatar from '@mui/material/ListItemAvatar'
+import ListItemText from '@mui/material/ListItemText'
+import Typography from '@mui/material/Typography'
 
 /**
  * https://mui.com/material-ui/react-autocomplete/#asynchronous-requests
@@ -29,7 +34,9 @@ function AutoCompleteSearchBoard() {
   // Xử lý việc nhận data nhập vào từ input sau đó gọi API để lấy kết quả về (cần cho vào useDebounceFn như bên dưới)
   const handleInputSearchChange = (event) => {
     const searchValue = event.target?.value
-    if (!searchValue) return
+    if (!searchValue) {
+      return
+    }
     // console.log(searchValue)
 
     // Dùng createSearchParams của react-router-dom để tạo một cái searchPath chuẩn với q[title] để gọi lên API
@@ -92,6 +99,60 @@ function AutoCompleteSearchBoard() {
 
       // onChange của cả cái Autocomplete sẽ chạy khi chúng ta select một cái kết quả (ở đây là board)
       onChange={handleSelectedBoard}
+
+      // Render từng option trong list kết quả tìm kiếm (thumbnail + title + description)
+      renderOption={(props, option) => {
+        const { key, ...optionProps } = props
+        const bg = option?.background || {}
+        const thumbSize = 40 // Kích thước thumbnail
+
+        return (
+          <ListItem
+            key={key}
+            component="li"
+            {...optionProps}
+            sx={{ alignItems: 'flex-start', py: 1 }}
+          >
+            <ListItemAvatar sx={{ minWidth: 0, mr: 1 }}>
+              <Box
+                sx={{
+                  width: thumbSize,
+                  height: thumbSize,
+                  borderRadius: 1,
+                  overflow: 'hidden',
+                  boxShadow: 1,
+                  bgcolor: bg?.backgroundType === 'color' ? (bg.backgroundUrl || '#1976d2') : '#1976d2'
+                }}
+              >
+                {bg?.backgroundType === 'image' ? (
+                  <Box
+                    component="img"
+                    src={bg.backgroundUrl}
+                    alt={option.title}
+                    sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                ) : bg?.backgroundType === 'gradient' ? (
+                  <Box sx={{ width: '100%', height: '100%', backgroundImage: bg.backgroundUrl, backgroundSize: 'cover' }} />
+                ) : null}
+              </Box>
+            </ListItemAvatar>
+
+            <ListItemText
+              primary={
+                <Typography variant="body1" sx={{ fontWeight: 600 }} noWrap>
+                  {option.title}
+                </Typography>
+              }
+              secondary={
+                <Typography variant="body2" color="text.secondary" noWrap>
+                  {option.description}
+                </Typography>
+              }
+              sx={{ ml: 0 }}
+            />
+          </ListItem>
+        )
+      }}
 
       // Render ra cái thẻ input để nhập nội dung tìm kiếm
       renderInput={(params) => (

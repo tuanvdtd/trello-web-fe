@@ -275,7 +275,7 @@ function Boards() {
                       {b.members.length > 0 && (
                         <div className="flex items-center justify-between">
                           <div className="flex -space-x-2">
-                            {b.members.map((member) => (
+                            {b.members.slice(0, 2).map((member) => (
                               <img
                                 key={member._id}
                                 src={member.avatar}
@@ -284,13 +284,13 @@ function Boards() {
                                 title={member.name}
                               />
                             ))}
-                            {b.members.length > 5 && (
+                            {b.members.length > 2 && (
                               <div
                                 className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 
                                      border-white bg-gray-200 text-gray-600
                                  flex items-center justify-center text-[10px] sm:text-xs`}
                               >
-                                +{b.members.length - 5}
+                                +{b.members.length - 2}
                               </div>
                             )}
                           </div>
@@ -339,26 +339,6 @@ function Boards() {
           }
         </MainContent>
       </Box>
-      {/* {isMobile && (
-        <IconButton
-          color="inherit"
-          edge="start"
-          onClick={handleDrawerToggle}
-          sx={{
-            position: 'fixed',
-            top: 20,
-            left: 20,
-            zIndex: theme.zIndex.drawer + 1,
-            bgcolor: 'background.paper',
-            boxShadow: 2,
-            '&:hover': {
-              bgcolor: 'action.hover'
-            }
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
-      )} */}
 
       <LearnMoreModal
         open={isLearnMoreOpen}

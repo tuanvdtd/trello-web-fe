@@ -69,6 +69,15 @@ export const activeBoardSlice = createSlice({
         } else {
           // Nếu column có cards thì sắp xếp thứ tự cards theo cardOrderIds ngay từ trên root
           column.cards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
+          column.cards.forEach((card) => {
+            // Nếu card không có comments thì gán mảng rỗng để tránh lỗi
+            if (!Array.isArray(card.comments)) {
+              card.comments = []
+            } else {
+              // Sắp xếp thứ tự comments theo commentOrderIds ngay từ trên root
+              card.comments = mapOrder(card?.comments, card?.commentOrderIds, '_id')
+            }
+          })
         }
       })
       // lấy ra tất cả users trong board (owners và members) để tiện cho việc search thành viên khi thêm thẻ

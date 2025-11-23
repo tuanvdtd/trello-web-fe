@@ -109,3 +109,22 @@ export const verify_2FA_API = async (otpToken) => {
   const res = await authorizedAxiosInstance.put(`${API_ROOT}/v1/users/verify_2fa`, { otpToken })
   return res.data
 }
+
+//----------------Comment API----------------------------------
+
+export const createNewCommentAPI = async (newCommentData) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/v1/comments`, newCommentData)
+  return response.data
+}
+
+export const deleteCommentAPI = async (commentId) => {
+  const response = await authorizedAxiosInstance.delete(`${API_ROOT}/v1/comments/${commentId}`)
+  return response.data
+}
+
+export const updateCommentAPI = async (commentId, updateData) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/v1/comments/${commentId}`, { content: updateData })
+  return response.data
+}
+
+//------------------------------------------
