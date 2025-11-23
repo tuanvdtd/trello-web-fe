@@ -30,11 +30,11 @@ function AutoCompleteSearchBoard() {
   const handleInputSearchChange = (event) => {
     const searchValue = event.target?.value
     if (!searchValue) return
-    console.log(searchValue)
+    // console.log(searchValue)
 
     // Dùng createSearchParams của react-router-dom để tạo một cái searchPath chuẩn với q[title] để gọi lên API
     const searchPath = `?${createSearchParams({ 'q[title]': searchValue })}`
-    console.log(searchPath)
+    // console.log(searchPath)
 
     // Gọi API...
     setLoading(true)
@@ -61,7 +61,7 @@ function AutoCompleteSearchBoard() {
 
   return (
     <Autocomplete
-      sx={{ width: 220 }}
+      sx={{ width: 250 }}
       id="asynchronous-search-board"
       // Cái text này hiện ra khi boards là null hoặc sau khi đã fetch boards nhưng rỗng - không có kết quả
       noOptionsText={!boards ? 'Type to search board...' : 'No board found!'}

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Stack from '@mui/material/Stack'
@@ -11,6 +12,7 @@ import { styled } from '@mui/material/styles'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import SidebarCreateBoardModal from '~/pages/Boards/create'
+import CreateBoard from '~/components/CreateBoard/CreateBoard'
 
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -45,6 +47,10 @@ const SidebarContent = ({
   onCloseCreateModal
 }) => {
   const currentUser = useSelector(selectCurrentUser)
+  const [showCreate, setShowCreate] = useState(false)
+  const handleShowCreate = () => {
+    setShowCreate(!showCreate)
+  }
 
   return (
     <Box sx={{
@@ -101,7 +107,7 @@ const SidebarContent = ({
             <SpaceDashboardIcon fontSize="small" />
             Boards
           </SidebarItem>
-          <SidebarItem onClick={onItemClick}>
+          <SidebarItem onClick={handleShowCreate}>
             <ListAltIcon fontSize="small" />
             Templates
           </SidebarItem>
@@ -181,7 +187,11 @@ const SidebarContent = ({
           ))}
         </Stack>
       </Box>
+      {showCreate && (
+        <CreateBoard showCreate={handleShowCreate} />
+      )}
     </Box>
+
   )
 }
 

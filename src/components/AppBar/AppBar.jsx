@@ -2,27 +2,29 @@ import { useState } from 'react'
 import ToggleTheme from '~/components/ModeSelect/ToggleTheme'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import AppsIcon from '@mui/icons-material/Apps'
 import { ReactComponent as TrelloIcon } from '~/assets/trello.svg'
 import SvgIcon from '@mui/material/SvgIcon'
-import WorkSpace from './Menu/WorkSpace'
-import Recent from './Menu/Recent'
-import Starred from './Menu/Starred'
-import TemPlates from './Menu/Templates'
-import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import Profile from './Menu/Profile'
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd'
 import { Link } from 'react-router-dom'
 import Notifications from './Notifications/Notifications'
 import AutoCompleteSearchBoard from './SearchBoards/AutoCompleteSearchBoard'
-import CreateBoard from '~/components/CreateBoard/CreateBoard'
+import Drawer from '@mui/material/Drawer'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
+import SidebarContent from '~/components/SidebarContent'
+import {
+  Menu
+} from 'lucide-react'
+import { useColorScheme } from '@mui/material/styles'
+
 
 function AppBar() {
-  const [showCreate, setShowCreate] = useState(false)
-  const handleShowCreate = () => {
-    setShowCreate(!showCreate)
+  const { mode } = useColorScheme()
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const DRAWER_WIDTH = 280
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen)
   }
   return (
     <>
@@ -44,58 +46,109 @@ function AppBar() {
             theme.palette.mode === 'dark' ? '#2c3e50' : '#1565c0'
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Link to="/boards" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Tooltip title="Board List">
-              <AppsIcon sx={{ color: 'white', verticalAlign: 'middle', fontSize: '1.75rem' }} />
-            </Tooltip>
-          </Link>
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+        {/* Mobile drawer */}
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{ keepMounted: true }}
+          sx={{
+            // Make drawer available on all screen sizes when open
+            display: 'block',
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: DRAWER_WIDTH,
+              bgcolor: 'background.default',
+              borderRight: '1px solid',
+              borderColor: 'divider'
+            }
+          }}
+          anchor="left"
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 1, mb: 1, alignItems: 'center' }}>
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 0.5,
-                color: 'white'
+                gap: 1,
+                color: '#0984e3',
+                ml: 2
               }}
             >
               <SvgIcon component={TrelloIcon} inheritViewBox />
               <Typography
                 variant="span"
-                sx={{ fontSize: '1.25rem', fontWeight: 'bold' }}
+                sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}
               >
                 Trello
               </Typography>
             </Box>
+            <IconButton onClick={handleDrawerToggle}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <SidebarContent onItemClick={handleDrawerToggle} />
+        </Drawer>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, ml:1 }}>
+          <button
+            onClick={handleDrawerToggle}
+            className={` p-2 rounded-lg cursor-pointer ${
+              mode === 'dark'
+                ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                : 'text-white border border-white '
+            } transition-colors`}
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Tooltip title="Home">
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  color: 'white'
+                }}
+              >
+                <SvgIcon component={TrelloIcon} inheritViewBox />
+                <Typography
+                  variant="span"
+                  sx={{ fontSize: '1.25rem', fontWeight: 'bold' }}
+                >
+                  Trello
+                </Typography>
+              </Box>
+            </Tooltip>
           </Link>
+        </Box>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 15, mr: 1 }}>
+          {/* <AutoCompleteSearchBoard /> */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1.5 }}>
-            <WorkSpace />
+            {/* <WorkSpace />
             <Recent />
             <Starred />
-            <TemPlates />
-            <Button
+            <TemPlates /> */}
+            {/* <Button
               variant="outlined"
               startIcon={<LibraryAddIcon />}
               sx={{ color: 'white', border: 'none' }}
               onClick={handleShowCreate}
             >
-              Create
-            </Button>
+            Create
+            </Button> */}
+            <AutoCompleteSearchBoard />
           </Box>
-        </Box>
-        {showCreate && (
-          <CreateBoard showCreate={handleShowCreate} />
-        )}
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <AutoCompleteSearchBoard />
           {/* Theme */}
-          <ToggleTheme />
-          <Notifications />
-          <Tooltip title="Help">
-            <HelpOutlineIcon sx={{ cursor: 'pointer', color: 'white' }} />
-          </Tooltip>
-          <Profile />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <ToggleTheme />
+            <Notifications />
+            {/* <Tooltip title="Help">
+              <HelpOutlineIcon sx={{ cursor: 'pointer', color: 'white' }} />
+            </Tooltip> */}
+            <Profile />
+          </Box>
         </Box>
       </Box>
     </>

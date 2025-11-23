@@ -79,7 +79,7 @@ authorizedAxiosInstance.interceptors.response.use((response) => {
   if (error.response?.data?.message) {
     errorMessage = error.response.data.message
   }
-  // Hiển thị thông báo lỗi, ngoại trừ lỗi 410
+  // Hiển thị thông báo lỗi, ngoại trừ lỗi 410 và 401
   if (error.response?.status !== 410) {
     toast.error(errorMessage, { position: 'bottom-left' })
   }

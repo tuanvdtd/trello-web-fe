@@ -19,21 +19,16 @@ import BoardsListSkeleton from '~/components/Skeleton/BoardsListSkeleton'
 import LearnMoreModal from '~/components/LearnMoreModal'
 import { styled } from '@mui/material/styles'
 
-import useMediaQuery from '@mui/material/useMediaQuery'
 import Drawer from '@mui/material/Drawer'
-import IconButton from '@mui/material/IconButton'
-
-import { useTheme } from '@mui/material/styles'
-import MenuIcon from '@mui/icons-material/Menu'
-import CloseIcon from '@mui/icons-material/Close'
-
 import EmptyBoardsState from '~/components/EmptyBoardsState'
 import SidebarContent from '~/components/SidebarContent'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import {
-  Clock
+  Clock,
+  Search
 } from 'lucide-react'
+import { useColorScheme } from '@mui/material/styles'
 
 
 const DRAWER_WIDTH = 280
@@ -58,6 +53,7 @@ function Boards() {
   const [isLearnMoreOpen, setIsLearnMoreOpen] = useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
+  const { mode } = useColorScheme()
 
   // Xử lý phân trang từ url với MUI: https://mui.com/material-ui/react-pagination/#router-integration
   const location = useLocation()
@@ -71,10 +67,7 @@ function Boards() {
    * hàm parseInt cần tham số thứ 2 là Hệ thập phân (hệ đếm cơ số 10) để đảm bảo chuẩn số cho phân trang
    */
   const page = parseInt(query.get('page') || '1', 10)
-  const [mobileOpen, setMobileOpen] = useState(false)
 
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const userId = useSelector(selectCurrentUser)._id
 
   useEffect(() => {
@@ -104,9 +97,6 @@ function Boards() {
     })
   }
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen)
-  }
 
   const handleCreateBoard = () => {
     setIsCreateModalOpen(true)
@@ -122,31 +112,6 @@ function Boards() {
     <Container disableGutters maxWidth={false}>
       <AppBar />
       <Box sx={{ paddingX: 2, my: 4 }}>
-        {/* Mobile drawer */}
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: DRAWER_WIDTH,
-              bgcolor: 'background.default',
-              borderRight: '1px solid',
-              borderColor: 'divider'
-            }
-          }}
-        >
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}>
-            <IconButton onClick={handleDrawerToggle}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          <SidebarContent onItemClick={handleDrawerToggle} />
-        </Drawer>
-
         {/* Desktop drawer */}
         <Drawer
           variant="permanent"
@@ -169,8 +134,40 @@ function Boards() {
             onCloseCreateModal={() => setIsCreateModalOpen(false)} />
         </Drawer>
         <MainContent component="main">
-          {(isLoading || boards?.length !== 0) && <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 3 }}>Your boards:</Typography>
-          }
+          {(isLoading || boards?.length !== 0) && (
+            <div className="max-w-[1920px] mx-auto mb-8 ">
+              <div className="mb-4 sm:mb-8">
+                <div className="flex-1">
+                  <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
+                    {'My Boards'}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    {'Manage and organize all your projects in one place'}
+                  </Typography>
+                </div>
+              </div>
+              {/* Search bar */}
+              <Box className="relative flex-1" sx={{ display: { xs: 'flex', md: 'none' } }}>
+                <Search
+                  className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${
+                    mode === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                  }`}
+                />
+                <input
+                  type="text"
+                  placeholder="Search boards..."
+                  // value={searchQuery}
+                  // onChange={(e) => setSearchQuery(e.target.value)}
+                  className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base rounded-lg border ${
+                    mode === 'dark'
+                      ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400'
+                      : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                  } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                />
+              </Box>
+              {/* <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 3 }}>Your boards:</Typography> */}
+            </div>
+          )}
 
           {isLoading && <BoardsListSkeleton />}
 
@@ -280,7 +277,7 @@ function Boards() {
                           <div className="flex -space-x-2">
                             {b.members.map((member) => (
                               <img
-                                key={member.id}
+                                key={member._id}
                                 src={member.avatar}
                                 alt={member.name}
                                 className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-white dark:border-gray-800 hover:z-10 transition-all"
@@ -342,7 +339,7 @@ function Boards() {
           }
         </MainContent>
       </Box>
-      {isMobile && (
+      {/* {isMobile && (
         <IconButton
           color="inherit"
           edge="start"
@@ -361,7 +358,7 @@ function Boards() {
         >
           <MenuIcon />
         </IconButton>
-      )}
+      )} */}
 
       <LearnMoreModal
         open={isLearnMoreOpen}
