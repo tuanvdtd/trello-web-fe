@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
@@ -40,7 +40,12 @@ import { selectCurrentUser } from '~/redux/user/userSlice'
 import { CARD_MEMBER_ACTIONS } from '~/utils/constants'
 import { socketIoInstance } from '~/socketClient'
 import { createNewCommentAPI, updateCommentAPI, deleteCommentAPI } from '~/apis'
-
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+import Popover from '@mui/material/Popover'
+import moment from 'moment'
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 
 import { styled } from '@mui/material/styles'
 import { cloneDeep } from 'lodash'
@@ -73,6 +78,10 @@ function ActiveCard() {
   const activeCard = useSelector(selectCurrentActiveCard)
   const isShowActiveCardModal = useSelector(selectShowActiveCardModal)
   const userInfo = useSelector(selectCurrentUser)
+
+  const [anchorElDatePicker, setAnchorElDatePicker] = useState(null)
+  const [selectedDate, setSelectedDate] = useState(activeCard?.dueDate ? moment(activeCard.dueDate) : null)
+  const openDatePicker = Boolean(anchorElDatePicker)
 
   useEffect(() => {
     if (!isShowActiveCardModal || !activeCard?._id) return
@@ -195,6 +204,23 @@ function ActiveCard() {
     callUpdateCardAPI({ updateMemberCardData })
   }
 
+  const handleClickDatePicker = (event) => {
+    setAnchorElDatePicker(event.currentTarget)
+  }
+
+  const handleCloseDatePicker = () => {
+    setAnchorElDatePicker(null)
+  }
+
+  const handleDateChange = (newDate) => {
+    setSelectedDate(newDate)
+    if (newDate) {
+      callUpdateCardAPI({ dueDate: newDate.valueOf() })
+    }
+    // console.log({ dueDate: newDate.toISOString(), origin: newDate.valueOf() })
+    handleCloseDatePicker()
+  }
+
   return (
     <Modal
       disableScrollLock
@@ -244,6 +270,16 @@ function ActiveCard() {
             value={activeCard?.title}
             onChangedValue={onUpdateCardTitle} />
         </Box>
+
+        {/* Hiển thị dueDate nếu có */}
+        {activeCard?.dueDate && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2, color: moment(activeCard.dueDate).isBefore(moment()) ? 'error.main' : '#576574' }}>
+            <WatchLaterOutlinedIcon fontSize="small" />
+            <Typography sx={{ fontWeight: 600 }}>
+              {moment(activeCard.dueDate).format('LLL')} ({moment(activeCard.dueDate).fromNow()})
+            </Typography>
+          </Box>
+        )}
 
         <Grid container spacing={2} sx={{ mb: 3 }}>
           {/* Left side */}
@@ -317,7 +353,40 @@ function ActiveCard() {
               <SidebarItem><AttachFileOutlinedIcon fontSize="small" />Attachment</SidebarItem>
               <SidebarItem><LocalOfferOutlinedIcon fontSize="small" />Labels</SidebarItem>
               <SidebarItem><TaskAltOutlinedIcon fontSize="small" />Checklist</SidebarItem>
-              <SidebarItem><WatchLaterOutlinedIcon fontSize="small" />Dates</SidebarItem>
+              <SidebarItem className="active" onClick={handleClickDatePicker}>
+                <WatchLaterOutlinedIcon fontSize="small" />
+                Dates
+              </SidebarItem>
+
+              <Popover
+                open={openDatePicker}
+                anchorEl={anchorElDatePicker}
+                onClose={handleCloseDatePicker}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left'
+                }}
+              >
+                <Box sx={{ p: 2 }}>
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <DatePicker
+                      label="Due Date"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      slotProps={{
+                        textField: {
+                          fullWidth: true
+                        }
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Box>
+              </Popover>
+
               <SidebarItem><AutoFixHighOutlinedIcon fontSize="small" />Custom Fields</SidebarItem>
             </Stack>
 

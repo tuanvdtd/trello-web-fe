@@ -84,7 +84,7 @@ function Notifications() {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClickNotificationIcon}
         >
-          <NotificationsNoneIcon sx={{
+          <NotificationsNoneIcon size="small" sx={{
             // color: 'white'
             color:  newNotification ? 'yellow' : 'white'
           }} />
@@ -92,20 +92,44 @@ function Notifications() {
       </Tooltip>
 
       <Menu
-        sx={{ mt: 2 }}
+        sx={{ mt: 1 }}
         id="basic-notification-menu"
-        // disableAutoFocus
+        disableAutoFocus
         disableEnforceFocus
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        MenuListProps={{ 'aria-labelledby': 'basic-button-open-notification' , role: 'menu' }}
+        // MenuListProps={{ 'aria-labelledby': 'basic-button-open-notification', role: 'menu' }}
         // slotProps={{
         //   list: {
         //     'aria-labelledby': 'basic-button-open-notification',
         //     // role: 'listbox',
         //   },
         // }}
+        slotProps={{
+          paper: {
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              mt: 1.5,
+              '&::before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                right: 8,
+                width: 10,
+                height: 10,
+                bgcolor: 'background.paper',
+                transform: 'translateY(-50%) rotate(45deg)',
+                zIndex: 0
+              }
+            }
+          }
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         {(!notifications || notifications.length === 0) && <MenuItem sx={{ minWidth: 200 }}>You do not have any new notifications.</MenuItem>}
         {notifications?.map((notification, index) =>
@@ -121,8 +145,8 @@ function Notifications() {
                   <Box><GroupAddIcon fontSize="small" /></Box>
                   <Box><strong>{notification.inviter.displayName}</strong> had invited you to join the board <strong>{notification.board.title}</strong></Box>
                 </Box>
-              {/* Khi Status của thông báo này là PENDING thì sẽ hiện 2 Button */}
-              { notification.boardInvitation.status === BOARD_INVITATION_STATUS.PENDING && 
+                {/* Khi Status của thông báo này là PENDING thì sẽ hiện 2 Button */}
+                { notification.boardInvitation.status === BOARD_INVITATION_STATUS.PENDING &&
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
                   <Button
                     className="interceptor-loading"

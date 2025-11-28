@@ -11,9 +11,12 @@ import { CSS } from '@dnd-kit/utilities'
 import { updateCurrentActiveCard, showActiveCardModal } from '~/redux/activeCard/activeCardSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
-import { MessageSquare, Paperclip, UsersRound, Users } from 'lucide-react'
+import { MessageSquare, Paperclip, Users, Calendar, AlertCircle, Clock } from 'lucide-react'
+import { differenceInDays, differenceInHours, isPast, isToday, isTomorrow } from 'date-fns'
+import { useColorScheme } from '@mui/material/styles'
 
 function TrelloCard({ card }) {
+  const { mode: darkMode } = useColorScheme()
   const dispatch = useDispatch()
   const {
     attributes,
@@ -48,6 +51,62 @@ function TrelloCard({ card }) {
     return boardMembers.find(user => user._id === memberId)
   })
 
+  // const priorityColors = {
+  //   low: darkMode ? 'bg-green-900/50 text-green-300' : 'bg-green-100 text-green-700',
+  //   medium: darkMode ? 'bg-yellow-900/50 text-yellow-300' : 'bg-yellow-100 text-yellow-700',
+  //   high: darkMode ? 'bg-red-900/50 text-red-300' : 'bg-red-100 text-red-700'
+  // }
+
+  const getDueStatus = () => {
+    if (!card.dueDate) return null
+
+    const due = new Date(card.dueDate)
+    const now = new Date()
+
+    if (isPast(due) && !isToday(due)) {
+      const daysOverdue = differenceInDays(now, due)
+      return {
+        label: `${daysOverdue}d overdue`,
+        color: 'bg-red-600 text-white',
+        icon: true
+      }
+    }
+
+    if (isToday(due)) {
+      const hoursLeft = differenceInHours(due, now)
+      return {
+        label: hoursLeft > 0 ? `${hoursLeft}h left` : 'Due today',
+        color: 'bg-orange-500 text-white',
+        icon: true
+      }
+    }
+
+    if (isTomorrow(due)) {
+      return {
+        label: 'Due tomorrow',
+        color: darkMode ? 'bg-yellow-900/70 text-yellow-200' : 'bg-yellow-100 text-yellow-800',
+        icon: false
+      }
+    }
+
+    const daysLeft = differenceInDays(due, now)
+    if (daysLeft <= 7) {
+      return {
+        label: `${daysLeft}d left`,
+        color: darkMode ? 'bg-blue-900/70 text-blue-200' : 'bg-blue-100 text-blue-800',
+        icon: false
+      }
+    }
+
+    return null
+  }
+
+  const dueStatus = getDueStatus()
+  const isOverdue = card.dueDate && isPast((card.dueDate)) && !isToday((card.dueDate))
+  // console.log(
+  //   {dueStatus, isOverdue}
+  // )
+
   return (
     <>
       <Card
@@ -71,15 +130,38 @@ function TrelloCard({ card }) {
           // display: card?.isPlaceHolderCard ? "none" : "block",
           height: card?.isPlaceHolderCard ? '0px' : 'unset',
           // border: "1px solid transparent",
-          border: card?.isPlaceHolderCard ? 'unset' : '1px solid transparent',
+          border: card?.isPlaceHolderCard ? 'unset' : isOverdue ? '2px solid red' : '1px solid transparent',
           '&:hover': {
             borderColor: (theme) => theme.palette.primary.main
           }
         }}
       >
-        {card?.cover && <CardMedia sx={{ height: 140 }} image={card?.cover} />}
+        {card?.cover && <CardMedia sx={{ height: 140, borderRadius: '4px 4px 0 0', objectFit: 'cover'}} image={card?.cover} />}
         <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
           <Typography>{card?.title}</Typography>
+          {(card?.startDate || card?.dueDate) && (
+            <div className={`flex items-center justify-between text-xs mt-2 ${
+              isOverdue ? 'text-red-500' : (darkMode ? 'text-gray-400' : 'text-gray-500')
+            }`}>
+              <div className="flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5" />
+                <span>
+                  {card?.startDate && card?.dueDate
+                    ? `${new Date(card?.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(card?.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+                    : card?.dueDate
+                      ? new Date(card?.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                      : new Date(card?.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                  }
+                </span>
+              </div>
+              {dueStatus && (
+                <div className={`flex items-center gap-1 px-2 py-1 rounded text-xs ${dueStatus.color}`}>
+                  {dueStatus.icon && <Clock className="w-3 h-3" />}
+                  <span>{dueStatus.label}</span>
+                </div>
+              )}
+            </div>
+          )}
         </CardContent>
         {isShowCardActions() && (
           <CardActions sx={{ p: '0 4px 8px 4px' }}>
