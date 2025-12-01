@@ -48,7 +48,7 @@ function AccountTab() {
 
   const submitChangeGeneralInformation = (data) => {
     const { displayName } = data
-    console.log('displayName: ', displayName)
+    // console.log('displayName: ', displayName)
 
     // Nếu không có sự thay đổi gì về displayname thì không làm gì cả
     if (displayName === currentUser?.displayName) return
@@ -57,7 +57,7 @@ function AccountTab() {
     toast.promise(
       dispatch(updateUserAPI({ displayName })),
       {
-        pending: 'Updating...',
+        pending: 'Updating...'
       }
     ).then(res => {
       if (!res.error) {
@@ -68,7 +68,7 @@ function AccountTab() {
 
   const uploadAvatar = (e) => {
     // Lấy file thông qua e.target?.files[0] và validate nó trước khi xử lý
-    console.log('e.target?.files[0]: ', e.target?.files[0])
+    // console.log('e.target?.files[0]: ', e.target?.files[0])
     const error = singleFileValidator(e.target?.files[0])
     if (error) {
       toast.error(error)
@@ -88,7 +88,7 @@ function AccountTab() {
     toast.promise(
       dispatch(updateUserAPI(reqData)),
       {
-        pending: 'Uploading...',
+        pending: 'Uploading...'
       }
     ).then(res => {
       if (!res.error) {
@@ -97,7 +97,7 @@ function AccountTab() {
       // cần clear giá trị fileInput, nếu không thì nếu gọi api lỗi mà upload lại thì kh có value nữa
       e.target.value = ''
     })
-  
+
   }
 
   return (
@@ -178,7 +178,7 @@ function AccountTab() {
               />
             </Box>
 
-            <Box sx={{  }}>
+            <Box sx={{ }}>
               <TextField
                 fullWidth
                 label="Your Display Name"
@@ -197,8 +197,8 @@ function AccountTab() {
                       <InputAdornment position="start">
                         <AssignmentIndIcon fontSize="small" sx={{ '&.MuiSvgIcon-root': { color: 'inherit' } }} />
                       </InputAdornment>
-                    ),
-                  },
+                    )
+                  }
                 }}
                 {...register('displayName', {
                   required: FIELD_REQUIRED_MESSAGE

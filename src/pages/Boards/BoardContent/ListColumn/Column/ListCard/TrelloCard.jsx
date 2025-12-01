@@ -136,7 +136,7 @@ function TrelloCard({ card }) {
           }
         }}
       >
-        {card?.cover && <CardMedia sx={{ height: 140, borderRadius: '4px 4px 0 0', objectFit: 'cover'}} image={card?.cover} />}
+        {card?.cover && <CardMedia sx={{ height: 140, borderRadius: '4px 4px 0 0', objectFit: 'cover' }} image={card?.cover} />}
         <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
           <Typography>{card?.title}</Typography>
           {(card?.startDate || card?.dueDate) && (

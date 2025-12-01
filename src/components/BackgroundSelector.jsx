@@ -56,10 +56,18 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
     { id: 1, url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', alt: 'Mountain landscape' },
     { id: 2, url: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=400', alt: 'Orange sunset' },
     { id: 3, url: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=400', alt: 'Beach palm' },
-    { id: 4, url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', alt: 'Mountain lake' },
-    { id: 5, url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400', alt: 'Building architecture' },
-    { id: 7, url: 'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=400', alt: 'Ocean waves' },
-    { id: 8, url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400', alt: 'Night mountain' }
+    { id: 4, url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400', alt: 'Building architecture' },
+    { id: 5, url: 'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=400', alt: 'Ocean waves' },
+    { id: 6, url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400', alt: 'Night mountain' },
+    { id: 7, url: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=400', alt: 'Forest path' },
+    { id: 8, url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400', alt: 'Tropical beach' },
+    { id: 9, url: 'https://images.unsplash.com/photo-1508615039623-a25605d2b022?w=400', alt: 'Mountain peak' },
+    { id: 10, url: 'https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=400', alt: 'Sunset sky' },
+    { id: 11, url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400', alt: 'Green forest' },
+    { id: 12, url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400', alt: 'Misty mountains' },
+    { id: 13, url: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400', alt: 'Desert landscape' },
+    { id: 14, url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400', alt: 'Lake view' },
+    { id: 15, url: 'https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=400', alt: 'Pine forest' }
   ]
 
   const handleTabChange = (event, newValue) => {
@@ -207,7 +215,7 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
                   transform: 'scale(1.05)'
                 }
               }}
-              onClick={() => handleDefaultSelect('image', image.url)}
+              onClick={() => handleDefaultSelect('image', image.url.replace('?w=400', ''))}
             >
               <CardMedia
                 component="img"
@@ -330,7 +338,7 @@ const BackgroundSelector = ({ open, onClose, boardId }) => {
                     sx={{
                       width: 150,
                       height: 90,
-                      backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=100)',
+                      backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400)',
                       backgroundSize: 'cover',
                       borderRadius: 2,
                       mb: 0.5,

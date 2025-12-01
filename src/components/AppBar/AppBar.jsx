@@ -125,7 +125,7 @@ function AppBar() {
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 15, mr: 1 }}>
           {/* <AutoCompleteSearchBoard /> */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1.5 }}>
+          <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 1.5 }}>
             {/* <WorkSpace />
             <Recent />
             <Starred />

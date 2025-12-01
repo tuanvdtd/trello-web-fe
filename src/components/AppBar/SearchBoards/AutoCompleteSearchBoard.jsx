@@ -12,11 +12,13 @@ import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
 import Typography from '@mui/material/Typography'
-
+import {
+  Search
+} from 'lucide-react'
 /**
  * https://mui.com/material-ui/react-autocomplete/#asynchronous-requests
  */
-function AutoCompleteSearchBoard() {
+function AutoCompleteSearchBoard({ typeSearch = 'appbar' }) {
   const navigate = useNavigate()
 
   // State xử lý hiển thị kết quả fetch về từ API
@@ -68,7 +70,7 @@ function AutoCompleteSearchBoard() {
 
   return (
     <Autocomplete
-      sx={{ width: 250 }}
+      sx={{ width: typeSearch === 'appbar' ? 250 : '100%', maxWidth: 400 }}
       id="asynchronous-search-board"
       // Cái text này hiện ra khi boards là null hoặc sau khi đã fetch boards nhưng rỗng - không có kết quả
       noOptionsText={!boards ? 'Type to search board...' : 'No board found!'}
@@ -116,7 +118,7 @@ function AutoCompleteSearchBoard() {
             <ListItemAvatar sx={{ minWidth: 0, mr: 1 }}>
               <Box
                 sx={{
-                  width: thumbSize,
+                  width: thumbSize*1.5,
                   height: thumbSize,
                   borderRadius: 1,
                   overflow: 'hidden',
@@ -155,38 +157,76 @@ function AutoCompleteSearchBoard() {
       }}
 
       // Render ra cái thẻ input để nhập nội dung tìm kiếm
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Type to search..."
-          size="small"
-          InputProps={{
-            ...params.InputProps,
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color: 'white' }} />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <>
-                {loading ? <CircularProgress sx={{ color: 'white' }} size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </>
-            )
-          }}
-          sx={{
-            '& label': { color: 'white' },
-            '& input': { color: 'white' },
-            '& label.Mui-focused': { color: 'white' },
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': { borderColor: 'white' },
-              '&:hover fieldset': { borderColor: 'white' },
-              '&.Mui-focused fieldset': { borderColor: 'white' }
-            },
-            '.MuiSvgIcon-root': { color: 'white' }
-          }}
-        />
-      )}
+      renderInput={(params) => {
+        // Nếu typeSearch là 'appbar' thì render TextField với style đặc biệt
+        if (typeSearch === 'appbar') {
+          return (
+            <TextField
+              {...params}
+              type='text'
+              label="Type to search..."
+              size="small"
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: 'white' }} />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <>
+                    {loading ? <CircularProgress sx={{ color: 'white' }} size={20} /> : null}
+                    {params.InputProps.endAdornment}
+                  </>
+                )
+              }}
+              sx={{
+                '& label': { color: 'white' },
+                '& input': { color: 'white' },
+                '& label.Mui-focused': { color: 'white' },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': { borderColor: 'white' },
+                  '&:hover fieldset': { borderColor: 'white' },
+                  '&.Mui-focused fieldset': { borderColor: 'white' }
+                },
+                '.MuiSvgIcon-root': { color: 'white' }
+              }}
+            />
+          )
+        }
+
+        // Ngược lại render TextField với style mặc định (cho các vị trí khác)
+        return (
+          <TextField
+            {...params}
+            type='text'
+            placeholder="Search boards..."
+            size="small"
+            InputProps={{
+              ...params.InputProps,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <>
+                  {loading ? <CircularProgress size={20} /> : null}
+                  {params.InputProps.endAdornment}
+                </>
+              )
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& input': {
+                  padding: '10px 14px',
+                  fontSize: { xs: '0.875rem', sm: '1rem' }
+                }
+              }
+            }}
+          />
+        )
+      }}
     />
   )
 }

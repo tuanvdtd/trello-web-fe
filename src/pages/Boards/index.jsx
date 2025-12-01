@@ -28,7 +28,8 @@ import {
   Clock,
   Search
 } from 'lucide-react'
-import { useColorScheme } from '@mui/material/styles'
+// import { useColorScheme } from '@mui/material/styles'
+import AutoCompleteSearchBoard from '~/components/AppBar/SearchBoards/AutoCompleteSearchBoard'
 
 
 const DRAWER_WIDTH = 280
@@ -53,7 +54,6 @@ function Boards() {
   const [isLearnMoreOpen, setIsLearnMoreOpen] = useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
-  const { mode } = useColorScheme()
 
   // Xử lý phân trang từ url với MUI: https://mui.com/material-ui/react-pagination/#router-integration
   const location = useLocation()
@@ -134,40 +134,39 @@ function Boards() {
             onCloseCreateModal={() => setIsCreateModalOpen(false)} />
         </Drawer>
         <MainContent component="main">
-          {(isLoading || boards?.length !== 0) && (
-            <div className="max-w-[1920px] mx-auto mb-8 ">
-              <div className="mb-4 sm:mb-8">
-                <div className="flex-1">
-                  <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
-                    {'My Boards'}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    {'Manage and organize all your projects in one place'}
-                  </Typography>
-                </div>
+          <div className="max-w-[1920px] mx-auto mb-8 items-center">
+            <div className="mb-4 sm:mb-8">
+              <div className="flex-1">
+                <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
+                  {'My Boards'}
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  {'Manage and organize all your projects in one place'}
+                </Typography>
               </div>
-              {/* Search bar */}
-              <Box className="relative flex-1" sx={{ display: { xs: 'flex', md: 'none' } }}>
-                <Search
-                  className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${
-                    mode === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                />
-                <input
-                  type="text"
-                  placeholder="Search boards..."
-                  // value={searchQuery}
-                  // onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base rounded-lg border ${
-                    mode === 'dark'
-                      ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400'
-                      : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                  } focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                />
-              </Box>
-              {/* <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 3 }}>Your boards:</Typography> */}
             </div>
-          )}
+            {/* Search bar */}
+            <Box className="relative flex-1" sx={{ display: { xs: 'flex', sm: 'none', justifyContent: 'center' } }}>
+              {/* <Search
+                className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${
+                  mode === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                }`}
+              />
+              <input
+                type="text"
+                placeholder="Search boards..."
+                // value={searchQuery}
+                // onChange={(e) => setSearchQuery(e.target.value)}
+                className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base rounded-lg border ${
+                  mode === 'dark'
+                    ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400'
+                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              /> */}
+              <AutoCompleteSearchBoard typeSearch="boardbar" />
+            </Box>
+            {/* <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 3 }}>Your boards:</Typography> */}
+          </div>
 
           {isLoading && <BoardsListSkeleton />}
 

@@ -47,7 +47,7 @@ const EmptyBoardsState = ({ onCreateBoard, onLearnMore }) => {
           fontSize: { xs: '1.5rem', md: '2rem' }
         }}
       >
-        No boards yet
+        No boards found
       </Typography>
 
       <Typography
@@ -60,7 +60,7 @@ const EmptyBoardsState = ({ onCreateBoard, onLearnMore }) => {
           lineHeight: 1.6
         }}
       >
-        Create your first board to get started with organizing your projects and tasks
+        Create your board to get started with organizing your projects and tasks
       </Typography>
 
       {/* Action Buttons */}
@@ -90,7 +90,7 @@ const EmptyBoardsState = ({ onCreateBoard, onLearnMore }) => {
             transition: 'all 0.3s ease'
           }}
         >
-          Create your first board
+          Create your board
         </Button>
 
         <Button
